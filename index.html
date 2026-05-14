@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pneumatic Cylinder | รายงานกลุ่มที่ 7</title>
+  <title>กระบอกสูบนิวเมติกส์ | รายงานกลุ่มที่ 7</title>
   <style>
     :root {
       --bg: #0b0f19; --bg-alt: #111827; --card: #161b2c;
@@ -15,216 +15,452 @@
     html { scroll-behavior: smooth; }
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; overflow-x: hidden; }
     a { color: inherit; text-decoration: none; }
-    ul, ol { padding-left: 1.2rem; } li { margin-bottom: 6px; }
+    ul, ol { padding-left: 1.4rem; } li { margin-bottom: 6px; }
 
-    /* NAV */
-    nav { position: sticky; top: 0; z-index: 100; background: rgba(11,15,25,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; }
-    .brand { font-weight: 800; font-size: 1.15rem; color: var(--primary); }
-    .nav-links { display: flex; gap: 18px; }
-    .nav-links a { font-size: 0.9rem; color: var(--text-muted); transition: 0.3s; padding: 6px 10px; border-radius: 6px; }
-    .nav-links a:hover { background: rgba(14,165,233,0.1); color: var(--primary); }
+    /* NAVIGATION */
+    nav { position: sticky; top: 0; z-index: 1000; background: rgba(11,15,25,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+    .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+    .brand { font-weight: 800; font-size: 1.2rem; color: var(--primary); padding: 16px 0; }
+    .nav-menu { display: flex; list-style: none; gap: 4px; }
+    .nav-item { position: relative; }
+    .nav-link { display: flex; align-items: center; gap: 6px; padding: 18px 16px; color: var(--text-muted); transition: 0.3s; cursor: pointer; font-weight: 500; }
+    .nav-link:hover, .nav-link.active { color: var(--primary); background: rgba(14,165,233,0.08); }
+    .dropdown-arrow { transition: 0.3s; font-size: 0.7rem; }
+    .nav-item:hover .dropdown-arrow { transform: rotate(180deg); }
+    
+    .dropdown { position: absolute; top: 100%; left: 0; background: var(--card); border: 1px solid var(--border); border-radius: 8px; min-width: 260px; opacity: 0; visibility: hidden; transform: translateY(-8px); transition: 0.25s; box-shadow: var(--shadow); margin-top: 0; }
+    .nav-item:hover .dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+    .dropdown a { display: block; padding: 12px 18px; color: var(--text-muted); border-bottom: 1px solid var(--border); transition: 0.2s; font-size: 0.95rem; }
+    .dropdown a:last-child { border-bottom: none; }
+    .dropdown a:hover { background: rgba(14,165,233,0.1); color: var(--primary); padding-left: 22px; }
+    .dropdown a small { display: block; color: var(--text-muted); font-size: 0.75rem; margin-top: 2px; opacity: 0.7; }
 
     /* HERO & TEAM */
-    .hero { text-align: center; padding: 80px 20px 40px; background: radial-gradient(circle at 50% 0%, rgba(14,165,233,0.12), transparent 70%); }
-    .hero h1 { font-size: 2.6rem; font-weight: 800; margin-bottom: 8px; background: linear-gradient(90deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero .sub { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 25px; }
+    .hero { text-align: center; padding: 100px 20px 50px; background: radial-gradient(circle at 50% 0%, rgba(14,165,233,0.12), transparent 70%); }
+    .hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 10px; background: linear-gradient(90deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero .sub { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 30px; }
     
-    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; max-width: 850px; margin: 0 auto 25px; }
-    .team-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 12px; transition: 0.3s; position: relative; overflow: hidden; }
-    .team-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: var(--shadow); }
-    .team-card h3 { font-size: 0.95rem; margin: 10px 0 2px; }
-    .student-id { font-size: 0.8rem; color: var(--accent); margin-bottom: 2px; font-family: monospace; }
-    .role { font-size: 0.8rem; color: var(--text-muted); }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 900px; margin: 0 auto 30px; }
+    .team-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 25px 15px; transition: 0.3s; }
+    .team-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: var(--shadow); }
+    .photo-wrap { width: 100px; height: 100px; margin: 0 auto 15px; position: relative; cursor: pointer; }
+    .photo-circle { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--border); overflow: hidden; background: var(--bg-alt); display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+    .photo-wrap:hover .photo-circle { border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow); }
+    .photo-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .photo-placeholder { width: 50%; height: 50%; fill: var(--text-muted); opacity: 0.5; }
+    .upload-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.2s; border-radius: 50%; }
+    .photo-wrap:hover .upload-overlay { opacity: 1; }
+    .upload-overlay svg { width: 35px; height: 35px; fill: #fff; }
+    input[type="file"] { display: none; }
+    .team-card h3 { font-size: 1.05rem; margin: 10px 0 5px; }
+    .student-id { font-size: 0.85rem; color: var(--accent); margin-bottom: 3px; font-family: monospace; }
+    .role { font-size: 0.9rem; color: var(--text-muted); }
+    .meta { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 25px; font-size: 0.9rem; color: var(--text-muted); }
+    .meta span { background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 8px; }
 
-    /* PHOTO UPLOAD */
-    .photo-wrap { position: relative; width: 75px; height: 75px; margin: 0 auto; cursor: pointer; }
-    .photo-circle { width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--border); overflow: hidden; background: var(--bg-alt); display: flex; align-items: center; justify-content: center; transition: 0.3s; }
-    .photo-wrap:hover .photo-circle { border-color: var(--primary); }
-    .photo-img { width: 100%; height: 100%; object-fit: cover; }
-    .photo-placeholder { width: 40px; height: 40px; fill: var(--text-muted); }
-    .upload-hint { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.75); color: #fff; font-size: 0.65rem; text-align: center; padding: 3px 0; border-radius: 0 0 50% 50%; opacity: 0; transition: 0.2s; }
-    .photo-wrap:hover .upload-hint { opacity: 1; }
+    /* CONTENT SECTIONS */
+    .section { max-width: 1000px; margin: 0 auto; padding: 60px 20px; }
+    .section-title { font-size: 2rem; color: var(--primary); margin-bottom: 30px; display: flex; align-items: center; gap: 12px; }
+    .section-title::before { content: ''; width: 5px; height: 35px; background: var(--accent); border-radius: 3px; }
+    
+    .content-block { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; margin-bottom: 25px; transition: 0.3s; }
+    .content-block:hover { border-color: rgba(14,165,233,0.4); }
+    .content-block h3 { color: var(--accent); margin-bottom: 15px; font-size: 1.4rem; }
+    .content-block h4 { color: var(--primary); margin: 20px 0 10px; }
+    .content-block p, .content-block li { color: var(--text-muted); margin-bottom: 8px; line-height: 1.8; }
+    .content-block strong { color: var(--text); }
 
-    .meta { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 20px; font-size: 0.85rem; color: var(--text-muted); }
-    .meta span { background: rgba(255,255,255,0.05); padding: 5px 10px; border-radius: 6px; }
-
-    /* MAIN */
-    .container { max-width: 950px; margin: 0 auto; padding: 30px 20px 80px; }
-    .section-title { font-size: 1.6rem; color: var(--primary); margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
-    .section-title::before { content: ''; width: 4px; height: 24px; background: var(--accent); border-radius: 2px; }
-
-    /* ACCORDION */
-    .acc-group { display: flex; flex-direction: column; gap: 12px; }
-    .acc { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: 0.3s; }
-    .acc:hover { border-color: rgba(14,165,233,0.4); }
-    .acc-btn { width: 100%; padding: 16px 18px; background: transparent; border: none; color: var(--text); font-size: 1rem; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; text-align: left; transition: 0.2s; }
-    .acc-btn:hover { background: rgba(255,255,255,0.03); }
-    .acc-btn .arrow { transition: 0.3s; color: var(--primary); }
-    .acc.open .acc-btn .arrow { transform: rotate(45deg); color: var(--accent); }
-    .acc-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1); padding: 0 18px; }
-    .acc.open .acc-body { max-height: 1200px; padding: 0 18px 20px; }
-    .acc-body h4 { color: var(--accent); margin: 15px 0 8px; }
-    .acc-body p, .acc-body li { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 6px; }
-    .acc-body strong { color: var(--text); }
-
-    /* TABLES & CALC */
-    .table-wrap { overflow-x: auto; margin: 15px 0; border: 1px solid var(--border); border-radius: 8px; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+    /* TABLES */
+    .table-wrap { overflow-x: auto; margin: 20px 0; border: 1px solid var(--border); border-radius: 8px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; min-width: 500px; }
+    th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border); }
     th { background: rgba(14,165,233,0.1); color: var(--primary); font-weight: 600; }
     tr:hover { background: rgba(255,255,255,0.02); }
 
-    .calc-box { background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; margin: 25px 0; }
-    .calc-inputs { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 12px 0; }
-    .calc-inputs input { padding: 10px; border: 1px solid var(--border); border-radius: 8px; background: #0b0f19; color: #fff; width: 140px; text-align: center; }
-    .btn { padding: 10px 18px; background: var(--primary); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s; }
-    .btn:hover { background: #0284c7; box-shadow: 0 4px 12px var(--primary-glow); }
-    .calc-result { font-size: 1.1rem; margin-top: 10px; color: var(--accent); font-weight: 600; }
+    /* CALCULATOR */
+    .calc-box { background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; text-align: center; margin: 30px 0; }
+    .calc-inputs { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 15px 0; }
+    .calc-inputs input { padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: #0b0f19; color: #fff; width: 150px; text-align: center; }
+    .btn { padding: 12px 24px; background: var(--primary); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+    .btn:hover { background: #0284c7; box-shadow: 0 4px 15px var(--primary-glow); }
+    .calc-result { font-size: 1.2rem; margin-top: 15px; color: var(--accent); font-weight: 600; }
 
     /* FOOTER & ANIM */
-    footer { text-align: center; padding: 30px 20px; background: #070a11; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border); }
+    footer { text-align: center; padding: 30px 20px; background: #070a11; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--border); }
     footer a { color: var(--primary); }
-    .fade-up { opacity: 0; transform: translateY(20px); transition: 0.6s; }
+    .fade-up { opacity: 0; transform: translateY(30px); transition: 0.7s; }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
 
-    @media (max-width: 768px) {
-      .hero h1 { font-size: 2rem; } .nav-links { display: none; } .acc-btn { font-size: 0.95rem; } th, td { padding: 8px; font-size: 0.8rem; }
+    @media (max-width: 968px) {
+      .nav-menu { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--card); border-bottom: 1px solid var(--border); }
+      .nav-menu.open { display: flex; }
+      .dropdown { position: static; opacity: 1; visibility: visible; transform: none; display: none; border: none; box-shadow: none; border-radius: 0; }
+      .nav-item.active .dropdown { display: block; }
+      .hero h1 { font-size: 2.2rem; }
+      .mobile-toggle { display: block; background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; }
     }
+    @media (min-width: 969px) { .mobile-toggle { display: none; } }
   </style>
 </head>
 <body>
 
   <nav>
-    <div class="brand"> Pneumatic Cylinder</div>
-    <div class="nav-links">
-      <a href="#hero">หน้าแรก</a>
-      <a href="#content">เนื้อหา</a>
-      <a href="#tools">เครื่องมือ</a>
-      <a href="#footer">อ้างอิง</a>
+    <div class="nav-container">
+      <div class="brand">⚙️ Pneumatic Cylinder</div>
+      <button class="mobile-toggle" onclick="document.querySelector('.nav-menu').classList.toggle('open')">☰</button>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <div class="nav-link">Introduction <span class="dropdown-arrow">▼</span></div>
+          <div class="dropdown">
+            <a href="#intro">1. บทนำ<small>ภาพรวมและวัตถุประสงค์</small></a>
+            <a href="#basics">2. ความหมายและพื้นฐาน<small>นิวเมติกส์</small></a>
+            <a href="#summary">11. สรุป<small>สรุปเนื้อหา</small></a>
+            <a href="#references">12. เอกสารอ้างอิง<small>แหล่งข้อมูล</small></a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a href="#design" class="nav-link">Design Automation</a>
+        </li>
+        <li class="nav-item">
+          <div class="nav-link">Process & Quality Control <span class="dropdown-arrow">▼</span></div>
+          <div class="dropdown">
+            <a href="#application">7. การประยุกต์ใช้<small>ในอุตสาหกรรม</small></a>
+            <a href="#maintenance">8. การบำรุงรักษา<small>และการแก้ไขปัญหา</small></a>
+            <a href="#comparison">9. เปรียบเทียบระบบ<small>ข้อดี-ข้อเสีย</small></a>
+            <a href="#standards">10. มาตรฐานความปลอดภัย<small>และแนวโน้ม</small></a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a href="#about" class="nav-link">About us</a>
+        </li>
+      </ul>
     </div>
   </nav>
 
-  <header class="hero" id="hero">
+  <header class="hero" id="about">
     <h1>กระบอกสูบนิวเมติกส์</h1>
     <p class="sub">รายงานวิชาการ | ระบบขับเคลื่อนด้วยลมอัดสำหรับอุตสาหกรรมสมัยใหม่</p>
     
     <div class="team-grid">
-      <!-- Member 1 -->
       <div class="team-card fade-up">
-        <div class="photo-wrap">
-          <div class="photo-circle"><img class="photo-img" src="เจ.jpg" alt="ธีรภัทร เก่งนอก (เจ)"></div>
-          <input type="file" accept="image/*" id="upload1" hidden>
-          <label for="upload1" class="upload-hint">📷 อัปโหลดรูป</label>
-        </div>
+        <label class="photo-wrap">
+          <div class="photo-circle">
+            <img src="" alt="Member 1" class="photo-img" id="img1" style="display:none;">
+            <svg class="photo-placeholder" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          </div>
+          <div class="upload-overlay"><svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg></div>
+          <input type="file" accept="image/*" id="upload1">
+        </label>
         <h3>1. ธีรภัทร เก่งนอก (เจ)</h3>
         <p class="student-id">ID: 2411220078</p>
         <p class="role">หัวหน้ากลุ่ม</p>
       </div>
-      <!-- Member 2 -->
+      
       <div class="team-card fade-up">
-        <div class="photo-wrap">
-          <div class="photo-circle"><img class="photo-img" src="โย.jpg" alt="พีระพัฒน์ โภคพูล (โย)"></div>
-          <input type="file" accept="image/*" id="upload2" hidden>
-          <label for="upload2" class="upload-hint">📷 อัปโหลดรูป</label>
-        </div>
+        <label class="photo-wrap">
+          <div class="photo-circle">
+            <img src="" alt="Member 2" class="photo-img" id="img2" style="display:none;">
+            <svg class="photo-placeholder" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          </div>
+          <div class="upload-overlay"><svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg></div>
+          <input type="file" accept="image/*" id="upload2">
+        </label>
         <h3>2. พีระพัฒน์ โภคพูล (โย)</h3>
         <p class="student-id">ID: 2411220078</p>
-    
+        <p class="role">ฝ่ายเนื้อหา</p>
       </div>
-      <!-- Member 3 -->
+
       <div class="team-card fade-up">
-        <div class="photo-wrap">
-          <div class="photo-circle"><img class="photo-img" src="อั๋น.jpg" alt="อนุรักษ์ ศิริภักดี (อั๋น)"></div>
-          <input type="file" accept="image/*" id="upload3" hidden>
-          <label for="upload3" class="upload-hint">📷 อัปโหลดรูป</label>
-        </div>
+        <label class="photo-wrap">
+          <div class="photo-circle">
+            <img src="" alt="Member 3" class="photo-img" id="img3" style="display:none;">
+            <svg class="photo-placeholder" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          </div>
+          <div class="upload-overlay"><svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg></div>
+          <input type="file" accept="image/*" id="upload3">
+        </label>
         <h3>3. อนุรักษ์ ศิริภักดี (อั๋น)</h3>
         <p class="student-id">ID: 2511220127</p>
-    
+        <p class="role">ฝ่ายวิเคราะห์</p>
       </div>
-      <!-- Member 4 -->
+
       <div class="team-card fade-up">
-        <div class="photo-wrap">
-          <div class="photo-circle"><img class="photo-img" src="เนะ.jpg" alt="ศรัญยู ภูเขาใหญ่ (กลอฟ)"></div>
-          <input type="file" accept="image/*" id="upload4" hidden>
-          <label for="upload4" class="upload-hint">📷 อัปโหลดรูป</label>
-        </div>
+        <label class="photo-wrap">
+          <div class="photo-circle">
+            <img src="" alt="Member 4" class="photo-img" id="img4" style="display:none;">
+            <svg class="photo-placeholder" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          </div>
+          <div class="upload-overlay"><svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg></div>
+          <input type="file" accept="image/*" id="upload4">
+        </label>
         <h3>4. ศรัญยู ภูเขาใหญ่ (กอล์ฟ)</h3>
         <p class="student-id">ID: 2411220268</p>
-      
+        <p class="role">ฝ่ายนำเสนอ</p>
       </div>
     </div>
 
     <div class="meta fade-up">
-      <span> ผศ.ดร.วิภาวดี วงษ์สุวรรณ์</span>
-      <span> ภาคเรียนที่ 3 ปีการศึกษา 2569</span>
-      <span> รายวิชา Engineering Materials</span>
+      <span>👨‍🏫 ผศ.ดร.วิภาวดี วงษ์สุวรรณ์</span>
+      <span>📅 ภาคเรียนที่ 3 ปีการศึกษา 2569</span>
+      <span>🎓 รายวิชา Engineering Materials</span>
     </div>
   </header>
 
-  <main class="container">
-    <div class="section-title fade-up"> เนื้อหาฉบับสมบูรณ์</div>
-    <div class="acc-group" id="content">
-      <div class="acc fade-up"><button class="acc-btn">1. บทนำ <span class="arrow">+</span></button><div class="acc-body"><p>ในยุคอุตสาหกรรม 4.0 ระบบอัตโนมัติมีบทบาทสำคัญต่อการเพิ่มประสิทธิภาพการผลิต ลดต้นทุน และยกระดับคุณภาพสินค้า <strong>ระบบนิวเมติกส์</strong> ซึ่งใช้พลังงานจากอากาศอัดยังคงเป็นพื้นฐานที่ขาดไม่ได้ เนื่องจากปลอดภัย ตอบสนองเร็ว บำรุงรักษาง่าย และทนทานต่อสภาวะแวดล้อม</p><h4> วัตถุประสงค์</h4><ul><li>ศึกษาหลักการทำงานและโครงสร้างของกระบอกสูบนิวเมติกส์</li><li>จำแนกประเภทและแนวทางการเลือกใช้งานให้เหมาะสม</li><li>วิเคราะห์ข้อดี-ข้อเสีย และการบำรุงรักษาเชิงป้องกัน</li><li>เปรียบเทียบระบบนิวเมติกส์กับระบบขับเคลื่อนอื่นๆ และติดตามแนวโน้มเทคโนโลยี</li></ul></div></div>
-      <div class="acc fade-up"><button class="acc-btn">2. ความหมายและพื้นฐานนิวเมติกส์ <span class="arrow">+</span></button><div class="acc-body"><p>คำว่า <strong>"Pneumatics"</strong> มาจากภาษากรีก "Pneuma" แปลว่า ลม/อากาศ ในทางวิศวกรรมหมายถึงศาสตร์การใช้ก๊าซหรืออากาศอัดเป็นสื่อกลางถ่ายทอดพลังงาน</p><ul><li><strong>อัดตัวได้:</strong> ลดแรงกระแทกและดูดซับการสั่นสะเทือน</li><li><strong>ไม่ติดไฟ:</strong> ปลอดภัยต่อสภาพแวดล้อมเสี่ยงระเบิด</li><li><strong>สะอาด:</strong> รั่วไหลไม่ก่อมลพิษ ใช้ในอาหาร/ยาได้</li><li><strong>ต้นทุนต่ำ:</strong> อากาศมีทั่วไป เพียงใช้คอมเพรสเซอร์และกรอง</li></ul><p>แรงดันใช้งานทั่วไป: <strong>4–8 บาร์</strong> (400–800 kPa) สูงสุดได้ถึง 12–16 บาร์</p></div></div>
-      <div class="acc fade-up"><button class="acc-btn">3. ประเภทของกระบอกสูบนิวเมติกส์ <span class="arrow">+</span></button><div class="acc-body"><h4>3.1 Single-Acting</h4><p>ใช้อากาศอัดด้านเดียว กลับตำแหน่งด้วยสปริง เหมาะกับงานกด/หนีบ ระยะชักสั้น ประหยัดลม</p><h4>3.2 Double-Acting</h4><p>อากาศอัดสลับเข้า-ออก 2 ด้าน ควบคุมยืด-หดได้แม่นยำ ใช้วาล์ว 5/2 หรือ 5/3 นิยมสุดในสายผลิต</p><h4>3.3 ประเภทพิเศษ</h4><ul><li><strong>Rodless:</strong> ไม่มีก้านยื่น ประหยัดพื้นที่ ระยะยาวได้</li><li><strong>Guided:</strong> มีแกนนำทาง รับแรงด้านข้างสูง ไม่เอียง</li><li><strong>Multi-position:</strong> หยุดได้หลายตำแหน่งในตัวเดียว</li><li><strong>Rotary Actuator:</strong> หมุน 0°–270° ใช้จัดวางชิ้นงาน</li></ul><div class="table-wrap"><table><tr><th>ประเภท</th><th>ทิศทางสร้างแรง</th><th>วาล์ว</th><th>จุดเด่น</th><th>งานเหมาะสม</th></tr><tr><td>Single-Acting</td><td>1 ทาง</td><td>3/2</td><td>ประหยัดลม, ง่าย</td><td>งานกด, ปลอดภัย</td></tr><tr><td>Double-Acting</td><td>2 ทาง</td><td>5/2, 5/3</td><td>แรงสม่ำเสมอ, ควบคุมละเอียด</td><td>สายผลิตทั่วไป</td></tr><tr><td>Rodless</td><td>เชิงเส้น</td><td>5/2</td><td>ประหยัดพื้นที่</td><td>ขนส่งแนวราบ</td></tr><tr><td>Guided</td><td>เชิงเส้น</td><td>5/2</td><td>รับแรงข้างสูง</td><td>โหลดเยื้องศูนย์</td></tr></table></div></div></div>
-      <div class="acc fade-up"><button class="acc-btn">4. ส่วนประกอบ วัสดุ และการเลือกใช้งาน <span class="arrow">+</span></button><div class="acc-body"><ul><li><strong>ท่อกระบอก:</strong> อลูมิเนียมอโนไดซ์ หรือ SS304/316 ผิวด้านในโฮนนิ่งเรียบ</li><li><strong>ลูกสูบ:</strong> อลูมิเนียม/เหล็กหล่อ มีซีลและวงแหวนแม่เหล็กติดเซนเซอร์</li><li><strong>ก้านสูบ:</strong> เหล็กชุบโครมแข็ง ป้องกันรอยขีดข่วน</li><li><strong>ซีล:</strong> NBR, PU, FKM/Viton, PTFE (เลือกตามอุณหภูมิ/สารเคมี)</li><li><strong>Cushioning:</strong> วาล์วปรับลดความเร็วก่อนชนฝาปิด ป้องกันเสียงดัง</li><li><strong>Mounting:</strong> Foot, Flange, Clevis/Trunnion เลือกตามลักษณะรับแรง</li></ul></div></div>
-      <div class="acc fade-up"><button class="acc-btn">5. หลักการทำงานและสมการทางวิศวกรรม <span class="arrow">+</span></button><div class="acc-body"><p>ทำงานตาม <strong>กฎของพาสคาล</strong> ความดันถ่ายทอดทุกทิศทางเท่าเทียมกัน</p><h4>📐 การคำนวณแรง</h4><p><strong>Extend:</strong> F = P × (π × D² / 4)<br><strong>Retract:</strong> F = P × [π × (D² - d²) / 4]</p><p><em>ต้องหักแรงเสียดทานซีล (~5-10%) และเผื่อ Safety Factor 1.25–1.5</em></p><h4> ความเร็วและการใช้อากาศ</h4><p>ใช้วาล์ว Meter-out ควบคุมลมออก ทำให้เคลื่อนที่นุ่มนวล ลดอาการกระตุก<br>Q = (A × L × N) / 60 × (Pabs / Patm) → ใช้เลือกคอมเพรสเซอร์และท่อ</p></div></div>
-      <div class="acc fade-up"><button class="acc-btn">6. อุปกรณ์ประกอบในระบบ <span class="arrow">+</span></button><div class="acc-body"><ul><li><strong>FRL Unit:</strong> Filter + Regulator + Lubricator (หรือ Oil-Free สำหรับงานอาหาร/อิเล็กฯ)</li><li><strong>Directional Valve:</strong> 3/2, 5/2, 5/3 ขับด้วย Solenoid, Pneumatic Pilot หรือมือ/เท้า</li><li><strong>Flow Control:</strong> ปรับความเร็ว มักมี Check Valve ในตัว</li><li><strong>Quick Exhaust:</strong> ระบายลมทิ้งเร็ว เพิ่มความเร็วจังหวะหดกลับ 3 เท่า</li><li><strong>Sensor/Switch:</strong> Reed, Hall Effect, Proximity ติดรางส่งสัญญาณ PLC</li><li><strong>Tubing & Fittings:</strong> PU, Nylon, Push-in/Compression</li></ul></div></div>
-      <div class="acc fade-up"><button class="acc-btn">7. การประยุกต์ใช้งานในอุตสาหกรรม <span class="arrow">+</span></button><div class="acc-body"><ul><li> <strong>ยานยนต์:</strong> เชื่อมจุด, ยกชิ้นส่วน, พ่นสี, ทดสอบแรงกด</li><li> <strong>บรรจุภัณฑ์:</strong> ปิดฝา, ติดฉลาก, ลำเลียง, ซีลถุง</li><li> <strong>อาหาร/ยา:</strong> เกรดอาหาร ซีล PTFE ปลอดน้ำมัน</li><li> <strong>อิเล็กฯ:</strong> Pick & Place, ทดสอบปุ่ม, ทำความสะอาด PCB</li><li> <strong>การแพทย์:</strong> เก้าอี้ทำฟัน, เครื่องมือผ่าตัดแรงดันต่ำ</li><li> <strong>หุ่นยนต์:</strong> Gripper, Linear Slide, Rotary Table</li></ul><p> <em>คำนวณแรงจริง, เผื่อ Safety Factor, เลือกซีลให้เหมาะกับอุณหภูมิ/สารเคมี, ออกแบบ Fail-safe</em></p></div></div>
-      <div class="acc fade-up"><button class="acc-btn">8. การบำรุงรักษาและการแก้ไขปัญหา <span class="arrow">+</span></button><div class="acc-body"><h4> ตารางตรวจสอบ</h4><ul><li>รายวัน: แรงดัน, ดูดน้ำ Filter, ฟังเสียงรั่ว, สังเกตการเคลื่อนที่</li><li>รายเดือน: ตรวจสอบซีลก้านสูบ, ทำความสะอาด Filter, ขันน็อต</li><li>รายปี: เปลี่ยนซีลชุดใหญ่, ตรวจก้านสูบ, เช็คเซนเซอร์</li></ul><div class="table-wrap"><table><tr><th>อาการ</th><th>สาเหตุ</th><th>แนวทางแก้ไข</th></tr><tr><td>เคลื่อนช้า/กระตุก</td><td>แรงดันต่ำ, ซีลเสื่อม</td><td>ปรับ Regulator, เปลี่ยนซีล, ใช้ Meter-out</td></tr><tr><td>เสียงลมรั่วดัง</td><td>ซีลพัง, ข้อต่อหลวม</td><td>เปลี่ยนซีล, ขันข้อต่อ/ท่อ</td></tr><tr><td>ก้านเป็นรอย/คด</td><td>รับแรงข้าง, โหลดเกิน</td><td>เพิ่ม Guided, ปรับแนวติดตั้ง</td></tr><tr><td>น้ำในระบบมาก</td><td>Drain ไม่ทำงาน</td><td>ล้าง Filter, ติดตั้ง Air Dryer</td></tr><tr><td>ไม่เคลื่อนที่</td><td>วาล์วไม่สลับ, ไฟดับ</td><td>เช็ค Solenoid/PLC, วัดแรงดัน</td></tr></table></div></div></div>
-      <div class="acc fade-up"><button class="acc-btn">9. ข้อดี-ข้อเสีย และเปรียบเทียบกับระบบอื่น <span class="arrow">+</span></button><div class="acc-body"><h4> ข้อดี</h4><ul><li>ปลอดภัย ไม่เกิดประกายไฟ</li><li>โครงสร้างง่าย ต้นทุนต่ำ</li><li>ความเร็วสูง ตอบสนองเร็ว</li><li>ทน Overload, ระบายอากาศได้ไม่พังอุปกรณ์</li></ul><h4>❌ ข้อเสีย</h4><ul><li>Force Density ต่ำ vs ไฮดรอลิก</li><li>ควบคุมตำแหน่งไม่แม่นยำเท่า Servo</li><li>ต้องบำบัดอากาศต่อเนื่อง</li><li>ประสิทธิภาพพลังงาน ~10-20%</li></ul><div class="table-wrap"><table><tr><th>เปรียบเทียบ</th><th>นิวเมติกส์</th><th>ไฮดรอลิก</th><th>ไฟฟ้า (Servo)</th></tr><tr><td>แรงสูงสุด</td><td>ปานกลาง (1-50 kN)</td><td>สูงมาก (100+ kN)</td><td>ปานกลาง-สูง</td></tr><tr><td>ความเร็ว</td><td>สูง</td><td>ปานกลาง</td><td>สูงมาก</td></tr><tr><td>ความแม่นยำ</td><td>ต่ำ-ปานกลาง</td><td>ปานกลาง</td><td>สูงมาก</td></tr><tr><td>ต้นทุน</td><td>ต่ำ</td><td>สูง</td><td>สูง</td></tr><tr><td>บำรุงรักษา</td><td>ง่าย</td><td>ซับซ้อน</td><td>ง่าย</td></tr></table></div></div></div>
-      <div class="acc fade-up"><button class="acc-btn">10. มาตรฐานความปลอดภัยและแนวโน้มอนาคต <span class="arrow">+</span></button><div class="acc-body"><h4> มาตรฐานสากล</h4><ul><li>ISO 1219: สัญลักษณ์กราฟิก</li><li>ISO 4414: ศัพท์เทคนิค</li><li>ISO 15552: ขนาดและระยะติดตั้ง</li><li>OSHA / ANSI B11: ความปลอดภัยระบบอัตโนมัติ</li></ul><h4> ความปลอดภัย</h4><p>ติดตั้ง E-Stop, วาล์วล็อคความดัน, Lockout/Tagout, Guarding</p><h4> แนวโน้มอนาคต</h4><ul><li><strong>Smart Pneumatics & IoT:</strong> เซนเซอร์วัดแรงดัน/ตำแหน่ง ส่งผ่าน IO-Link ไป Cloud</li><li><strong>Energy Recovery:</strong> กักเก็บลมทิ้ง ลดค่าไฟฟ้า 10-20%</li><li><strong>Hybrid:</strong> ไฟฟ้าคุมตำแหน่ง + นิวเมติกส์สร้างแรง</li><li><strong>วัสดุยุคใหม่:</strong> พอลิเมอร์ทนร้อน, เคลือบนาโน, ซีลตลอดอายุ</li></ul></div></div>
-      <div class="acc fade-up"><button class="acc-btn">11. สรุป <span class="arrow">+</span></button><div class="acc-body"><p>กระบอกสูบนิวเมติกส์เป็นอุปกรณ์พื้นฐานที่ขาดไม่ได้ในระบบอัตโนมัติสมัยใหม่ แปลงพลังงานอากาศอัดเป็นการเคลื่อนที่เชิงเส้น/หมุน โครงสร้างไม่ซับซ้อน ตอบสนองเร็ว ปลอดภัย ต้นทุนต่ำ การเลือกใช้งานต้องพิจารณาประเภท วัสดุซีล แรงดัน ระยะชัก Mounting และสภาพแวดล้อม</p><p>แม้มีข้อจำกัดด้านความแม่นยำและประสิทธิภาพพลังงาน แต่ด้วยข้อได้เปรียบด้านความทนทานและความง่ายในการบำรุงรักษา ทำให้ยังคงเป็นเทคโนโลยีหลักในสายการผลิตทั่วโลก การพัฒนาสู่ <strong>Smart Pneumatics</strong> จะช่วยให้ระบบคงความสำคัญในยุคอุตสาหกรรม 4.0 อย่างยั่งยืน</p></div></div>
-      <div class="acc fade-up"><button class="acc-btn">12. เอกสารอ้างอิง <span class="arrow">+</span></button><div class="acc-body"><ol><li>SMC Corporation. (2023). Pneumatic Basic Course & Catalog.</li><li>Festo Didactic. (2022). Learning System for Automation and Communications: Pneumatics.</li><li>AirTAC International Group. (2024). Product Catalog & Technical Guide.</li><li>ISO 1219-1:2012. Fluid power systems and components — Graphical symbols.</li><li>ISO 15552:2023. Pneumatic fluid power — Mounting dimensions of cylinders.</li><li>บุญส่ง ใจเที่ยง. (2564). ระบบนิวเมติกส์และไฮดรอลิกสำหรับอุตสาหกรรม.</li><li>Parker Hannifin. (2021). Pneumatic Cylinder Application Guide.</li><li>ออนไลน์: www.smcworld.com, www.festo.com, www.airtac.com (เข้าถึง พ.ค. 2569)</li></ol></div></div>
-    </div>
-
-    <div class="section-title fade-up" style="margin-top:40px;"> เครื่องมือสนับสนุนการนำเสนอ</div>
-    <div class="calc-box fade-up" id="tools">
-      <h3> เครื่องคำนวณแรงกระบอกสูบ</h3>
-      <p style="color:var(--text-muted); margin:8px 0; font-size:0.9rem;">สูตร: <b>F = P × A</b> (ป้อนค่าเพื่อคำนวณแบบ Real-time)</p>
-      <div class="calc-inputs">
-        <input type="number" id="pressure" placeholder="แรงดัน (บาร์)" value="6">
-        <input type="number" id="diameter" placeholder="เส้นผ่านศูนย์กลาง (mm)" value="40">
-        <button class="btn" onclick="calcForce()">คำนวณ</button>
+  <main>
+    <!-- INTRODUCTION -->
+    <section class="section" id="intro">
+      <h2 class="section-title fade-up">1. บทนำ</h2>
+      <div class="content-block fade-up">
+        <p>ในยุคอุตสาหกรรม 4.0 ระบบอัตโนมัติมีบทบาทสำคัญต่อการเพิ่มประสิทธิภาพการผลิต ลดต้นทุน และยกระดับคุณภาพสินค้า <strong>ระบบนิวเมติกส์ (Pneumatic System)</strong> ซึ่งเป็นเทคโนโลยีที่ใช้พลังงานจากอากาศอัด (Compressed Air) เพื่อขับเคลื่อนกลไกต่างๆ ยังคงเป็นพื้นฐานที่ขาดไม่ได้ในสายการผลิตสมัยใหม่ เนื่องจากมีความปลอดภัยสูง ตอบสนองเร็ว บำรุงรักษาง่าย และทนทานต่อสภาวะแวดล้อมที่หลากหลาย</p>
+        <p>กระบอกสูบนิวเมติกส์ (Pneumatic Cylinder) ถือเป็นหัวใจหลักของระบบ ทำหน้าที่แปลงพลังงานความดันอากาศให้เป็นการเคลื่อนที่เชิงเส้น (Linear Motion) หรือการเคลื่อนที่เชิงหมุน (Rotary Motion) การเข้าใจหลักการทำงาน การเลือกประเภท การบำรุงรักษา และมาตรฐานที่เกี่ยวข้อง จึงเป็นความรู้พื้นฐานที่จำเป็นสำหรับวิศวกร ช่างเทคนิค และนักศึกษาสายอุตสาหกรรม</p>
+        <h4>🎯 วัตถุประสงค์ของรายงาน</h4>
+        <ol>
+          <li>เพื่อศึกษาหลักการทำงานและโครงสร้างของกระบอกสูบนิวเมติกส์</li>
+          <li>เพื่อจำแนกประเภทและแนวทางการเลือกใช้งานให้เหมาะสมกับงาน</li>
+          <li>เพื่อวิเคราะห์ข้อดี-ข้อเสีย และการบำรุงรักษาเชิงป้องกัน</li>
+          <li>เพื่อเปรียบเทียบระบบนิวเมติกส์กับระบบขับเคลื่อนอื่นๆ และติดตามแนวโน้มเทคโนโลยีในอนาคต</li>
+        </ol>
       </div>
-      <div class="calc-result" id="result">แรงที่ได้: 753.98 N (≈ 76.86 kgf)</div>
-    </div>
+    </section>
+
+    <section class="section" id="basics" style="background: var(--bg-alt);">
+      <h2 class="section-title fade-up">2. ความหมายและพื้นฐานนิวเมติกส์</h2>
+      <div class="content-block fade-up">
+        <p>คำว่า <strong>"นิวเมติกส์" (Pneumatics)</strong> มีรากศัพท์มาจากภาษากรีกโบราณว่า "Pneuma" ซึ่งหมายถึง ลม หรือ อากาศ ในทางวิศวกรรมหมายถึง ศาสตร์ที่ว่าด้วยการใช้ก๊าซหรืออากาศอัดเป็นสื่อกลางในการถ่ายทอดพลังงาน เพื่อสร้างการเคลื่อนที่หรือแรงกล</p>
+        <p>อากาศอัดมีคุณสมบัติพิเศษที่เหมาะสมกับการใช้งานในระบบควบคุม ได้แก่</p>
+        <ul>
+          <li><strong>อัดตัวได้ (Compressible):</strong> ช่วยลดแรงกระแทกและดูดซับการสั่นสะเทือนได้โดยธรรมชาติ</li>
+          <li><strong>ไม่ติดไฟและไม่ระเบิด:</strong> ปลอดภัยต่อการใช้งานในสภาพแวดล้อมที่มีความเสี่ยงสูง เช่น โรงงานสี โรงงานเคมี</li>
+          <li><strong>สะอาดและเป็นมิตรต่อสิ่งแวดล้อม:</strong> เมื่อรั่วไหลจะไม่ก่อให้เกิดมลพิษ สามารถใช้งานในอุตสาหกรรมอาหารและยาได้</li>
+          <li><strong>หาได้ง่ายและมีต้นทุนต่ำ:</strong> อากาศมีอยู่ทั่วไป เพียงแค่ใช้คอมเพรสเซอร์อัดและกรองให้บริสุทธิ์</li>
+        </ul>
+        <p>โดยทั่วไประบบนิวเมติกส์จะทำงานที่แรงดัน <strong>4 ถึง 8 บาร์ (Bar)</strong> หรือประมาณ 400–800 กิโลปาสคาล (kPa) ซึ่งเพียงพอสำหรับงานส่วนใหญ่ในโรงงาน แต่หากใช้งานพิเศษอาจปรับแรงดันได้สูงสุดถึง 12–16 บาร์ ตามข้อกำหนดของผู้ผลิต</p>
+      </div>
+    </section>
+
+    <!-- DESIGN AUTOMATION -->
+    <section class="section" id="design">
+      <h2 class="section-title fade-up">Design Automation</h2>
+      <p class="fade-up" style="color: var(--text-muted); margin-bottom: 30px;">หัวข้อที่ 3-6: ประเภท, ส่วนประกอบ, หลักการทำงาน และอุปกรณ์ประกอบระบบ</p>
+      
+      <div class="content-block fade-up">
+        <h3>3. ประเภทของกระบอกสูบนิวเมติกส์</h3>
+        <h4>3.1 กระบอกสูบทิศทางเดียว (Single-Acting Cylinder)</h4>
+        <p>ใช้อากาศอัดเข้าด้านเดียวเพื่อผลักลูกสูบเคลื่อนที่ออก ส่วนการกลับสู่ตำแหน่งเดิมอาศัยแรงสปริงภายใน หรือน้ำหนักของโหลดเอง เหมาะกับงานที่ต้องการแรงผลักในจังหวะเดียว เช่น งานกด งานหนีบ งานดีดชิ้นงาน ข้อดีคือประหยัดอากาศและใช้วาล์วควบคุมง่าย แต่มีข้อจำกัดเรื่องแรงและระยะชัก (Stroke) ที่ไม่ยาวมาก</p>
+        <h4>3.2 กระบอกสูบสองทิศทาง (Double-Acting Cylinder)</h4>
+        <p>เป็นประเภทที่นิยมใช้มากที่สุด อากาศอัดสามารถสลับเข้า-ออกได้ทั้งสองฝั่งของลูกสูบ ทำให้สร้างแรงได้ทั้งจังหวะยืดออกและหดกลับ ควบคุมความเร็วและตำแหน่งได้แม่นยำกว่า ใช้วาล์ว 5/2 หรือ 5/3 ในการสลับทิศทาง ระยะชักมีให้เลือกหลากหลายตั้งแต่ 10 มม. ถึงหลายเมตร</p>
+        <h4>3.3 กระบอกสูบประเภทพิเศษ</h4>
+        <ul>
+          <li><strong>Rodless Cylinder:</strong> ไม่มีก้านลูกสูบยื่นออกมา ใช้แม่เหล็กหรือกลไกเชิงกลเคลื่อนแคร่ เหมาะกับงานที่ต้องการระยะยาวยึดพื้นที่น้อย</li>
+          <li><strong>Guided Cylinder:</strong> มีแกนนำทางคู่ขนาน ป้องกันการหมุนหรือเอนเอียง ใช้ในงานรับแรงด้านข้างสูง</li>
+          <li><strong>Multi-position Cylinder:</strong> มีลูกสูบ 2 ตัวทำงานร่วมกัน ให้ตำแหน่งหยุดได้ 3-4 จุด ในตัวเดียว</li>
+          <li><strong>Rotary Actuator:</strong> ให้การเคลื่อนที่แบบหมุน (0° ถึง 270°) ใช้กับวาล์วหมุนหรือจัดวางชิ้นงาน</li>
+          <li><strong>Clamp/Stopper Cylinder:</strong> ออกแบบมาเฉพาะสำหรับงานหนีบจับหรือหยุดเคลื่อนที่ชิ้นงานบนสายพาน</li>
+        </ul>
+        <div class="table-wrap">
+          <table>
+            <tr><th>ประเภท</th><th>ทิศทางสร้างแรง</th><th>ควบคุมอากาศ</th><th>จุดเด่น</th><th>งานที่เหมาะสม</th></tr>
+            <tr><td>Single-Acting</td><td>1 ทิศทาง</td><td>ใช้วาล์ว 3/2</td><td>ประหยัดลม, โครงสร้างง่าย</td><td>งานกด, งานดีด, ระบบความปลอดภัย</td></tr>
+            <tr><td>Double-Acting</td><td>2 ทิศทาง</td><td>ใช้วาล์ว 5/2 หรือ 5/3</td><td>แรงสม่ำเสมอ, ควบคุมได้ละเอียด</td><td>งานทั่วไปในสายผลิต</td></tr>
+            <tr><td>Rodless</td><td>เชิงเส้น</td><td>5/2</td><td>ประหยัดพื้นที่, ระยะยาวได้</td><td>ขนส่งชิ้นงานแนวราบ</td></tr>
+            <tr><td>Guided</td><td>เชิงเส้น</td><td>5/2</td><td>รับแรงข้างได้สูง, ไม่เอียง</td><td>งานรับโหลดเยื้องศูนย์</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="content-block fade-up">
+        <h3>4. ส่วนประกอบ วัสดุ และการเลือกใช้งาน</h3>
+        <p>การเข้าใจโครงสร้างและวัสดุช่วยให้เลือกกระบอกสูบได้ตรงกับสภาพแวดล้อมการทำงาน และยืดอายุการใช้งานได้ยาวนานขึ้น</p>
+        <ul>
+          <li><strong>ท่อกระบอก (Cylinder Barrel):</strong> ทำจากอลูมิเนียมอัลลอยด์ชุบอโนไดซ์เบาและทนการกัดกร่อน หรือสแตนเลส (SS304/316) สำหรับงานอาหารและเคมี ผิวด้านในผ่านการโฮนนิ่ง (Honing) ให้เรียบเพื่อลดการสึกหรอของซีล</li>
+          <li><strong>ลูกสูบ (Piston):</strong> โดยทั่วไปทำจากอลูมิเนียมหล่อ หรือเหล็กหล่อ มีแหวนซีลกันรั่ว และบางรุ่นมีวงแหวนแม่เหล็กสำหรับติดตั้งเซนเซอร์ตรวจจับตำแหน่ง</li>
+          <li><strong>ก้านลูกสูบ (Piston Rod):</strong> ทำจากเหล็กกล้าคาร์บอนสูง ชุบโครมแข็ง (Hard Chrome Plated) เพื่อป้องกันรอยขีดข่วนและการกัดกร่อน งานพิเศษอาจใช้สแตนเลสหรือเคลือบเซรามิก</li>
+          <li><strong>ซีล (Seals):</strong> หัวใจสำคัญกันรั่ว แบ่งเป็น Piston Seal, Rod Seal, Wiper และ Cushion Seal วัสดุยอดนิยมคือ NBR (ทนน้ำมัน, -30°C ถึง 80°C), PU (ทนการเสียดสีสูง), FKM/Viton (ทนความร้อนสูง 200°C และสารเคมี), PTFE (ทนสารเคมีรุนแรง, แรงเสียดทานต่ำ)</li>
+          <li><strong>ระบบกันกระแทก (Cushioning):</strong> ที่ปลายกระบอกมีวาล์วปรับแรงดันช่วยลดความเร็วลูกสูบก่อนชนฝาปิด ป้องกันเสียงดังและยืดอายุซีล มีแบบปรับได้ (Adjustable) และแบบอัตโนมัติ</li>
+          <li><strong>รูปแบบยึดติด (Mounting):</strong> เลือกตามลักษณะรับแรง เช่น Foot Mount (รับแรงแนวแกน), Front/Rear Flange (รับแรงกระแทกได้ดี), Clevis/Trunnion (ยอมให้เอียงได้ลดแรงด้านข้าง)</li>
+        </ul>
+      </div>
+
+      <div class="content-block fade-up">
+        <h3>5. หลักการทำงานและสมการทางวิศวกรรม</h3>
+        <p>กระบอกสูบนิวเมติกส์ทำงานตาม <strong>กฎของพาสคาล (Pascal's Law)</strong> ซึ่งระบุว่า ความดันที่กระทำต่อของไหลในภาชนะปิดจะถ่ายทอดไปทุกทิศทางอย่างเท่าเทียมกัน และตั้งฉากกับผนังภาชนะเสมอ</p>
+        <h4>📐 การคำนวณแรง (Force Calculation)</h4>
+        <p>แรงที่กระบอกสูบสร้างได้ขึ้นอยู่กับพื้นที่หน้าตัดและความดันอากาศ</p>
+        <p><strong>สูตรแรงจังหวะยืดออก (Extend):</strong> F<sub>extend</sub> = P × A = P × (π × D² / 4)</p>
+        <p><strong>สูตรแรงจังหวะหดกลับ (Retract):</strong> F<sub>retract</sub> = P × (A - A<sub>rod</sub>) = P × [π × (D² - d²) / 4]</p>
+        <p><em>โดยที่ P = ความดันใช้งาน (Pa), D = เส้นผ่านศูนย์กลางกระบอก (m), d = เส้นผ่านศูนย์กลางก้านสูบ (m)</em></p>
+        <p>ในทางปฏิบัติต้องหักลบแรงเสียดทานของซีล (ประมาณ 5-10%) และเผื่อโหลดความปลอดภัย (Safety Factor 1.25–1.5) เสมอ</p>
+        <h4>⚡ การควบคุมความเร็วและการใช้อากาศ</h4>
+        <p>ความเร็วของลูกสูบขึ้นกับอัตราการไหลของอากาศ (Flow Rate) นิยมใช้วาล์วควบคุมอัตราการไหลแบบ <strong>Meter-out</strong> (ควบคุมลมออก) มากกว่า Meter-in เพราะการเคลื่อนที่จะนุ่มนวลกว่า ลดอาการกระตุก (Stick-slip) และรับโหลดได้ดีกว่า</p>
+        <p>การรู้ปริมาณอากาศช่วยให้เลือกคอมเพรสเซอร์และท่อได้เหมาะสม: Q = (A × L × N) / 60 × (P<sub>abs</sub> / P<sub>atm</sub>)</p>
+      </div>
+
+      <div class="content-block fade-up">
+        <h3>6. อุปกรณ์ประกอบในระบบนิวเมติกส์</h3>
+        <p>กระบอกสูบไม่สามารถทำงานได้ลำพัง ต้องอาศัยอุปกรณ์ประกอบเพื่อควบคุมทิศทาง ความดัน และอัตราการไหล</p>
+        <ul>
+          <li><strong>ชุดปรับปรุงคุณภาพอากาศ (FRL Unit):</strong> ประกอบด้วย Filter (กรองฝุ่น/น้ำ), Regulator (ปรับแรงดัน), Lubricator (จ่ายน้ำมันหล่อลื่น) หรือใช้ระบบ Oil-Free ในงานอาหาร/อิเล็กทรอนิกส์</li>
+          <li><strong>วาล์วควบคุมทิศทาง (Directional Control Valve):</strong> ระบุด้วยจำนวนช่อง/ตำแหน่ง เช่น 3/2, 5/2, 5/3 ขับเคลื่อนด้วยขดลวดแม่เหล็กไฟฟ้า (Solenoid), ลม (Pneumatic Pilot), หรือมือ/เท้า</li>
+          <li><strong>วาล์วควบคุมอัตราการไหล (Flow Control Valve):</strong> ปรับความเร็วกระบอกสูบ มักมี Check Valve ในตัวเพื่อแยกทางเข้า-ออก</li>
+          <li><strong>วาล์วระบายลมเร็ว (Quick Exhaust Valve):</strong> ติดตั้งใกล้กระบอกสูบ ระบายลมทิ้งเร็วขึ้น เพิ่มความเร็วจังหวะหดกลับได้ถึง 3 เท่า</li>
+          <li><strong>เซนเซอร์และสวิตช์:</strong> Reed Switch, Hall Effect, หรือ Proximity Sensor ติดตั้งบนรางกระบอก ตรวจจับตำแหน่งลูกสูบเพื่อส่งสัญญาณกลับ PLC</li>
+          <li><strong>ท่อและข้อต่อ:</strong> ท่อ PU (ยืดหยุ่น, ราคาถูก), ท่อไนลอน (ทนแรงดันสูง, ทนอุณหภูมิ), ข้อต่อ Push-in หรือ Compression ฟิตติ้งทองเหลืองหรือสแตนเลส</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- PROCESS & QUALITY CONTROL -->
+    <section class="section" id="application" style="background: var(--bg-alt);">
+      <h2 class="section-title fade-up">7. การประยุกต์ใช้งานในอุตสาหกรรม</h2>
+      <div class="content-block fade-up">
+        <p>ระบบนิวเมติกส์แทรกซึมอยู่ในเกือบทุกสายการผลิต ตัวอย่างการประยุกต์ใช้จริงมีดังนี้:</p>
+        <ul>
+          <li> <strong>ยานยนต์:</strong> ใช้ในสายประกอบตัวถัง (Body-in-White) สำหรับงานเชื่อมจุด (Spot Welding), ยกชิ้นส่วนหนัก, ระบบพ่นสี, และเครื่องทดสอบแรงกด</li>
+          <li>📦 <strong>บรรจุภัณฑ์:</strong> เครื่องปิดฝาขวด, ติดฉลากอัตโนมัติ, ระบบลำเลียงและเรียงกล่อง (Palletizing), ซีลถุงพลาสติกด้วยความร้อน</li>
+          <li>🍔 <strong>อาหารและยา:</strong> ใช้กระบอกสแตนเลสเกรดอาหาร (Food Grade) ซีล PTFE ปลอดน้ำมัน ในเครื่องบรรจุ, ตัดแบ่ง, และตรวจสอบคุณภาพ</li>
+          <li>💻 <strong>อิเล็กทรอนิกส์:</strong> หุ่นยนต์ Pick & Place วางชิปบน PCB, เครื่องทดสอบแรงกดปุ่ม, ระบบทำความสะอาดแผงวงจร</li>
+          <li>🏥 <strong>การแพทย์และทันตกรรม:</strong> เก้าอี้ทำฟัน, เครื่องมือผ่าตัดแรงดันต่ำ, ระบบจ่ายอากาศในโรงพยาบาล ทำงานเงียบและสะอาด</li>
+          <li>🤖 <strong>หุ่นยนต์และอัตโนมัติ:</strong> Gripper (มือจับ), Linear Slide, Rotary Indexing Table, ระบบจัดวางชิ้นงานความแม่นยำสูง</li>
+        </ul>
+        <p>️ <em>ข้อควรระวังในการเลือกใช้งาน: ควรคำนวณแรงโหลดจริง เผื่อค่าความปลอดภัย เลือกวัสดุซีลให้เข้ากับอุณหภูมิและสารเคมี และออกแบบวงจรให้ล้มเหลวอย่างปลอดภัย (Fail-safe) เมื่ออากาศหมด</em></p>
+      </div>
+    </section>
+
+    <section class="section" id="maintenance">
+      <h2 class="section-title fade-up">8. การบำรุงรักษาและการแก้ไขปัญหา</h2>
+      <div class="content-block fade-up">
+        <p>การบำรุงรักษาเชิงป้องกัน (Preventive Maintenance) ช่วยลด downtime และยืดอายุการใช้งาน</p>
+        <h4>📋 ตารางตรวจสอบประจำ</h4>
+        <ul>
+          <li><strong>รายวัน:</strong> ตรวจสอบแรงดันอากาศ, ดูดน้ำที่ถังพักและ Filter, ฟังเสียงรั่ว, สังเกตการเคลื่อนที่ผิดปกติ</li>
+          <li><strong>รายเดือน:</strong> ตรวจสอบซีลก้านสูบ, ทำความสะอาด Filter, ตรวจสอบการยึดติดและน็อตขันแน่น, วัดอัตราการใช้อากาศ</li>
+          <li><strong>รายปี:</strong> เปลี่ยนซีลชุดใหญ่, ตรวจสอบความเรียบของก้านสูบ, ทดสอบแรงดันสูงสุด, ตรวจสอบระบบไฟฟ้าและเซนเซอร์</li>
+        </ul>
+        <div class="table-wrap">
+          <table>
+            <tr><th>อาการ</th><th>สาเหตุที่เป็นไปได้</th><th>แนวทางแก้ไข</th></tr>
+            <tr><td>เคลื่อนที่ช้า/กระตุก</td><td>แรงดันต่ำ, ลมรั่ว, ซีลเสื่อม, ควบคุมลมไม่เหมาะสม</td><td>ปรับ Regulator, เปลี่ยนซีล, เปลี่ยนเป็น Meter-out, ตรวจสอบท่อ</td></tr>
+            <tr><td>มีเสียงลมรั่วดัง</td><td>ซีลพัง, ฝาวาล์วหลวม, ท่อหลุด</td><td>เปลี่ยนซีล, ขันน็อตฝาปิด, เปลี่ยนข้อต่อ/ท่อ</td></tr>
+            <tr><td>ก้านสูบเป็นรอย/คด</td><td>รับแรงด้านข้าง, โหลดเกิน, ไม่มี Guide</td><td>เพิ่ม Guided Cylinder, ปรับแนวติดตั้ง, ลดโหลด</td></tr>
+            <tr><td>น้ำในระบบมาก</td><td>Drain ไม่ทำงาน, คอมเพรสเซอร์ร้อนเกิน, Filter อุดตัน</td><td>ล้าง/เปลี่ยน Filter, ติดตั้ง Air Dryer, ตรวจสอบ Drain อัตโนมัติ</td></tr>
+            <tr><td>ไม่เคลื่อนที่เลย</td><td>วาล์วไม่สลับ, ไฟดับ, อากาศไม่เข้า</td><td>เช็ค Solenoid/PLC, วัดแรงดัน, ตรวจสอบท่อหลัก</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="comparison" style="background: var(--bg-alt);">
+      <h2 class="section-title fade-up">9. ข้อดี-ข้อเสีย และเปรียบเทียบกับระบบอื่น</h2>
+      <div class="content-block fade-up">
+        <h4>✅ ข้อดี</h4>
+        <ul>
+          <li>ปลอดภัย ไม่เกิดประกายไฟ เหมาะกับพื้นที่เสี่ยงระเบิด</li>
+          <li>โครงสร้างไม่ซับซ้อน ต้นทุนการผลิตและติดตั้งต่ำ</li>
+          <li>ความเร็วสูง ตอบสนองเร็ว (0.1–1.5 m/s)</li>
+          <li>ทนต่อ Overload ได้ดี อากาศอัดสามารถระบายออกได้โดยไม่ทำลายอุปกรณ์</li>
+          <li>สะอาด ง่ายต่อการบำรุงรักษา</li>
+        </ul>
+        <h4>❌ ข้อเสีย</h4>
+        <ul>
+          <li>ความหนาแน่นแรงต่ำ (Force Density) เมื่อเทียบกับไฮดรอลิก</li>
+          <li>อากาศอัดตัวได้ ทำให้ควบคุมตำแหน่งได้ไม่แม่นยำเท่า Servo/Stepper</li>
+          <li>ต้องบำบัดอากาศ (กรอง/ทำแห้ง) อย่างต่อเนื่อง</li>
+          <li>มีเสียงขณะระบายลม ต้องใช้ Silencer</li>
+          <li>ประสิทธิภาพพลังงานต่ำ (~10-20%) เนื่องจากกระบวนการอัดอากาศสูญเสียพลังงานความร้อน</li>
+        </ul>
+        <div class="table-wrap">
+          <table>
+            <tr><th>หัวข้อเปรียบเทียบ</th><th>นิวเมติกส์</th><th>ไฮดรอลิก</th><th>ไฟฟ้า (Servo/Stepper)</th></tr>
+            <tr><td>แรงสูงสุด</td><td>ปานกลาง (1-50 kN)</td><td>สูงมาก (100+ kN)</td><td>ปานกลาง-สูง</td></tr>
+            <tr><td>ความเร็ว</td><td>สูง</td><td>ปานกลาง</td><td>สูงมาก</td></tr>
+            <tr><td>ความแม่นยำตำแหน่ง</td><td>ต่ำ-ปานกลาง</td><td>ปานกลาง</td><td>สูงมาก (±0.01 mm)</td></tr>
+            <tr><td>ต้นทุนระบบ</td><td>ต่ำ</td><td>สูง</td><td>สูง</td></tr>
+            <tr><td>การบำรุงรักษา</td><td>ง่าย</td><td>ซับซ้อน (รั่วซึม)</td><td>ง่าย (แต่ต้องตั้งค่า)</td></tr>
+            <tr><td>ผลกระทบต่อสิ่งแวดล้อม</td><td>ต่ำ (อากาศ)</td><td>สูง (น้ำมันรั่ว)</td><td>ต่ำ (ใช้ไฟฟ้า)</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="standards">
+      <h2 class="section-title fade-up">10. มาตรฐานความปลอดภัยและแนวโน้มอนาคต</h2>
+      <div class="content-block fade-up">
+        <h4>📜 มาตรฐานสากลที่เกี่ยวข้อง</h4>
+        <ul>
+          <li><strong>ISO 1219:</strong> กำหนดสัญลักษณ์กราฟิกสำหรับระบบนิวเมติกส์และไฮดรอลิก</li>
+          <li><strong>ISO 4414:</strong> ศัพท์เทคนิคและคำจำกัดความในระบบนิวเมติกส์</li>
+          <li><strong>ISO 15552:</strong> มาตรฐานขนาดกระบอกสูบและระยะติดตั้ง เพื่อให้เปลี่ยนยี่ห้อได้</li>
+          <li><strong>OSHA / ANSI B11:</strong> ข้อกำหนดความปลอดภัยในการออกแบบและติดตั้งระบบอัตโนมัติ</li>
+        </ul>
+        <h4>🔒 หลักความปลอดภัย</h4>
+        <p>ต้องติดตั้ง Emergency Stop, ใช้วาล์วล็อคความดัน, ตรวจสอบแรงดันก่อนบำรุงรักษา (Lockout/Tagout), และติดตั้ง Guarding ป้องกันการหนีบมือ</p>
+        <h4>🚀 แนวโน้มเทคโนโลยีในอนาคต</h4>
+        <ul>
+          <li><strong>Smart Pneumatics & IoT:</strong> กระบอกสูบติดเซนเซอร์วัดแรงดัน อุณหภูมิ ตำแหน่ง ส่งข้อมูลผ่าน IO-Link หรือ MQTT ไปยัง Cloud เพื่อ Predictive Maintenance</li>
+          <li><strong>Energy Recovery:</strong> ระบบกักเก็บพลังงานลมทิ้ง นำกลับมาใช้ใหม่ ลดค่าไฟฟ้าคอมเพรสเซอร์ 10-20%</li>
+          <li><strong>Electric-Pneumatic Hybrid:</strong> ผสมข้อดีของทั้งสองระบบ ใช้ไฟฟ้าคุมตำแหน่ง แม่นยำ ใช้นิวเมติกส์สร้างแรงกระแทก</li>
+          <li><strong>วัสดุและซีลยุคใหม่:</strong> พอลิเมอร์ทนอุณหภูมิสูง, การเคลือบนาโนลดแรงเสียดทาน, ซีลตลอดอายุการใช้งาน (Lubrication-free)</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SUMMARY & REFERENCES -->
+    <section class="section" id="summary" style="background: var(--bg-alt);">
+      <h2 class="section-title fade-up">11. สรุป</h2>
+      <div class="content-block fade-up">
+        <p>กระบอกสูบนิวเมติกส์เป็นอุปกรณ์พื้นฐานที่ขาดไม่ได้ในระบบอัตโนมัติอุตสาหกรรมสมัยใหม่ ทำงานโดยแปลงพลังงานอากาศอัดเป็นการเคลื่อนที่เชิงเส้นหรือเชิงหมุน มีโครงสร้างไม่ซับซ้อน ตอบสนองเร็ว ปลอดภัย และต้นทุนต่ำ การเลือกใช้งานอย่างถูกต้องต้องพิจารณาปัจจัยหลายด้าน ได้แก่ ประเภทของกระบอกสูบ วัสดุซีล แรงดันใช้งาน ระยะชัก รูปแบบการยึดติด และสภาพแวดล้อม</p>
+        <p>แม้ระบบนิวเมติกส์จะมีข้อจำกัดด้านความแม่นยำและประสิทธิภาพพลังงานเมื่อเทียบกับระบบไฟฟ้าหรือไฮดรอลิก แต่ด้วยข้อได้เปรียบด้านความทนทาน ความปลอดภัย และความง่ายในการบำรุงรักษา ทำให้ยังคงเป็นเทคโนโลยีหลักในสายการผลิตทั่วโลก การพัฒนาสู่ <strong>Smart Pneumatics</strong> ที่ผสาน IoT และการออกแบบที่ประหยัดพลังงานมากขึ้น จะช่วยให้ระบบนิวเมติกส์คงความสำคัญและแข่งขันได้ในยุคอุตสาหกรรม 4.0 อย่างยั่งยืน</p>
+      </div>
+    </section>
+
+    <section class="section" id="references">
+      <h2 class="section-title fade-up">12. เอกสารอ้างอิง</h2>
+      <div class="content-block fade-up">
+        <ol>
+          <li>SMC Corporation. (2023). Pneumatic Basic Course & Catalog. Tokyo: SMC.</li>
+          <li>Festo Didactic. (2022). Learning System for Automation and Communications: Pneumatics. Esslingen: Festo.</li>
+          <li>AirTAC International Group. (2024). Product Catalog & Technical Guide. Taipei: AirTAC.</li>
+          <li>ISO 1219-1:2012. Fluid power systems and components — Graphical symbols and circuit diagrams.</li>
+          <li>ISO 15552:2023. Pneumatic fluid power — Mounting dimensions of cylinders.</li>
+          <li>บุญส่ง ใจเที่ยง. (2564). ระบบนิวเมติกส์และไฮดรอลิกสำหรับอุตสาหกรรม. กรุงเทพฯ: สำนักพิมพ์มหาวิทยาลัยเทคโนโลยี.</li>
+          <li>Parker Hannifin. (2021). Pneumatic Cylinder Application Guide. Ohio: Parker.</li>
+          <li>แหล่งข้อมูลออนไลน์: www.smcworld.com, www.festo.com, www.airtac.com (เข้าถึงล่าสุด พฤษภาคม 2569)</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- CALCULATOR -->
+    <section class="section" id="tools">
+      <div class="calc-box fade-up">
+        <h3> เครื่องคำนวณแรงกระบอกสูบ</h3>
+        <p style="color:var(--text-muted); margin:10px 0;">สูตร: <b>F = P × A</b> (ป้อนค่าเพื่อคำนวณแบบ Real-time)</p>
+        <div class="calc-inputs">
+          <input type="number" id="pressure" placeholder="แรงดัน (บาร์)" value="6">
+          <input type="number" id="diameter" placeholder="เส้นผ่านศูนย์กลาง (mm)" value="40">
+          <button class="btn" onclick="calcForce()">คำนวณ</button>
+        </div>
+        <div class="calc-result" id="result">แรงที่ได้: 753.98 N (≈ 76.86 kgf)</div>
+      </div>
+    </section>
   </main>
 
   <footer id="footer">
     <p>© 2026 รายงานกลุ่มที่ 7 | รายวิชา Engineering Materials | สถาบันเทคโนโลยีไทย-ญี่ปุ่น</p>
-    <p style="margin-top:6px;"> <a href="https://pages.github.com" target="_blank"></a> | </p>
+    <p style="margin-top:8px;"> <a href="https://pages.github.com" target="_blank"></a> | </p>
   </footer>
 
   <script>
-    // ACCORDION
-    document.querySelectorAll('.acc-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const acc = btn.parentElement;
-        acc.classList.toggle('open');
-      });
-    });
-
     // PHOTO UPLOAD
-    document.querySelectorAll('input[type="file"]').forEach(input => {
-      input.addEventListener('change', function(e) {
+    ['upload1','upload2','upload3','upload4'].forEach((id,i) => {
+      document.getElementById(id).addEventListener('change', function(e) {
         const file = e.target.files[0];
-        if (file) {
+        if(file) {
           const reader = new FileReader();
-          const photoId = this.id.replace('upload', 'photo');
-          // Find sibling photo-img
-          const img = this.parentElement.querySelector('.photo-img, .photo-placeholder').parentElement;
-          
-          reader.onload = () => {
-            // Replace placeholder with actual img tag if not exists
-            if (!img.querySelector('.photo-img')) {
-              const imgTag = document.createElement('img');
-              imgTag.className = 'photo-img';
-              img.appendChild(imgTag);
-              img.querySelector('.photo-placeholder')?.remove();
-            }
-            img.querySelector('.photo-img').src = reader.result;
+          reader.onload = function(ev) {
+            const img = document.getElementById('img'+(i+1));
+            img.src = ev.target.result;
+            img.style.display = 'block';
+            img.parentElement.querySelector('.photo-placeholder').style.display = 'none';
           };
           reader.readAsDataURL(file);
         }
@@ -232,19 +468,27 @@
     });
 
     // SCROLL ANIMATION
-    const observer = new IntersectionObserver((entries) => {
+    const observer = new IntersectionObserver(entries => {
       entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
+    }, {threshold: 0.1});
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
     // CALCULATOR
     function calcForce() {
       const P = parseFloat(document.getElementById('pressure').value) * 100000;
       const D = parseFloat(document.getElementById('diameter').value) / 1000;
-      const A = Math.PI * Math.pow(D / 2, 2);
-      const F = P * A;
+      const F = P * Math.PI * Math.pow(D/2, 2);
       document.getElementById('result').textContent = `แรงที่ได้: ${F.toFixed(2)} N (≈ ${(F/9.81).toFixed(2)} kgf)`;
     }
+
+    // MOBILE MENU
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', function(e) {
+        if(window.innerWidth <= 968 && this.querySelector('.dropdown')) {
+          this.classList.toggle('active');
+        }
+      });
+    });
   </script>
 </body>
 </html>
