@@ -142,16 +142,56 @@
     .fade-up.visible { opacity: 1; transform: translateY(0); }
 
     @media (max-width: 768px) {
-      .hero h1 { font-size: 2.2rem; }
-      .nav-links { display: none; }
-      .acc-btn { font-size: 0.9rem; }
+      .hero h1 { font-size: 2rem; }
+      .acc-btn { font-size: 0.88rem; }
       th, td { padding: 8px; font-size: 0.8rem; }
       .hero-eyebrow { font-size: 0.72rem; }
+
+      /* hide desktop nav links, show hamburger */
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      /* mobile drawer */
+      .mobile-drawer { display: block; }
+      .mobile-drawer.open { transform: translateX(0); }
+
+      /* mega menu full width on mobile */
+      .mega-menu { left: 8px; right: 8px; width: auto; transform: none; top: 56px; }
+      .nav-item.open .mega-menu { display: flex; flex-direction: column; }
+      .mega-col { border-right: none !important; border-bottom: 1px solid #e5e7eb; padding: 0 0 12px !important; margin-bottom: 12px; }
+      .mega-col:last-of-type { border-bottom: none; margin-bottom: 0; }
+
+      /* modal full screen on mobile */
+      .content-modal-overlay { padding: 56px 0 0; }
+      .content-modal { border-radius: 0; min-height: calc(100vh - 56px); margin: 0; }
     }
     @media (max-width: 480px) {
-      .hero h1 { font-size: 1.8rem; }
+      .hero h1 { font-size: 1.7rem; }
       .team-grid { grid-template-columns: repeat(2, 1fr); }
     }
+
+    /* HAMBURGER */
+    .hamburger { display: none; flex-direction: column; justify-content: center; gap: 5px; padding: 10px; cursor: pointer; border: none; background: transparent; border-radius: 8px; transition: 0.2s; }
+    .hamburger:hover { background: rgba(255,255,255,0.06); }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text-muted); border-radius: 2px; transition: 0.3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* MOBILE DRAWER */
+    .mobile-drawer {
+      display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
+      background: rgba(11,15,25,0.98); backdrop-filter: blur(16px);
+      z-index: 150; transform: translateX(100%); transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+      overflow-y: auto; padding: 16px;
+    }
+    .drawer-links { display: flex; flex-direction: column; gap: 4px; }
+    .drawer-links a { color: var(--text); font-size: 1rem; font-weight: 500; padding: 14px 16px; border-radius: 10px; display: flex; align-items: center; gap: 10px; transition: 0.2s; border: 1px solid transparent; }
+    .drawer-links a:hover { background: rgba(14,165,233,0.08); border-color: rgba(14,165,233,0.2); color: var(--primary); }
+    .drawer-section { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); padding: 16px 16px 8px; }
+    .drawer-acc-btn { width: 100%; background: var(--card); border: 1px solid var(--border); color: var(--text); font-size: 0.9rem; font-weight: 600; padding: 13px 16px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 10px; text-align: left; font-family: 'Sarabun', sans-serif; transition: 0.2s; margin-bottom: 4px; }
+    .drawer-acc-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .drawer-acc-btn .drawer-num { font-size: 0.68rem; font-family: 'Space Mono', monospace; background: rgba(14,165,233,0.12); color: var(--primary); padding: 2px 6px; border-radius: 4px; }
   </style>
 </head>
 <body>
@@ -231,10 +271,37 @@
       <a href="#tools">🧮 คำนวณ</a>
       <a href="#footer">📖 อ้างอิง</a>
     </div>
+    <button class="hamburger" id="hamburger" aria-label="เมนู">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
 
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer" id="mobileDrawer">
+    <div class="drawer-links">
+      <a href="#hero" onclick="closeDrawer()">🏠 หน้าแรก</a>
+      <a href="#tools" onclick="closeDrawer()">🧮 เครื่องคำนวณ</a>
+      <a href="#footer" onclick="closeDrawer()">📖 เอกสารอ้างอิง</a>
+    </div>
+    <div class="drawer-section">📚 เนื้อหา</div>
+    <div class="drawer-links">
+      <button class="drawer-acc-btn" onclick="openAcc(0);closeDrawer()"><span class="drawer-num">#01</span> บทนำ</button>
+      <button class="drawer-acc-btn" onclick="openAcc(1);closeDrawer()"><span class="drawer-num">#02</span> ความหมายและพื้นฐาน</button>
+      <button class="drawer-acc-btn" onclick="openAcc(2);closeDrawer()"><span class="drawer-num">#03</span> ประเภทกระบอกสูบ</button>
+      <button class="drawer-acc-btn" onclick="openAcc(3);closeDrawer()"><span class="drawer-num">#04</span> ส่วนประกอบและวัสดุ</button>
+      <button class="drawer-acc-btn" onclick="openAcc(4);closeDrawer()"><span class="drawer-num">#05</span> หลักการและสมการ</button>
+      <button class="drawer-acc-btn" onclick="openAcc(5);closeDrawer()"><span class="drawer-num">#06</span> อุปกรณ์ประกอบในระบบ</button>
+      <button class="drawer-acc-btn" onclick="openAcc(6);closeDrawer()"><span class="drawer-num">#07</span> การประยุกต์ใช้งาน</button>
+      <button class="drawer-acc-btn" onclick="openAcc(7);closeDrawer()"><span class="drawer-num">#08</span> การบำรุงรักษา</button>
+      <button class="drawer-acc-btn" onclick="openAcc(8);closeDrawer()"><span class="drawer-num">#09</span> ข้อดี-ข้อเสีย เปรียบเทียบ</button>
+      <button class="drawer-acc-btn" onclick="openAcc(9);closeDrawer()"><span class="drawer-num">#10</span> มาตรฐานและแนวโน้ม</button>
+      <button class="drawer-acc-btn" onclick="openAcc(10);closeDrawer()"><span class="drawer-num">#11</span> สรุป</button>
+      <button class="drawer-acc-btn" onclick="openAcc(11);closeDrawer()"><span class="drawer-num">#12</span> เอกสารอ้างอิง</button>
+    </div>
+  </div>
+
   <header class="hero" id="hero">
-    <div class="hero-eyebrow">⚡ รายงานวิชาการ · กลุ่มที่ 7</div>
+    <div class="hero-eyebrow"> รายงานวิชาการ · กลุ่มที่ 7 พอแล้ว พอแล้ว</div>
     <h1>กระบอกสูบนิวเมติกส์</h1>
     <p class="sub">ระบบขับเคลื่อนด้วยลมอัดสำหรับอุตสาหกรรมสมัยใหม่<br>Engineering Materials · สถาบันเทคโนโลยีไทย-ญี่ปุ่น</p>
     
@@ -244,7 +311,7 @@
         <div class="photo-wrap">
           <div class="photo-circle"><img class="photo-img" src="เจ.jpg" alt="ธีรภัทร เก่งนอก (เจ)"></div>
           <input type="file" accept="image/*" id="upload1" hidden>
-          <label for="upload1" class="upload-hint">📷 อัปโหลดรูป</label>
+         
         </div>
         <h3>1. ธีรภัทร เก่งนอก (เจ)</h3>
         <p class="student-id">ID: 2411220078</p>
@@ -255,7 +322,7 @@
         <div class="photo-wrap">
           <div class="photo-circle"><img class="photo-img" src="โย.jpg" alt="พีระพัฒน์ โภคพูล (โย)"></div>
           <input type="file" accept="image/*" id="upload2" hidden>
-          <label for="upload2" class="upload-hint">📷 อัปโหลดรูป</label>
+        
         </div>
         <h3>2. พีระพัฒน์ โภคพูล (โย)</h3>
         <p class="student-id">ID: 2411220078</p>
@@ -266,7 +333,7 @@
         <div class="photo-wrap">
           <div class="photo-circle"><img class="photo-img" src="อั๋น.jpg" alt="อนุรักษ์ ศิริภักดี (อั๋น)"></div>
           <input type="file" accept="image/*" id="upload3" hidden>
-          <label for="upload3" class="upload-hint">📷 อัปโหลดรูป</label>
+          
         </div>
         <h3>3. อนุรักษ์ ศิริภักดี (อั๋น)</h3>
         <p class="student-id">ID: 2511220127</p>
@@ -277,7 +344,7 @@
         <div class="photo-wrap">
           <div class="photo-circle"><img class="photo-img" src="เนะ.jpg" alt="ศรัญยู ภูเขาใหญ่ (กลอฟ)"></div>
           <input type="file" accept="image/*" id="upload4" hidden>
-          <label for="upload4" class="upload-hint">📷 อัปโหลดรูป</label>
+          
         </div>
         <h3>4. ศรัญยู ภูเขาใหญ่ (กอล์ฟ)</h3>
         <p class="student-id">ID: 2411220268</p>
@@ -310,7 +377,7 @@
   <div class="content-modal-overlay" id="contentModal">
     <div class="content-modal">
       <div class="modal-header">
-        <div class="modal-title">📋 เนื้อหาฉบับสมบูรณ์</div>
+        <div class="modal-title"> เนื้อหาฉบับสมบูรณ์</div>
         <button class="modal-close" onclick="closeModal()">✕</button>
       </div>
       <div class="acc-group" id="content">
@@ -383,6 +450,24 @@
       const F = P * A;
       document.getElementById('result').textContent = `แรงที่ได้: ${F.toFixed(2)} N (≈ ${(F/9.81).toFixed(2)} kgf)`;
     }
+    // HAMBURGER
+    const hamburger = document.getElementById('hamburger');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    function closeDrawer() {
+      hamburger.classList.remove('open');
+      mobileDrawer.classList.remove('open');
+      mobileDrawer.style.transform = 'translateX(100%)';
+    }
+    hamburger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = hamburger.classList.toggle('open');
+      mobileDrawer.style.transform = isOpen ? 'translateX(0)' : 'translateX(100%)';
+      mobileDrawer.classList.toggle('open', isOpen);
+    });
+    document.addEventListener('click', (e) => {
+      if (!mobileDrawer.contains(e.target) && !hamburger.contains(e.target)) closeDrawer();
+    });
+
     // MEGA MENU
     const navItem = document.getElementById('navContent');
     const trigger = navItem.querySelector('.nav-trigger');
