@@ -301,7 +301,7 @@
   </div>
 
   <header class="hero" id="hero">
-    <div class="hero-eyebrow"> รายงานวิชาการ · กลุ่มที่ 7 พอแล้ว พอแล้ว</div>
+    <div class="hero-eyebrow">⚡ รายงานวิชาการ · กลุ่มที่ 7</div>
     <h1>กระบอกสูบนิวเมติกส์</h1>
     <p class="sub">ระบบขับเคลื่อนด้วยลมอัดสำหรับอุตสาหกรรมสมัยใหม่<br>Engineering Materials · สถาบันเทคโนโลยีไทย-ญี่ปุ่น</p>
     
@@ -311,7 +311,7 @@
         <div class="photo-wrap">
           <div class="photo-circle"><img class="photo-img" src="เจ.jpg" alt="ธีรภัทร เก่งนอก (เจ)"></div>
           <input type="file" accept="image/*" id="upload1" hidden>
-         
+          <label for="upload1" class="upload-hint">📷 อัปโหลดรูป</label>
         </div>
         <h3>1. ธีรภัทร เก่งนอก (เจ)</h3>
         <p class="student-id">ID: 2411220078</p>
@@ -322,7 +322,7 @@
         <div class="photo-wrap">
           <div class="photo-circle"><img class="photo-img" src="โย.jpg" alt="พีระพัฒน์ โภคพูล (โย)"></div>
           <input type="file" accept="image/*" id="upload2" hidden>
-        
+          <label for="upload2" class="upload-hint">📷 อัปโหลดรูป</label>
         </div>
         <h3>2. พีระพัฒน์ โภคพูล (โย)</h3>
         <p class="student-id">ID: 2411220078</p>
@@ -333,7 +333,7 @@
         <div class="photo-wrap">
           <div class="photo-circle"><img class="photo-img" src="อั๋น.jpg" alt="อนุรักษ์ ศิริภักดี (อั๋น)"></div>
           <input type="file" accept="image/*" id="upload3" hidden>
-          
+          <label for="upload3" class="upload-hint">📷 อัปโหลดรูป</label>
         </div>
         <h3>3. อนุรักษ์ ศิริภักดี (อั๋น)</h3>
         <p class="student-id">ID: 2511220127</p>
@@ -344,7 +344,7 @@
         <div class="photo-wrap">
           <div class="photo-circle"><img class="photo-img" src="เนะ.jpg" alt="ศรัญยู ภูเขาใหญ่ (กลอฟ)"></div>
           <input type="file" accept="image/*" id="upload4" hidden>
-          
+          <label for="upload4" class="upload-hint">📷 อัปโหลดรูป</label>
         </div>
         <h3>4. ศรัญยู ภูเขาใหญ่ (กอล์ฟ)</h3>
         <p class="student-id">ID: 2411220268</p>
@@ -377,7 +377,7 @@
   <div class="content-modal-overlay" id="contentModal">
     <div class="content-modal">
       <div class="modal-header">
-        <div class="modal-title"> เนื้อหาฉบับสมบูรณ์</div>
+        <div class="modal-title">📋 เนื้อหาฉบับสมบูรณ์</div>
         <button class="modal-close" onclick="closeModal()">✕</button>
       </div>
       <div class="acc-group" id="content">
@@ -403,42 +403,35 @@
   </footer>
 
   <script>
-    // ACCORDION
+    // ACCORDION (in modal)
     document.querySelectorAll('.acc-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const acc = btn.parentElement;
-        acc.classList.toggle('open');
-      });
+      btn.addEventListener('click', () => btn.parentElement.classList.toggle('open'));
     });
 
     // PHOTO UPLOAD
     document.querySelectorAll('input[type="file"]').forEach(input => {
       input.addEventListener('change', function(e) {
         const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          const photoId = this.id.replace('upload', 'photo');
-          // Find sibling photo-img
-          const img = this.parentElement.querySelector('.photo-img, .photo-placeholder').parentElement;
-          
-          reader.onload = () => {
-            // Replace placeholder with actual img tag if not exists
-            if (!img.querySelector('.photo-img')) {
-              const imgTag = document.createElement('img');
-              imgTag.className = 'photo-img';
-              img.appendChild(imgTag);
-              img.querySelector('.photo-placeholder')?.remove();
-            }
-            img.querySelector('.photo-img').src = reader.result;
-          };
-          reader.readAsDataURL(file);
-        }
+        if (!file) return;
+        const reader = new FileReader();
+        const circle = this.parentElement.querySelector('.photo-circle');
+        reader.onload = () => {
+          let img = circle.querySelector('.photo-img');
+          if (!img) {
+            img = document.createElement('img');
+            img.className = 'photo-img';
+            circle.querySelector('svg')?.remove();
+            circle.appendChild(img);
+          }
+          img.src = reader.result;
+        };
+        reader.readAsDataURL(file);
       });
     });
 
     // SCROLL ANIMATION
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
     }, { threshold: 0.1 });
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
@@ -450,55 +443,68 @@
       const F = P * A;
       document.getElementById('result').textContent = `แรงที่ได้: ${F.toFixed(2)} N (≈ ${(F/9.81).toFixed(2)} kgf)`;
     }
-    // HAMBURGER
-    const hamburger = document.getElementById('hamburger');
-    const mobileDrawer = document.getElementById('mobileDrawer');
-    function closeDrawer() {
-      hamburger.classList.remove('open');
-      mobileDrawer.classList.remove('open');
-      mobileDrawer.style.transform = 'translateX(100%)';
-    }
-    hamburger.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isOpen = hamburger.classList.toggle('open');
-      mobileDrawer.style.transform = isOpen ? 'translateX(0)' : 'translateX(100%)';
-      mobileDrawer.classList.toggle('open', isOpen);
-    });
-    document.addEventListener('click', (e) => {
-      if (!mobileDrawer.contains(e.target) && !hamburger.contains(e.target)) closeDrawer();
-    });
 
-    // MEGA MENU
-    const navItem = document.getElementById('navContent');
-    const trigger = navItem.querySelector('.nav-trigger');
-    trigger.addEventListener('click', (e) => {
-      e.stopPropagation();
-      navItem.classList.toggle('open');
-    });
-    document.addEventListener('click', () => navItem.classList.remove('open'));
-    navItem.querySelector('.mega-menu').addEventListener('click', e => e.stopPropagation());
-
-    // MODAL
+    // ── MODAL ──────────────────────────────────────────
     const modal = document.getElementById('contentModal');
+
     function openModal(index) {
-      navItem.classList.remove('open');
-      modal.classList.add('open');
-      document.body.style.overflow = 'hidden';
-      const accs = document.querySelectorAll('.acc');
-      accs.forEach((a, i) => {
+      // show only selected accordion
+      document.querySelectorAll('.acc').forEach((a, i) => {
         a.style.display = (i === index) ? '' : 'none';
         a.classList.toggle('open', i === index);
       });
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
     }
+
     function closeModal() {
       modal.classList.remove('open');
       document.body.style.overflow = '';
     }
-    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+    // close only when clicking the dark overlay itself
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
-    // Open specific accordion from mega menu
-    function openAcc(index) { openModal(index); }
+    // ── MEGA MENU (desktop) ────────────────────────────
+    const navItem = document.getElementById('navContent');
+    const trigger = navItem.querySelector('.nav-trigger');
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      navItem.classList.toggle('open');
+    });
+    navItem.querySelector('.mega-menu').addEventListener('click', (e) => e.stopPropagation());
+    document.addEventListener('click', () => navItem.classList.remove('open'));
+
+    // ── HAMBURGER (mobile) ─────────────────────────────
+    const hamburger = document.getElementById('hamburger');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+
+    function closeDrawer() {
+      hamburger.classList.remove('open');
+      mobileDrawer.style.transform = 'translateX(100%)';
+    }
+
+    hamburger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const opening = !hamburger.classList.contains('open');
+      hamburger.classList.toggle('open', opening);
+      mobileDrawer.style.transform = opening ? 'translateX(0)' : 'translateX(100%)';
+    });
+
+    mobileDrawer.addEventListener('click', (e) => e.stopPropagation());
+
+    document.addEventListener('click', () => closeDrawer());
+
+    // ── openAcc: called from mega menu & drawer ────────
+    function openAcc(index) {
+      closeDrawer();
+      navItem.classList.remove('open');
+      openModal(index);
+    }
   </script>
 </body>
 </html>
