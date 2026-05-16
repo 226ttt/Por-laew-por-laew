@@ -7,9 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <style>
-        /* รักษา CSS เดิมทั้งหมด */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Sarabun', sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; }
+
         header { position: fixed; top: 0; width: 100%; z-index: 1000; background: linear-gradient(135deg, #4a6cf7, #6348f1); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
         nav { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 120px; }
         .logo { color: #fff; font-weight: 700; font-size: 2rem; text-decoration: none; cursor: pointer; transition: 0.2s; }
@@ -28,9 +28,9 @@
         }
         .lang-btn:hover { background: #fff; color: #4a6cf7; border-color: #fff; }
 
-        .hamburger { display: none; flex-direction: column; cursor: pointer; }
+        .hamburger { display: none; flex-direction: column; cursor: pointer; padding: 10px; }
         .hamburger span { width: 32px; height: 4px; background: #fff; margin: 4px 0; transition: 0.3s; border-radius: 2px; }
-        .hamburger.active span { transform: rotate(45deg) translate(6px, 6px); }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
 
@@ -42,7 +42,7 @@
         .dropdown.open .dropdown-content { display: block; }
         .dropdown-arrow { font-size: 1rem; margin-left: 4px; }
 
-        main { margin-top: 160px; max-width: 1200px; margin-left: auto; margin-right: auto; padding: 2rem 1.5rem; }
+        main { margin-top: 160px; max-width: 1200px; margin-left: auto; margin-right: auto; padding: 2rem 1.5rem; min-height: calc(100vh - 289.60px); }
         .page-section { background: #fff; padding: 2.5rem; border-radius: 14px; margin-bottom: 2.5rem; box-shadow: 0 6px 18px rgba(0,0,0,0.06); animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .hidden { display: none !important; }
@@ -61,8 +61,25 @@
         .members-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
         .member-card { background: linear-gradient(135deg, #4a6cf7, #6348f1); color: #fff; padding: 1.8rem; border-radius: 12px; text-align: center; transition: 0.3s; }
         .member-card:hover { transform: translateY(-5px); box-shadow: 0 8px 18px rgba(74,108,247,0.3); }
-        .member-icon { font-size: 3rem; margin-bottom: 0.5rem; }
-        /* แก้ไขชื่อไม่ขึ้นบรรทัดใหม่ */
+        .member-photo-container { position: relative; width: 120px; height: 120px; margin: 0 auto 1rem; border-radius: 50%; overflow: hidden; background: rgba(255,255,255,0.2); border: 3px solid rgba(255,255,255,0.5); display: flex; align-items: center; justify-content: center; }
+        .member-photo { width: 100%; height: 100%; object-fit: cover; }
+        .member-icon { font-size: 3.5rem; }
+        .photo-upload-input { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+        .photo-upload-btn { position: absolute; bottom: 0; right: 0; width: 35px; height: 35px; background: #fff; color: #4a6cf7; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; border: 2px solid #4a6cf7; transition: 0.2s; }
+        .photo-upload-btn:hover { transform: scale(1.1); background: #4a6cf7; color: #fff; }
+        .photo-link-btn { position: absolute; bottom: 0; left: 0; width: 35px; height: 35px; background: #fff; color: #6348f1; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; border: 2px solid #6348f1; transition: 0.2s; }
+        .photo-link-btn:hover { transform: scale(1.1); background: #6348f1; color: #fff; }
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+        .modal.show { display: flex; align-items: center; justify-content: center; }
+        .modal-content { background: #fff; border-radius: 12px; padding: 2rem; max-width: 500px; width: 90%; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+        .modal-close { float: right; font-size: 2rem; font-weight: bold; cursor: pointer; color: #999; }
+        .modal-close:hover { color: #333; }
+        .modal h3 { margin-top: 0; color: #4a6cf7; }
+        .modal input { width: 100%; padding: 10px; margin: 1rem 0; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 1rem; font-family: 'Sarabun', sans-serif; }
+        .modal button { background: linear-gradient(135deg, #4a6cf7, #6348f1); color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: 'Sarabun', sans-serif; margin-right: 0.5rem; }
+        .modal button:hover { opacity: 0.9; }
+        .modal button.cancel { background: #cbd5e1; color: #333; }
+        /* ✅ แก้ไขชื่อไม่ขึ้นบรรทัดใหม่ */
         .member-card h3 { 
             color: #fff; font-size: 1.25rem; margin-bottom: 0.4rem; 
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;
@@ -154,7 +171,7 @@
                 <li><a href="#home" onclick="showSection('home'); closeMobileMenu();" id="nav-home" class="active" data-i18n="nav_home">Home</a></li>
                 <li><a href="#intro" onclick="showSection('intro'); closeMobileMenu();" id="nav-intro" data-i18n="nav_intro">Introduction</a></li>
                 <li class="dropdown" id="design-dropdown">
-                    <a href="#design" onclick="showSection('design3d'); closeMobileMenu();" id="nav-design" data-i18n="nav_design">Part Design <span class="dropdown-arrow">▼</span></a>
+                    <a href="#design" onclick="showSection('design3d'); closeMobileMenu(); return false;" id="nav-design" data-i18n="nav_design">Part Design <span class="dropdown-arrow">▼</span></a>
                     <div class="dropdown-content">
                         <a onclick="showSection('design3d'); closeMobileMenu();" data-i18n="drop_3d">3D Design</a>
                         <a onclick="showSection('cat3d'); closeMobileMenu();" data-i18n="drop_cat3d">CAT3D</a>
@@ -172,7 +189,7 @@
     <main>
         <section id="home" class="page-section">
             <div class="hero-section">
-                <h1 data-i18n="hero_title">Pneumatic Cylinder Report</h1>
+                <h1 data-i18n="hero_title">Pneumatics Part Project</h1>
                 <h2 data-i18n="hero_sub">Engineering Materials</h2>
                 <p data-i18n="hero_desc">Study the design and manufacturing of pneumatic cylinders using CAD/CAM technology.</p>
                 <div class="hero-buttons">
@@ -213,10 +230,7 @@
             <p style="color: #64748b; font-size: 0.95rem;" data-i18n="media_d">Upload a .glb file for 3D models or a .gif for animations.</p>
             
             <div class="viewer3d-container" id="viewer-container">
-                <model-viewer id="glb-viewer" camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1" environment-image="neutral" exposure="1.0" alt="3D Model" ar>
-                    <!-- ไฟล์ GLB ตัวอย่างจาก GitHub Gist -->
-                    <source src="https://gist.githubusercontent.com/your-username/your-gist-id/raw/main/cylinder.glb" type="model/gltf">
-                </model-viewer>
+                <model-viewer id="glb-viewer" src="./Assembly.glb" camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1" environment-image="neutral" exposure="1.0" alt="3D Model" ar></model-viewer>
                 <div class="viewer-placeholder" id="viewer-placeholder">
                     <div class="icon">🔧</div>
                     <div data-i18n="placeholder_t">No 3D Model or GIF yet</div>
@@ -234,17 +248,30 @@
             </div>
             <div class="speed-control" id="speed-control" style="display: none;">
                 <label data-i18n="speed_label">⏱️ Speed:</label>
-                <input type="range" id="rotate-speed" min="1" max="100" value="10" oninput="updateRotationSpeed(this.value)">
-                <span id="speed-label">10°/s</span>
+                <input type="range" id="rotate-speed" min="1" max="100" value="100" oninput="updateRotationSpeed(this.value)">
+                <span id="speed-label">100°/s</span>
             </div>
 
-            <div class="file-manager">
+            <!-- <h2 style="margin-top: 2rem;" data-i18n="audio_title">🎵 Background Music</h2>
+            <p style="color: #64748b; font-size: 0.95rem;" data-i18n="audio_desc">Upload an MP3 file to play during auto-rotation.</p>
+            <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin: 1rem 0;">
                 <div class="file-input-wrapper">
-                    <!-- ไม่ต้องมีฟังก์ชันอัปโหลดแบบ dynamic เนื่องจาก GitHub Pages ไม่รองรับ -->
+                    <input type="file" id="upload-audio" accept=".mp3,.wav,.ogg,.m4a">
+                    <label for="upload-audio" class="upload-button" data-i18n="up_audio">🎵 Select Audio File</label>
+                </div>
+                <button class="viewer-btn" id="btn-play-music" onclick="toggleMusicPlayback()" style="display: none;" data-i18n="btn_play">▶️ Play Music</button>
+            </div>
+            <audio id="background-music" src="/FUNKY TOWN.mp3" style="display: none;" loop></audio>
+            <div id="audio-info" style="color: #64748b; font-size: 0.9rem; margin-top: 0.5rem;"></div> -->
+            <audio id="background-music" src="./FUNKY TOWN.mp3" loop></audio>
+
+            <!-- <div class="file-manager">
+                <div class="file-input-wrapper">
+                    <input type="file" id="upload-media" accept=".glb,.gltf,.gif">
                     <label for="upload-media" class="upload-button" data-i18n="up_media">📦 Add GLB or GIF File</label>
                 </div>
                 <div class="file-list" id="list-media"></div>
-            </div>
+            </div> -->
 
             <h2 data-i18n="intro_types">Types of Pneumatic Cylinders</h2>
             <ul>
@@ -263,6 +290,7 @@
             <p data-i18n="desc_3d">Creating 3D models helps verify assembly and simulate operations before actual manufacturing. Software like SolidWorks, Inventor, or CATIA can be used.</p>
             <div class="file-manager">
                 <div class="file-input-wrapper">
+                    <input type="file" id="upload-design3d" multiple accept=".stl,.obj,.step,.stp,.fbx,.3mf,.png,.jpg,.jpeg,.pdf">
                     <label for="upload-design3d" class="upload-button" data-i18n="up_3d">📦 Add 3D Files</label>
                 </div>
                 <div class="file-list" id="list-design3d"></div>
@@ -279,6 +307,7 @@
             </ul>
             <div class="file-manager">
                 <div class="file-input-wrapper">
+                    <input type="file" id="upload-cat3d" multiple accept=".catpart,.catproduct,.stl,.obj,.png,.jpg,.pdf">
                     <label for="upload-cat3d" class="upload-button" data-i18n="up_cat3d">📦 Add CAT3D Files</label>
                 </div>
                 <div class="file-list" id="list-cat3d"></div>
@@ -295,6 +324,7 @@
             </ul>
             <div class="file-manager">
                 <div class="file-input-wrapper">
+                    <input type="file" id="upload-cat2d" multiple accept=".dwg,.dxf,.pdf,.png,.jpg,.jpeg">
                     <label for="upload-cat2d" class="upload-button" data-i18n="up_cat2d">📐 Add CAT2D Files</label>
                 </div>
                 <div class="file-list" id="list-cat2d"></div>
@@ -314,6 +344,7 @@
             </table>
             <div class="file-manager">
                 <div class="file-input-wrapper">
+                    <input type="file" id="upload-boom" multiple accept=".xlsx,.xls,.csv,.pdf,.png,.jpg">
                     <label for="upload-boom" class="upload-button" data-i18n="up_boom">📊 Add BOM Files</label>
                 </div>
                 <div class="file-list" id="list-boom"></div>
@@ -330,33 +361,58 @@
             </ul>
             <div class="file-manager">
                 <div class="file-input-wrapper">
+                    <input type="file" id="upload-materials" multiple accept=".pdf,.xlsx,.png,.jpg,.doc,.docx">
                     <label for="upload-materials" class="upload-button" data-i18n="up_mat">📦 Add Material Files</label>
                 </div>
                 <div class="file-list" id="list-materials"></div>
             </div>
         </section>
 
-        <!-- แก้ไขส่วนสมาชิกกลุ่มให้ชื่ออยู่บรรทัดเดียว -->
+        <!-- ✅ แก้ไขส่วนสมาชิกกลุ่มให้ชื่ออยู่บรรทัดเดียว -->
         <section id="members" class="page-section hidden">
             <h1 data-i18n="sec_mem">3. Team Members</h1>
             <div class="members-grid">
                 <div class="member-card">
-                    <div class="member-icon">👨‍🔧</div>
+                    <div class="member-photo-container" data-member="1">
+                        <img id="photo-1" class="member-photo hidden" src="./เจ.jpg" alt="Member Photo">
+                        <div class="member-icon">👨‍🔧</div>
+                        <input type="file" class="photo-upload-input" accept="image/*" onchange="uploadMemberPhoto(1, event)">
+                        <div class="photo-upload-btn" onclick="document.querySelector('[data-member=\"1\"] .photo-upload-input').click();">📸</div>
+                        <div class="photo-link-btn" onclick="showPhotoLinkModal(1);">🔗</div>
+                    </div>
                     <h3 data-i18n="mem1_n">Teerapat Kangnoke</h3>
                     <p><span data-i18n="mem1_r">Team Leader</span><br>ID: 2411220078</p>
                 </div>
                 <div class="member-card">
-                    <div class="member-icon">👩‍🔧</div>
+                    <div class="member-photo-container" data-member="2">
+                        <img id="photo-2" class="member-photo hidden" src="./โย.jpg" alt="Member Photo">
+                        <div class="member-icon">👩‍🔧</div>
+                        <input type="file" class="photo-upload-input" accept="image/*" onchange="uploadMemberPhoto(2, event)">
+                        <div class="photo-upload-btn" onclick="document.querySelector('[data-member=\"2\"] .photo-upload-input').click();">📸</div>
+                        <div class="photo-link-btn" onclick="showPhotoLinkModal(2);">🔗</div>
+                    </div>
                     <h3 data-i18n="mem2_n">Peerapat Pokpool</h3>
                     <p><span data-i18n="mem2_r">2D/3D Designer</span><br>ID: 2411220342</p>
                 </div>
                 <div class="member-card">
-                    <div class="member-icon">👨‍🔧</div>
+                    <div class="member-photo-container" data-member="3">
+                        <img id="photo-3" class="member-photo hidden" src="./อั๋น.jpg" alt="Member Photo">
+                        <div class="member-icon">👨‍🔧</div>
+                        <input type="file" class="photo-upload-input" accept="image/*" onchange="uploadMemberPhoto(3, event)">
+                        <div class="photo-upload-btn" onclick="document.querySelector('[data-member=\"3\"] .photo-upload-input').click();">📸</div>
+                        <div class="photo-link-btn" onclick="showPhotoLinkModal(3);">🔗</div>
+                    </div>
                     <h3 data-i18n="mem3_n">Anuluk Siriphagdee</h3>
                     <p><span data-i18n="mem3_r">BOM & Materials</span><br>ID: 2511220127</p>
                 </div>
                 <div class="member-card">
-                    <div class="member-icon">👩‍🔧</div>
+                    <div class="member-photo-container" data-member="4">
+                        <img id="photo-4" class="member-photo hidden" src="./เนะ.jpg" alt="Member Photo">
+                        <div class="member-icon">👩‍🔧</div>
+                        <input type="file" class="photo-upload-input" accept="image/*" onchange="uploadMemberPhoto(4, event)">
+                        <div class="photo-upload-btn" onclick="document.querySelector('[data-member=\"4\"] .photo-upload-input').click();">📸</div>
+                        <div class="photo-link-btn" onclick="showPhotoLinkModal(4);">🔗</div>
+                    </div>
                     <h3 data-i18n="mem4_n">Saranyu Phukhaoyai</h3>
                     <p><span data-i18n="mem4_r">Documentation</span><br>ID: 2411220268</p>
                 </div>
@@ -378,22 +434,37 @@
         <p data-i18n="footer">© 2026 Pneumatic Cylinder Report | Mechanical Engineering Group</p>
     </footer>
 
+    <!-- Modal for Photo URL Link -->
+    <div id="photoLinkModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closePhotoLinkModal();">&times;</span>
+            <h3>🔗 ใส่ลิงค์รูปภาพ | Enter Photo URL</h3>
+            <p style="color: #666; font-size: 0.95rem;">กรุณาใส่ลิงค์ URL ของรูปภาพ<br>Please paste the image URL</p>
+            <input type="text" id="photoUrlInput" placeholder="https://example.com/photo.jpg" style="margin-top: 0;">
+            <div style="margin-top: 1rem;">
+                <button onclick="setPhotoFromUrl();">✅ ตกลง | OK</button>
+                <button class="cancel" onclick="closePhotoLinkModal();">❌ ยกเลิก | Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ===== i18n Translations =====
         const translations = {
             th: {
                 nav_home: "Home", nav_intro: "บทนำ", nav_design: "พาสดีไซน์", nav_members: "สมาชิกกลุ่ม", nav_ref: "แหล่งอ้างอิง",
-                drop_3d: "ดีไซน์ 3D", drop_cat3d: "CAT3D", drop_cat2d: "CAT2D", drop_boom: "BOM", drop_mat: "Materials",
-                hero_title: "Pneumatic Cylinder Report", hero_sub: "Engineering Materials", hero_desc: "ศึกษาการออกแบบและผลิตกระบอกสูบนิวเมติกส์ด้วยเทคโนโลยี CAD/CAM",
+                audio_title: "🎵 เพลงพื้นหลัง", audio_desc: "อัปโหลดไฟล์ MP3 เพื่อให้เล่นระหว่าง  หมุนอัตโนมัติ", up_audio: "🎵 เลือกไฟล์เสียง", btn_play: "▶️ เล่นเพลง", btn_pause: "⏸️ หยุดเพลง",
+                drop_3d: "ดีไซน์ 3D", drop_cat3d: "CAT3D", drop_cat2d: "CAT2D", drop_boom: "BOOM", drop_mat: "Materials",
+                hero_title: "Pneumatics Part Project", hero_sub: "Engineering Materials", hero_desc: "ศึกษาการออกแบบและผลิตกระบอกสูบนิวเมติกส์ด้วยเทคโนโลยี CAD/CAM",
                 hero_btn1: "📖 เริ่มเรียนรู้", hero_btn2: "🎨 ดูแบบ 3D",
                 feat1_t: "บทนำ", feat1_d: "เรียนรู้พื้นฐานเกี่ยวกับกระบอกสูบนิวเมติกส์ ประเภท และการใช้งาน",
-                feat2_t: "ออกแบบ 3D", feat2_d: "ดูโมเดล 3 มิติและแบบแปลนการออกแบบด้วย CATIA",
+                feat2_t: "ออกแบบ 3D", feat2_d: "ดูโมเดล 3 มิติ และแบบแปลนการออกแบบด้วย CATIA",
                 feat3_t: "แบบ 2D", feat3_d: "แบบแปลนวิศวกรรมสำหรับการผลิต",
-                feat4_t: "BOM", feat4_d: "รายการวัสดุและชิ้นส่วนที่ใช้ในการประกอบ",
+                feat4_t: "BOOM", feat4_d: "รายการวัสดุและชิ้นส่วนที่ใช้ในการประกอบ",
                 sec_intro: "1. บทนำ", intro_what: "กระบอกสูบนิวเมติกส์คืออะไร?", intro_what_d: "กระบอกสูบนิวเมติกส์ (Pneumatic Cylinder) คือ อุปกรณ์แปลงพลังงานลมอัดเป็นการเคลื่อนที่เชิงเส้น ใช้ขับเคลื่อนลูกสูบภายในกระบอก โดยอาศัยความแตกต่างของความดันลมทั้งสองฝั่ง",
                 media_t: "🧊 ดูโมเดล 3D (GLB) หรือ GIF", media_d: "อัปโหลดไฟล์ .glb สำหรับโมเดล 3 มิติ หรือ .gif สำหรับภาพเคลื่อนไหว",
-                placeholder_t: "ไม่มีโมเดล 3D หรือ GIF  yet", placeholder_d: "อัปโหลด .glb หรือ .gif ด้านล่าง",
-                viewer_hint: "🖱️ ลากเมาส์เพื่อหมุน (GLB) | 🔍 ปรับขนาดเพื่อซูม",
+                placeholder_t: "ยังไม่มีโมเดล 3D หรือ GIF", placeholder_d: "อัปโหลดไฟล์ .glb หรือ .gif ด้านล่าง",
+                viewer_hint: "🖱️ ลากเมาส์เพื่อหมุน (GLB) | 🔍 Scroll เพื่อซูม",
                 btn_rotate: "🔄 หมุนอัตโนมัติ", btn_reset: "🎯 รีเซ็ตมุมมอง", speed_label: "⏱️ ความเร็ว:",
                 up_media: "📦 เพิ่มไฟล์ GLB หรือ GIF",
                 intro_types: "ประเภทของกระบอกสูบนิวเมติกส์",
@@ -402,25 +473,26 @@
                 type3: "Rodless Cylinder:", type3_d: "ไม่มีก้านลูกสูบ ประหยัดพื้นที่",
                 type4: "Rotary Actuator:", type4_d: "ให้การเคลื่อนที่แบบหมุน",
                 intro_apps: "การใช้งาน", intro_apps_d: "ใช้แพร่หลายในสายการผลิตอัตโนมัติ เช่น อุตสาหกรรมยานยนต์ บรรจุภัณฑ์ อิเล็กทรอนิกส์ อาหาร และระบบจับยึดชิ้นงาน",
-                sec_3d: "2.1 3D Design", desc_3d: "การสร้างโมเดล 3 มิติช่วยตรวจสอบการประกอบและจำลองการทำงานก่อนผลิตจริง สามารถใช้ซอฟต์แวร์เช่น SolidWorks, Inventor, หรือ CATIA ในการออกแบบ", up_3d: "📦 เพิ่มไฟล์ 3D",
+                sec_3d: "2.1 เดไซน์ 3D", desc_3d: "การสร้างโมเดล 3 มิติช่วยตรวจสอบการประกอบและจำลองการทำงานก่อนผลิตจริง สามารถใช้ซอฟต์แวร์เช่น SolidWorks, Inventor หรือ CATIA ในการออกแบบ", up_3d: "📦 เพิ่มไฟล์ 3D",
                 sec_cat3d: "2.2 CAT3D (CATIA V5 3D Modeling)", desc_cat3d: "การใช้งาน CATIA V5 สร้าง Part และ Assembly สำหรับกระบอกสูบนิวเมติกส์",
                 cat3d_1: "Part Design: สร้างชิ้นส่วนหลัก (Barrel, Piston, Rod)", cat3d_2: "Assembly Design: ประกอบชิ้นส่วนเข้าด้วยกัน", cat3d_3: "DMU Kinematics: ตรวจสอบการเคลื่อนที่และ Interference", up_cat3d: "📦 เพิ่มไฟล์ CAT3D",
                 sec_cat2d: "2.3 CAT2D (Engineering Drawing)", desc_cat2d: "การดึงแบบแปลน 2D จากโมเดล 3D สำหรับการผลิต โดยแสดงรายละเอียดขนาด ความคลาดเคลื่อน (Tolerance) และสัญลักษณ์ผิวงาน",
                 cat2d_1: "แสดง Orthographic Projection & Section Views", cat2d_2: "ระบุ GD&T สำหรับกระบวนการ CNC", cat2d_3: "Export เป็น .PDF หรือ .DXF สำหรับส่งผลิต", up_cat2d: "📐 เพิ่มไฟล์ CAT2D",
-                sec_boom: "2.4 BOM (Bill of Materials)", desc_boom: "รายการวัสดุและชิ้นส่วนที่ใช้ในการประกอบกระบอกสูบนิวเมติกส์",
+                sec_boom: "2.4 BOOM (Bill of Materials)", desc_boom: "รายการวัสดุและชิ้นส่วนที่ใช้ในการประกอบกระบอกสูบนิวเมติกส์",
                 th_no: "ลำดับ", th_comp: "ชิ้นส่วน", th_mat: "วัสดุ", th_qty: "จำนวน", up_boom: "📊 เพิ่มไฟล์ BOOM",
                 sec_mat: "2.5 Materials (วัสดุที่ใช้งาน)",
                 mat1: "น้ำหนักเบา ทนกัดกร่อน เหมาะสำหรับ Barrel และฝาปิด", mat2: "แข็งแรง ไม่เป็นสนิม ใช้ทำก้านลูกสูบ (Piston Rod)",
                 mat3: "ยืดหยุ่นดี ทนต่อน้ำมันและลมอัด ใช้ทำซีลกันรั่ว", mat4: "ค่าสัมประสิทธิ์แรงเสียดทานต่ำ ทนความร้อนสูง", up_mat: "📦 เพิ่มไฟล์ Materials",
                 sec_mem: "3. สมาชิกกลุ่ม",
-                mem1_n: "Teerapat Kangnoke", mem1_r: "หัวหน้ากลุ่ม", mem2_n: "Peerapat Pokpool", mem2_r: "ออกแบบ 2D/3D", mem3_n: "Anuluk Siriphagdee", mem3_r: "BOM & วัสดุ", mem4_n: "Saranyu Phukhaoyai", mem4_r: "เอกสาร & รายงาน",
+                mem1_n: "ธีรพัฒน์ กังนก", mem1_r: "หัวหน้ากลุ่ม", mem2_n: "พีรพัฒน์ โพธิ์พูล", mem2_r: "ออกแบบ 2D/3D", mem3_n: "อนุลักษณ์ ศิริภักดี", mem3_r: "BOM & วัสดุ", mem4_n: "ศรัญญู ภูเขาใหญ่", mem4_r: "เอกสาร & รายงาน",
                 sec_ref: "4. แหล่งอ้างอิง", ref_note: "💡 หมายเหตุ: GitHub Pages เป็นเว็บแบบ Static ไฟล์ที่เลือกผ่านปุ่มอัปโหลดจะแสดงเฉพาะในเครื่องของคุณเท่านั้น หากต้องการให้ผู้อื่นเห็นถาวร ให้อัปโหลดไฟล์เข้าโฟลเดอร์ใน Repository แล้วแก้ลิงก์ในโค้ดแทน",
                 footer: "© 2026 รายงานกระบอกสูบนิวเมติกส์ | กลุ่มวิศวกรรมเครื่องกล"
             },
             en: {
                 nav_home: "Home", nav_intro: "Introduction", nav_design: "Part Design", nav_members: "Team Members", nav_ref: "References",
+                audio_title: "🎵 Background Music", audio_desc: "Upload an MP3 file to play during auto-rotation", up_audio: "🎵 Select Audio File", btn_play: "▶️ Play Music", btn_pause: "⏸️ Pause Music",
                 drop_3d: "3D Design", drop_cat3d: "CAT3D", drop_cat2d: "CAT2D", drop_boom: "BOM", drop_mat: "Materials",
-                hero_title: "Pneumatic Cylinder Report", hero_sub: "Engineering Materials", hero_desc: "Study the design and manufacturing of pneumatic cylinders using CAD/CAM technology.",
+                hero_title: "Pneumatics Part Project", hero_sub: "Engineering Materials", hero_desc: "Study the design and manufacturing of pneumatic cylinders using CAD/CAM technology.",
                 hero_btn1: "📖 Start Learning", hero_btn2: "🎨 View 3D Model",
                 feat1_t: "Introduction", feat1_d: "Learn basics about pneumatic cylinders, types, and applications.",
                 feat2_t: "3D Design", feat2_d: "View 3D models and design drafts using CATIA software.",
@@ -456,11 +528,6 @@
         };
 
         let currentLang = localStorage.getItem('lang') || 'th';
-        let audio = null; // ตัวแปรสำหรับจัดการเสียง
-        let isAutoRotating = true;
-        let currentRotation = 0;
-        let rotateAnimFrame = null;
-        let glbUrl = 'assets/models/cylinder.glb'; // เส้นทางสัมพัทธ์สำหรับไฟล์ GLB
 
         function toggleLang() {
             currentLang = currentLang === 'th' ? 'en' : 'th';
@@ -479,60 +546,122 @@
             document.documentElement.lang = currentLang;
         }
 
-        // ===== เสียงสำหรับโหมดหมุนอัตโนมัติ =====
-        function playMusic() {
-            // ตรวจสอบว่ามีอ็อบเจกต์เสียงอยู่แล้วหรือไม่
-            if (!audio) {
-                // ตัวอย่างเสียง คุณต้องเปลี่ยนเส้นทางนี้ให้เป็นไฟล์เสียงจริงของคุณ
-                audio = new Audio('assets/music.mp3');
-                audio.loop = true;
-                audio.volume = 0.3; // ปรับความดัง
-            }
-            
-            // เริ่มเล่นเสียง
-            try {
-                audio.play().catch(e => {
-                    console.log("Autoplay blocked:", e);
-                    // ถ้าไม่สามารถเล่นได้ แสดงข้อความแจ้งเตือน
-                    alert("ไม่สามารถเล่นเพลงได้ เนื่องจากเบราว์เซอร์บล็อกการเล่นอัตโนมัติ");
+        // ===== File Manager =====
+        function initFileManager(inputId, listId) {
+            const input = document.getElementById(inputId);
+            const list = document.getElementById(listId);
+            if (!input || !list) return;
+            input.addEventListener('change', (e) => {
+                list.innerHTML = '';
+                Array.from(e.target.files).forEach(file => {
+                    const item = document.createElement('div'); item.className = 'file-item';
+                    const icon = getFileIcon(file.name); const url = URL.createObjectURL(file);
+                    const size = formatSize(file.size); const ext = file.name.split('.').pop().toLowerCase();
+                    let previewHTML = '';
+                    if (['jpg','jpeg','png','gif','webp'].includes(ext)) previewHTML = `<img src="${url}" class="file-preview" alt="${file.name}">`;
+                    else if (ext === 'pdf') previewHTML = `<a href="${url}" target="_blank" class="file-link">${currentLang==='th'?'เปิด PDF':'Open PDF'}</a>`;
+                    else if (['xlsx','xls','csv'].includes(ext)) previewHTML = `<a href="${url}" target="_blank" class="file-link">${currentLang==='th'?'เปิด Excel':'Open Excel'}</a>`;
+                    else previewHTML = `<a href="${url}" target="_blank" class="file-link">${currentLang==='th'?'ดูไฟล์':'View'}</a>`;
+                    item.innerHTML = `<div class="file-icon">${icon}</div><div class="file-info"><div class="file-name">${file.name}</div><div class="file-size">${size}</div></div>${previewHTML}`;
+                    list.appendChild(item);
                 });
-            } catch (error) {
-                console.error("Error playing music:", error);
-            }
-        }
-
-        function stopMusic() {
-            if (audio) {
-                audio.pause();
-                audio = null;
-            }
+            });
         }
 
         // ===== GLB/GIF Viewer =====
+        let isAutoRotating = true;
+        let glbUrl = null;
+        let rotateAnimFrame = null;
+        let currentRotation = 0;
+        let currentMediaType = null;
+        let isMusicPlaying = false;
+        let audioUrl = null;
+
+        function syncRotateButton() {
+            const btn = document.getElementById('btn-rotate');
+            if (!btn) return;
+            if (isAutoRotating) {
+                btn.textContent = translations[currentLang].btn_rotate;
+                btn.classList.add('active-btn');
+            } else {
+                btn.textContent = currentLang==='th'?'⏸️ หยุดหมุน':'⏸️ Stop Rotate';
+                btn.classList.remove('active-btn');
+            }
+        }
+
         function initMediaViewer() {
-            // ตั้งค่า URL สำหรับไฟล์ GLB
+            const input = document.getElementById('upload-media');
+            const list = document.getElementById('list-media');
             const viewer = document.getElementById('glb-viewer');
-            viewer.src = glbUrl;
+            const placeholder = document.getElementById('viewer-placeholder');
+            const controls = document.getElementById('viewer-controls');
+            const speedControl = document.getElementById('speed-control');
+            const gifContainer = document.getElementById('gif-container');
+            const gifViewer = document.getElementById('gif-viewer');
             
-            // ตรวจสอบการโหลดไฟล์
-            viewer.addEventListener('load', () => {
-                console.log('GLB model loaded successfully');
-                document.getElementById('viewer-controls').style.display = 'flex';
-                document.getElementById('speed-control').style.display = 'flex';
+            if (!input) return;
+            
+            input.addEventListener('change', (e) => {
+                list.innerHTML = '';
+                const file = e.target.files[0];
+                if (!file) return;
                 
-                // เริ่มการหมุนอัตโนมัติ
-                isAutoRotating = true;
-                document.getElementById('btn-rotate').textContent = currentLang === 'th' ? '⏸️ หยุดหมุน' : '⏸️ Stop Rotate';
-                document.getElementById('btn-rotate').classList.add('active-btn');
+                const url = URL.createObjectURL(file);
+                const ext = file.name.split('.').pop().toLowerCase();
+                
+                viewer.removeAttribute('src');
+                gifViewer.src = '';
+                gifContainer.classList.add('hidden');
+                placeholder.style.display = 'none';
+                
+                if (ext === 'gif') {
+                    currentMediaType = 'gif';
+                    gifViewer.src = url;
+                    gifContainer.classList.remove('hidden');
+                    controls.style.display = 'none';
+                    speedControl.style.display = 'none';
+                    stopSmoothRotation();
+                } else if (ext === 'glb' || ext === 'gltf') {
+                    currentMediaType = 'glb';
+                    glbUrl = url;
+                    setTimeout(() => { viewer.src = glbUrl; }, 100);
+                    controls.style.display = 'flex';
+                    speedControl.style.display = 'flex';
+                    currentRotation = 0;
+                    syncRotateButton();
+                    if (isAutoRotating) startSmoothRotation();
+                    else stopSmoothRotation();
+                }
+                
+                const item = document.createElement('div'); item.className = 'file-item';
+                item.innerHTML = `<div class="file-icon">${ext === 'gif' ? '🎬' : '🧊'}</div><div class="file-info"><div class="file-name">${file.name}</div><div class="file-size">${formatSize(file.size)}</div></div><a href="${url}" download="${file.name}" class="file-link">${currentLang==='th'?'ดาวน์โหลด':'Download'}</a>`;
+                list.appendChild(item);
+            });
+        }
+
+        function initDefaultModelSource() {
+            const viewer = document.getElementById('glb-viewer');
+            const placeholder = document.getElementById('viewer-placeholder');
+            const controls = document.getElementById('viewer-controls');
+            const speedControl = document.getElementById('speed-control');
+            if (!viewer) return;
+
+            const defaultSrc = viewer.getAttribute('src');
+            if (!defaultSrc) return;
+
+            currentMediaType = 'glb';
+            currentRotation = 0;
+
+            if (placeholder) placeholder.style.display = 'none';
+            if (controls) controls.style.display = 'flex';
+            if (speedControl) speedControl.style.display = 'flex';
+            syncRotateButton();
+            const introSection = document.getElementById('intro');
+            const isIntroActive = introSection && !introSection.classList.contains('hidden');
+            if (isAutoRotating && isIntroActive) {
                 startSmoothRotation();
-                playMusic(); // เริ่มเล่นเพลงเมื่อเปิดโหมดหมุน
-            });
-            
-            viewer.addEventListener('error', (e) => {
-                console.error('Failed to load GLB:', e);
-                document.getElementById('viewer-placeholder').style.display = 'block';
-                alert('ไม่สามารถโหลดไฟล์ GLB ได้ โปรดตรวจสอบไฟล์และเส้นทาง');
-            });
+                playBackgroundMusic();
+            }
         }
 
         function startSmoothRotation() {
@@ -560,35 +689,92 @@
         function toggleAutoRotate() {
             if (currentMediaType !== 'glb') return;
             const btn = document.getElementById('btn-rotate');
-            
-            if (isAutoRotating) {
-                // หยุดการหมุน
-                isAutoRotating = false;
-                btn.textContent = currentLang === 'th' ? '⏸️ หยุดหมุน' : '⏸️ Stop Rotate';
-                btn.classList.remove('active-btn');
-                stopMusic(); // หยุดเพลงเมื่อปิดโหมดหมุน
-            } else {
-                // เริ่มการหมุน
+            if (!isAutoRotating) {
+                // start rotating
                 isAutoRotating = true;
                 btn.textContent = translations[currentLang].btn_rotate;
                 btn.classList.add('active-btn');
-                playMusic(); // เริ่มเล่นเพลงเมื่อเปิดโหมดหมุน
+                startSmoothRotation();
+                if (audioUrl) playBackgroundMusic();
+            } else {
+                // stop rotating
+                isAutoRotating = false;
+                btn.textContent = currentLang==='th'?'⏸️ หยุดหมุน':'⏸️ Stop Rotate';
+                btn.classList.remove('active-btn');
+                pauseBackgroundMusic();
+                stopSmoothRotation();
             }
         }
 
         function updateRotationSpeed(val) {
             document.getElementById('speed-label').textContent = `${val}°/s`;
-            if (isAutoRotating && currentMediaType === 'glb') {
-                stopSmoothRotation();
-                startSmoothRotation();
-            }
+            if (isAutoRotating && currentMediaType === 'glb') { stopSmoothRotation(); startSmoothRotation(); }
         }
-        
-        function stopSmoothRotation() {
-            if (rotateAnimFrame) {
-                cancelAnimationFrame(rotateAnimFrame);
-                rotateAnimFrame = null;
-            }
+        function stopSmoothRotation() { if (rotateAnimFrame) cancelAnimationFrame(rotateAnimFrame); rotateAnimFrame = null; }
+
+        // ===== Audio Manager =====
+        function initAudioUpload() {
+            const input = document.getElementById('upload-audio');
+            const audioInfoEl = document.getElementById('audio-info');
+            const playBtn = document.getElementById('btn-play-music');
+            if (!input) return;
+            input.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                audioUrl = URL.createObjectURL(file);
+                const audio = document.getElementById('background-music');
+                audio.src = audioUrl;
+                playBtn.style.display = 'inline-flex';
+                audioInfoEl.textContent = `✅ ${currentLang==='th'?'ไฟล์เสียงที่เลือก:':'Selected audio:'} ${file.name}`;
+                isMusicPlaying = false;
+                playBtn.textContent = translations[currentLang]['btn_play'] || '▶️ Play Music';
+            });
+        }
+
+        function playBackgroundMusic() {
+            const audio = document.getElementById('background-music');
+            if (!audio) return;
+
+            // Keep user-uploaded audio as priority, otherwise use default src from HTML.
+            if (audioUrl) audio.src = audioUrl;
+            if (!audio.src) return;
+
+            const infoEl = document.getElementById('audio-info');
+            const btn = document.getElementById('btn-play-music');
+            audio.play().then(() => {
+                isMusicPlaying = true;
+                if (btn) btn.textContent = translations[currentLang]['btn_pause'] || '⏸️ Pause Music';
+            }).catch(() => {
+                if (infoEl) infoEl.textContent = currentLang==='th'?'⚠️ ไม่สามารถเล่นเสียงได้':'⚠️ Unable to play audio';
+                // Fallback for browsers that require user gesture before audio playback.
+                setupAudioAutoplayFallback();
+            });
+        }
+
+        function setupAudioAutoplayFallback() {
+            const onceTryPlay = () => {
+                playBackgroundMusic();
+                document.removeEventListener('click', onceTryPlay);
+                document.removeEventListener('keydown', onceTryPlay);
+                document.removeEventListener('touchstart', onceTryPlay);
+            };
+
+            document.addEventListener('click', onceTryPlay, { once: true });
+            document.addEventListener('keydown', onceTryPlay, { once: true });
+            document.addEventListener('touchstart', onceTryPlay, { once: true });
+        }
+
+        function pauseBackgroundMusic() {
+            const audio = document.getElementById('background-music');
+            const btn = document.getElementById('btn-play-music');
+            if (audio) audio.pause();
+            isMusicPlaying = false;
+            if (btn) btn.textContent = translations[currentLang]['btn_play'] || '▶️ Play Music';
+        }
+
+        function toggleMusicPlayback() {
+            if (!audioUrl) return;
+            if (isMusicPlaying) pauseBackgroundMusic(); else playBackgroundMusic();
         }
 
         // ===== UI Navigation =====
@@ -603,22 +789,135 @@
             const navLink = document.getElementById('nav-' + sectionId); 
             if (navLink) navLink.classList.add('active');
             document.getElementById('design-dropdown').classList.remove('open');
+
+            if (sectionId === 'intro') {
+                if (isAutoRotating && currentMediaType === 'glb') startSmoothRotation();
+                playBackgroundMusic();
+            } else {
+                pauseBackgroundMusic();
+                stopSmoothRotation();
+            }
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         document.getElementById('nav-design').addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); document.getElementById('design-dropdown').classList.toggle('open'); });
         window.addEventListener('click', (e) => { if (!e.target.closest('.dropdown')) document.getElementById('design-dropdown').classList.remove('open'); if (!e.target.closest('nav')) closeMobileMenu(); });
 
-        // ตั้งค่าเริ่มต้น
+        function getFileIcon(name) { const ext = name.split('.').pop().toLowerCase(); const icons = { stl:'🧊', obj:'🧊', step:'📐', stp:'📐', fbx:'🧊', '3mf':'🧊', glb:'🧊', gltf:'🧊', gif:'🎬', catpart:'🔷', catproduct:'🔷', dwg:'📐', dxf:'📐', xlsx:'📊', xls:'📊', csv:'📊', jpg:'🖼️', jpeg:'🖼️', png:'🖼️', pdf:'📄', doc:'📝', docx:'📝', txt:'📄' }; return icons[ext] || '📁'; }
+        function formatSize(bytes) { if (bytes===0) return '0 B'; const k=1024, sizes=['B','KB','MB','GB']; const i=Math.floor(Math.log(bytes)/Math.log(k)); return parseFloat((bytes/Math.pow(k,i)).toFixed(1))+' '+sizes[i]; }
+
+        // ===== Member Photo Upload =====
+        function uploadMemberPhoto(memberId, event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const photoImg = document.getElementById(`photo-${memberId}`);
+                const icon = document.querySelector(`[data-member="${memberId}"] .member-icon`);
+                photoImg.src = e.target.result;
+                photoImg.classList.remove('hidden');
+                icon.classList.add('hidden');
+                localStorage.setItem(`memberPhoto-${memberId}`, e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function loadMemberPhotos() {
+            for (let i = 1; i <= 4; i++) {
+                const savedPhoto = localStorage.getItem(`memberPhoto-${i}`);
+                if (savedPhoto) {
+                    const photoImg = document.getElementById(`photo-${i}`);
+                    const icon = document.querySelector(`[data-member="${i}"] .member-icon`);
+                    photoImg.src = savedPhoto;
+                    photoImg.classList.remove('hidden');
+                    icon.classList.add('hidden');
+                }
+            }
+        }
+
+        // ===== Photo Link Modal =====
+        let currentPhotoMemberId = null;
+
+        function showPhotoLinkModal(memberId) {
+            currentPhotoMemberId = memberId;
+            const modal = document.getElementById('photoLinkModal');
+            const input = document.getElementById('photoUrlInput');
+            const savedUrl = localStorage.getItem(`memberPhotoUrl-${memberId}`);
+            input.value = savedUrl || '';
+            modal.classList.add('show');
+        }
+
+        function closePhotoLinkModal() {
+            const modal = document.getElementById('photoLinkModal');
+            modal.classList.remove('show');
+            currentPhotoMemberId = null;
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('photoLinkModal');
+            if (e.target === modal) {
+                closePhotoLinkModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closePhotoLinkModal();
+            }
+        });
+
+        function setPhotoFromUrl() {
+            if (!currentPhotoMemberId) return;
+            const urlInput = document.getElementById('photoUrlInput').value.trim();
+            if (!urlInput) {
+                alert(currentLang === 'th' ? 'กรุณาใส่ลิงค์ URL' : 'Please enter a URL');
+                return;
+            }
+
+            const photoImg = document.getElementById(`photo-${currentPhotoMemberId}`);
+            const icon = document.querySelector(`[data-member="${currentPhotoMemberId}"] .member-icon`);
+            
+            // Test if image URL is valid
+            const testImg = new Image();
+            testImg.onload = () => {
+                photoImg.src = urlInput;
+                photoImg.classList.remove('hidden');
+                icon.classList.add('hidden');
+                localStorage.setItem(`memberPhotoUrl-${currentPhotoMemberId}`, urlInput);
+                localStorage.removeItem(`memberPhoto-${currentPhotoMemberId}`);
+                closePhotoLinkModal();
+            };
+            testImg.onerror = () => {
+                alert(currentLang === 'th' ? 'ไม่สามารถโหลดรูปจากลิงค์นี้ได้' : 'Cannot load image from this URL');
+            };
+            testImg.src = urlInput;
+        }
+
+        // Allow Enter key to submit URL
+        document.addEventListener('DOMContentLoaded', () => {
+            const photoUrlInput = document.getElementById('photoUrlInput');
+            if (photoUrlInput) {
+                photoUrlInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') setPhotoFromUrl();
+                });
+            }
+        });
+
         window.addEventListener('DOMContentLoaded', () => {
             updateText();
             document.getElementById('lang-toggle').textContent = currentLang === 'th' ? 'EN' : 'TH';
+            loadMemberPhotos();
+            initFileManager('upload-design3d', 'list-design3d');
+            initFileManager('upload-cat3d', 'list-cat3d');
+            initFileManager('upload-cat2d', 'list-cat2d');
+            initFileManager('upload-boom', 'list-boom');
+            initFileManager('upload-materials', 'list-materials');
             initMediaViewer();
-            
-            // ตรวจสอบว่ามีการเปิดโหมดหมุนอัตโนมัติหรือไม่
-            if (isAutoRotating) {
-                playMusic();
-            }
+            initDefaultModelSource();
+            initAudioUpload();
         });
     </script>
 </body>
