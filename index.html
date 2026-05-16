@@ -3,386 +3,601 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>รายงานกระบอกสูบนิวเมติกส์</title>
+    <title>Pneumatic Cylinder Report</title>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Sarabun', sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; }
 
-        /* Fixed Header */
-        header {
-            position: fixed; top: 0; width: 100%; z-index: 1000;
-            background: linear-gradient(135deg, #4a6cf7, #6348f1);
-            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-        }
-        nav {
-            max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;
-            display: flex; justify-content: space-between; align-items: center; height: 60px;
-        }
-        .logo { color: #fff; font-weight: 700; font-size: 1.3rem; text-decoration: none; cursor: pointer; }
+        header { position: fixed; top: 0; width: 100%; z-index: 1000; background: linear-gradient(135deg, #4a6cf7, #6348f1); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+        nav { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 120px; }
+        .logo { color: #fff; font-weight: 700; font-size: 2rem; text-decoration: none; cursor: pointer; transition: 0.2s; }
+        .logo:hover { transform: scale(1.02); }
         
-        /* Desktop Menu */
-        .nav-menu { display: flex; gap: 1.5rem; list-style: none; align-items: center; }
-        .nav-menu a {
-            color: rgba(255,255,255,0.95); text-decoration: none; font-weight: 500;
-            padding: 0.5rem 0; position: relative; transition: 0.2s; cursor: pointer;
-        }
-        .nav-menu a:hover { color: #fff; }
-        .nav-menu a::after {
-            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
-            background: #fff; transition: 0.3s;
-        }
-        .nav-menu a.active::after { width: 100%; }
+        .nav-menu { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        .nav-menu > li > a { color: rgba(255,255,255,0.95); text-decoration: none; font-weight: 600; padding: 0.8rem 0; font-size: 1.2rem; position: relative; transition: 0.2s; cursor: pointer; }
+        .nav-menu > li > a:hover { color: #fff; }
+        .nav-menu > li > a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background: #fff; transition: 0.3s; border-radius: 2px; }
+        .nav-menu > li > a.active::after { width: 100%; }
 
-        /* Hamburger Menu (Mobile) */
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            padding: 5px;
+        .lang-btn {
+            background: rgba(255,255,255,0.2); color: #fff; border: 2px solid rgba(255,255,255,0.5);
+            padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem;
+            transition: 0.3s; font-family: 'Sarabun', sans-serif;
         }
-        .hamburger span {
-            width: 25px;
-            height: 3px;
-            background: #fff;
-            margin: 3px 0;
-            transition: 0.3s;
-            border-radius: 3px;
-        }
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(6px, 6px);
-        }
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(6px, -6px);
-        }
+        .lang-btn:hover { background: #fff; color: #4a6cf7; border-color: #fff; }
 
-        /* Dropdown */
+        .hamburger { display: none; flex-direction: column; cursor: pointer; padding: 10px; }
+        .hamburger span { width: 32px; height: 4px; background: #fff; margin: 4px 0; transition: 0.3s; border-radius: 2px; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
         .dropdown { position: relative; }
-        .dropdown-content {
-            display: none; position: absolute; top: 100%; left: 0;
-            background: #fff; min-width: 180px; border-radius: 8px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15); overflow: hidden; z-index: 10;
-        }
-        .dropdown-content a {
-            display: block; padding: 12px 16px; color: #333;
-            border-bottom: 1px solid #eee; transition: 0.2s; cursor: pointer;
-        }
+        .dropdown-content { display: none; position: absolute; top: 100%; left: 0; margin-top: 8px; background: #fff; min-width: 200px; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); overflow: hidden; z-index: 10; }
+        .dropdown-content a { display: block; padding: 14px 18px; color: #333; font-size: 1rem; border-bottom: 1px solid #eee; transition: 0.2s; cursor: pointer; }
         .dropdown-content a:last-child { border-bottom: none; }
         .dropdown-content a:hover { background: #f0f3ff; color: #4a6cf7; }
         .dropdown.open .dropdown-content { display: block; }
-        .dropdown-arrow { font-size: 0.8rem; margin-left: 4px; }
+        .dropdown-arrow { font-size: 1rem; margin-left: 4px; }
 
-        /* Sections */
-        main { margin-top: 80px; max-width: 1200px; margin-left: auto; margin-right: auto; padding: 2rem 1.5rem; }
-        .page-section {
-            background: #fff; padding: 2rem; border-radius: 12px; margin-bottom: 2rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05); animation: fadeIn 0.3s ease;
-        }
+        main { margin-top: 160px; max-width: 1200px; margin-left: auto; margin-right: auto; padding: 2rem 1.5rem; }
+        .page-section { background: #fff; padding: 2.5rem; border-radius: 14px; margin-bottom: 2.5rem; box-shadow: 0 6px 18px rgba(0,0,0,0.06); animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .hidden { display: none !important; }
         
-        h1 { color: #4a6cf7; font-size: 2rem; margin-bottom: 1.5rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; }
-        h2 { color: #6348f1; margin: 1.5rem 0 1rem; font-size: 1.5rem; }
+        h1 { color: #4a6cf7; font-size: 2.2rem; margin-bottom: 1.5rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; }
+        h2 { color: #6348f1; margin: 1.5rem 0 1rem; font-size: 1.6rem; }
         p { margin-bottom: 1rem; text-align: justify; }
         ul { margin-left: 2rem; margin-bottom: 1rem; }
         li { margin-bottom: 0.5rem; }
 
-        /* Accordion Sub-topics */
-        .accordion-item {
-            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;
-            margin-bottom: 0.8rem; overflow: hidden; transition: 0.2s;
-        }
-        .accordion-item[open] { border-color: #4a6cf7; box-shadow: 0 2px 8px rgba(74,108,247,0.1); }
-        .accordion-item summary {
-            padding: 1rem 1.2rem; font-weight: 600; cursor: pointer; list-style: none;
-            display: flex; justify-content: space-between; align-items: center;
-            transition: 0.2s; user-select: none; background: #fff;
-        }
-        .accordion-item summary:hover { background: #f0f3ff; }
-        .accordion-item summary::after {
-            content: '+'; font-size: 1.3rem; font-weight: bold; transition: 0.3s; color: #6348f1;
-        }
-        .accordion-item[open] summary::after { transform: rotate(45deg); color: #4a6cf7; }
-        .detail-content { padding: 1rem 1.5rem 1.5rem; border-top: 1px solid #eee; }
-        
-        /* Table */
-        .data-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; font-size: 0.95rem; }
-        .data-table th { background: #4a6cf7; color: #fff; padding: 10px; text-align: left; }
-        .data-table td { padding: 10px; border-bottom: 1px solid #eee; }
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; font-size: 1rem; }
+        .data-table th { background: #4a6cf7; color: #fff; padding: 12px; text-align: left; }
+        .data-table td { padding: 12px; border-bottom: 1px solid #eee; }
         .data-table tr:last-child td { border-bottom: none; }
 
-        /* Member Cards */
-        .members-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
-        .member-card {
-            background: linear-gradient(135deg, #4a6cf7, #6348f1); color: #fff;
-            padding: 1.5rem; border-radius: 10px; text-align: center; transition: 0.3s;
-        }
-        .member-card:hover { transform: translateY(-5px); box-shadow: 0 6px 15px rgba(74,108,247,0.3); }
-        .member-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
-        .member-card h3 { color: #fff; font-size: 1.3rem; margin-bottom: 0.3rem; }
+        .members-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+        .member-card { background: linear-gradient(135deg, #4a6cf7, #6348f1); color: #fff; padding: 1.8rem; border-radius: 12px; text-align: center; transition: 0.3s; }
+        .member-card:hover { transform: translateY(-5px); box-shadow: 0 8px 18px rgba(74,108,247,0.3); }
+        .member-icon { font-size: 3rem; margin-bottom: 0.5rem; }
+        .member-card h3 { color: #fff; font-size: 1.4rem; margin-bottom: 0.3rem; }
         .member-card p { color: rgba(255,255,255,0.9); margin: 0; }
 
-        /* References */
-        .ref-item { background: #f8fafc; padding: 1rem; margin-bottom: 0.8rem; border-left: 4px solid #4a6cf7; border-radius: 6px; }
+        .ref-item { background: #f8fafc; padding: 1.2rem; margin-bottom: 0.8rem; border-left: 4px solid #4a6cf7; border-radius: 8px; font-size: 1rem; }
+        footer { text-align: center; padding: 2.5rem; background: #1e293b; color: #94a3b8; margin-top: 3rem; }
 
-        /* Footer */
-        footer { text-align: center; padding: 2rem; background: #1e293b; color: #94a3b8; margin-top: 2rem; }
+        .file-manager { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed #cbd5e1; }
+        .file-input-wrapper { position: relative; display: inline-block; margin-bottom: 1rem; }
+        .file-input-wrapper input[type="file"] { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+        .upload-button { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; background: linear-gradient(135deg, #4a6cf7, #6348f1); color: #fff; border-radius: 10px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.2s; box-shadow: 0 3px 8px rgba(74,108,247,0.3); }
+        .upload-button:hover { transform: translateY(-2px); box-shadow: 0 5px 12px rgba(74,108,247,0.4); }
+        .file-list { display: flex; flex-direction: column; gap: 0.8rem; }
+        .file-item { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; }
+        .file-icon { font-size: 2rem; min-width: 45px; text-align: center; }
+        .file-info { flex: 1; }
+        .file-name { font-weight: 600; font-size: 1rem; word-break: break-all; }
+        .file-size { font-size: 0.85rem; color: #64748b; }
+        .file-preview { max-width: 130px; max-height: 90px; border-radius: 8px; border: 1px solid #eee; }
+        .file-link { color: #4a6cf7; text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 5px 10px; background: #f0f3ff; border-radius: 6px; transition: 0.2s; }
+        .file-link:hover { background: #4a6cf7; color: #fff; }
 
-        /* Mobile Responsive */
+        .viewer3d-container { width: 100%; height: 480px; background: linear-gradient(145deg, #0f172a, #1e293b); border-radius: 16px; margin: 1.5rem 0; overflow: hidden; position: relative; border: 2px solid #334155; }
+        model-viewer { width: 100%; height: 100%; background: transparent; --poster-color: transparent; }
+        .viewer-placeholder { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #94a3b8; pointer-events: none; }
+        .viewer-placeholder .icon { font-size: 4rem; margin-bottom: 0.5rem; }
+        .viewer-hint { font-size: 0.85rem; color: #64748b; text-align: center; margin-top: 0.5rem; font-style: italic; }
+        
+        .viewer-controls { display: flex; justify-content: center; gap: 0.8rem; margin-top: 1rem; flex-wrap: wrap; }
+        .viewer-btn { padding: 10px 18px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 10px; cursor: pointer; font-size: 0.95rem; transition: 0.2s; font-family: 'Sarabun', sans-serif; }
+        .viewer-btn:hover { background: #4a6cf7; color: #fff; border-color: #4a6cf7; }
+        .viewer-btn.active-btn { background: #4a6cf7; color: #fff; border-color: #4a6cf7; box-shadow: 0 2px 8px rgba(74,108,247,0.3); }
+
+        .speed-control { display: flex; align-items: center; gap: 10px; margin-top: 0.8rem; justify-content: center; }
+        .speed-control label { font-size: 0.9rem; color: #64748b; }
+        .speed-control input[type="range"] { width: 200px; accent-color: #4a6cf7; cursor: pointer; }
+
+        .gif-viewer-container { width: 100%; min-height: 300px; background: linear-gradient(145deg, #f1f5f9, #e2e8f0); border-radius: 16px; margin: 1.5rem 0; overflow: hidden; position: relative; border: 2px solid #cbd5e1; display: flex; align-items: center; justify-content: center; }
+        .gif-viewer-container img { max-width: 100%; max-height: 500px; object-fit: contain; }
+
+        .hero-section { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 3rem; border-radius: 16px; text-align: center; margin-bottom: 2rem; }
+        .hero-section h1 { color: white; border-bottom: none; font-size: 3rem; margin-bottom: 0.5rem; }
+        .hero-section h2 { color: rgba(255,255,255,0.9); font-size: 1.8rem; margin-bottom: 1.5rem; font-weight: 400; }
+        .hero-section p { font-size: 1.2rem; margin-bottom: 2rem; }
+        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .hero-btn { padding: 12px 30px; background: white; color: #667eea; border-radius: 10px; text-decoration: none; font-weight: 600; transition: 0.3s; cursor: pointer; border: none; font-size: 1rem; }
+        .hero-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .hero-btn.secondary { background: transparent; color: white; border: 2px solid white; }
+        .hero-btn.secondary:hover { background: white; color: #667eea; }
+
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+        .feature-card { background: #f8fafc; padding: 2rem; border-radius: 12px; text-align: center; border: 2px solid #e2e8f0; transition: 0.3s; }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+        .feature-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .feature-card h3 { color: #4a6cf7; margin-bottom: 0.5rem; }
+
         @media (max-width: 768px) {
             .hamburger { display: flex; }
-            
-            .nav-menu {
-                display: none;
-                position: absolute;
-                top: 60px;
-                left: 0;
-                right: 0;
-                background: linear-gradient(135deg, #4a6cf7, #6348f1);
-                flex-direction: column;
-                padding: 1rem;
-                gap: 0;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            }
-            
+            nav { height: 120px; padding: 0 1rem; }
+            .nav-menu { display: none; position: absolute; top: 120px; left: 0; right: 0; background: linear-gradient(135deg, #4a6cf7, #6348f1); flex-direction: column; padding: 1rem 0; gap: 0; box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
             .nav-menu.active { display: flex; }
-            
-            .nav-menu li {
-                width: 100%;
-                border-bottom: 1px solid rgba(255,255,255,0.1);
-            }
-            
+            .nav-menu li { width: 100%; border-bottom: 1px solid rgba(255,255,255,0.1); }
             .nav-menu li:last-child { border-bottom: none; }
-            
-            .nav-menu a {
-                display: block;
-                padding: 1rem;
-                width: 100%;
-            }
-            
-            .nav-menu a::after { display: none; }
-            
-            .dropdown-content {
-                position: static;
-                box-shadow: none;
-                background: rgba(0,0,0,0.2);
-                min-width: 100%;
-            }
-            
-            .dropdown-content a {
-                color: #fff;
-                border-bottom: 1px solid rgba(255,255,255,0.1);
-                padding-left: 2rem;
-            }
-            
-            .dropdown-content a:hover { background: rgba(255,255,255,0.1); color: #fff; }
-            
-            main { margin-top: 80px; padding: 1rem; }
-            .page-section { padding: 1.5rem 1rem; }
-            h1 { font-size: 1.5rem; }
-            h2 { font-size: 1.2rem; }
+            .nav-menu > li > a { display: block; padding: 1.2rem 1.5rem; width: 100%; font-size: 1.2rem; }
+            .nav-menu > li > a::after { display: none; }
+            .dropdown-content { position: static; box-shadow: none; background: rgba(0,0,0,0.15); min-width: 100%; margin: 0; }
+            .dropdown-content a { color: #fff; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 1rem 2rem; }
+            .dropdown-content a:hover { background: rgba(255,255,255,0.15); color: #fff; }
+            main { margin-top: 150px; padding: 1rem; }
+            .page-section { padding: 1.8rem 1rem; }
+            h1 { font-size: 1.6rem; } h2 { font-size: 1.3rem; }
+            .viewer3d-container { height: 350px; }
+            .hero-section h1 { font-size: 2rem; }
+            .lang-btn { margin-left: auto; }
         }
     </style>
 </head>
 <body>
     <header>
         <nav>
-            <a href="#" class="logo" onclick="showSection('intro'); return false;">🔧 Pneumatic Report</a>
-            
-            <!-- Hamburger Menu Icon -->
+            <a href="#" class="logo" onclick="showSection('home'); return false;">🔧 Pneumatic Report</a>
+            <button id="lang-toggle" class="lang-btn" onclick="toggleLang()">EN</button>
             <div class="hamburger" onclick="toggleMobileMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </div>
-            
             <ul class="nav-menu" id="navMenu">
-                <li><a href="#intro" onclick="showSection('intro'); closeMobileMenu();" id="nav-intro" class="active">บทนำ</a></li>
+                <li><a href="#home" onclick="showSection('home'); closeMobileMenu();" id="nav-home" class="active" data-i18n="nav_home">Home</a></li>
+                <li><a href="#intro" onclick="showSection('intro'); closeMobileMenu();" id="nav-intro" data-i18n="nav_intro">Introduction</a></li>
                 <li class="dropdown" id="design-dropdown">
-                    <a href="#design" onclick="toggleDropdown(event); return false;" id="nav-design">พาสดีไซน์ <span class="dropdown-arrow">▼</span></a>
+                    <a href="#design" onclick="showSection('design3d'); closeMobileMenu(); return false;" id="nav-design" data-i18n="nav_design">Part Design <span class="dropdown-arrow">▼</span></a>
                     <div class="dropdown-content">
-                        <a data-target="detail3d" data-section="design">ดีไซน์ 3D</a>
-                        <a data-target="detailcat3d" data-section="design">CAT3D</a>
-                        <a data-target="detailcat2d" data-section="design">CAT2D</a>
-                        <a data-target="detailboom" data-section="design">BOOM</a>
-                        <a data-target="detailmat" data-section="design">Materials</a>
+                        <a onclick="showSection('design3d'); closeMobileMenu();" data-i18n="drop_3d">3D Design</a>
+                        <a onclick="showSection('cat3d'); closeMobileMenu();" data-i18n="drop_cat3d">CAT3D</a>
+                        <a onclick="showSection('cat2d'); closeMobileMenu();" data-i18n="drop_cat2d">CAT2D</a>
+                        <a onclick="showSection('boom'); closeMobileMenu();" data-i18n="drop_boom">BOM</a>
+                        <a onclick="showSection('materials'); closeMobileMenu();" data-i18n="drop_mat">Materials</a>
                     </div>
                 </li>
-                <li><a href="#members" onclick="showSection('members'); closeMobileMenu();" id="nav-members">สมาชิกกลุ่ม</a></li>
-                <li><a href="#references" onclick="showSection('references'); closeMobileMenu();" id="nav-references">แหล่งอ้างอิง</a></li>
+                <li><a href="#members" onclick="showSection('members'); closeMobileMenu();" id="nav-members" data-i18n="nav_members">Team Members</a></li>
+                <li><a href="#references" onclick="showSection('references'); closeMobileMenu();" id="nav-references" data-i18n="nav_ref">References</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <section id="intro" class="page-section">
-            <h1>1. บทนำ</h1>
-            <h2>กระบอกสูบนิวเมติกส์คืออะไร?</h2>
-            <p>กระบอกสูบนิวเมติกส์ (Pneumatic Cylinder) คือ อุปกรณ์แปลงพลังงานลมอัดเป็นการเคลื่อนที่เชิงเส้น ใช้ขับเคลื่อนลูกสูบภายในกระบอก โดยอาศัยความแตกต่างของความดันลมทั้งสองฝั่ง</p>
-            <h2>ประเภทของกระบอกสูบนิวเมติกส์</h2>
-            <ul>
-                <li><strong>Single Acting:</strong> ใช้ลมดันออกทางเดียว สปริงช่วยคืนตัว</li>
-                <li><strong>Double Acting:</strong> ใช้ลมดันทั้งจังหวะออกและเข้า (นิยมสุด)</li>
-                <li><strong>Rodless Cylinder:</strong> ไม่มีก้านลูกสูบ ประหยัดพื้นที่</li>
-                <li><strong>Rotary Actuator:</strong> ให้การเคลื่อนที่แบบหมุน</li>
-            </ul>
-            <h2>การใช้งาน</h2>
-            <p>ใช้แพร่หลายในสายการผลิตอัตโนมัติ เช่น อุตสาหกรรมยานยนต์ บรรจุภัณฑ์ อิเล็กทรอนิกส์ อาหาร และระบบจับยึดชิ้นงาน</p>
+        <section id="home" class="page-section">
+            <div class="hero-section">
+                <h1 data-i18n="hero_title">Pneumatics Part Project</h1>
+                <h2 data-i18n="hero_sub">Engineering Materials</h2>
+                <p data-i18n="hero_desc">Study the design and manufacturing of pneumatic cylinders using CAD/CAM technology.</p>
+                <div class="hero-buttons">
+                    <button class="hero-btn" onclick="showSection('intro')" data-i18n="hero_btn1">📖 Start Learning</button>
+                    <button class="hero-btn secondary" onclick="showSection('design3d')" data-i18n="hero_btn2">🎨 View 3D Model</button>
+                </div>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3 data-i18n="feat1_t">Introduction</h3>
+                    <p data-i18n="feat1_d">Learn basics about pneumatic cylinders, types, and applications.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3 data-i18n="feat2_t">3D Design</h3>
+                    <p data-i18n="feat2_d">View 3D models and design drafts using CATIA software.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📐</div>
+                    <h3 data-i18n="feat3_t">2D Drawings</h3>
+                    <p data-i18n="feat3_d">Engineering blueprints ready for manufacturing.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 data-i18n="feat4_t">BOM</h3>
+                    <p data-i18n="feat4_d">Bill of materials and components list for assembly.</p>
+                </div>
+            </div>
         </section>
 
-        <section id="design" class="page-section hidden">
-            <h1>2. พาสดีไซน์</h1>
-            <p style="margin-bottom: 1.5rem; color: #64748b;">คลิกหัวข้อด้านล่างเพื่อแสดงรายละเอียด (แสดงทีละหัวข้อ)</p>
-
-            <details class="accordion-item" id="detail3d">
-                <summary>ดีไซน์ 3D</summary>
-                <div class="detail-content">
-                    <p>การสร้างโมเดล 3 มิติช่วยตรวจสอบการประกอบและจำลองการทำงานก่อนผลิตจริง</p>
-                    <ul><li>ใช้ SolidWorks / Inventor / CATIA ในการออกแบบ</li><li>ตรวจสอบ Interference & Clearance</li></ul>
+        <section id="intro" class="page-section hidden">
+            <h1 data-i18n="sec_intro">1. Introduction</h1>
+            <h2 data-i18n="intro_what">What is a Pneumatic Cylinder?</h2>
+            <p data-i18n="intro_what_d">A pneumatic cylinder is a mechanical device that converts the energy of compressed air into linear motion. It drives a piston inside a barrel using pressure differences on both sides.</p>
+            
+            <h2 data-i18n="media_t">View 3D Model (GLB) or GIF</h2>
+            <p style="color: #64748b; font-size: 0.95rem;" data-i18n="media_d">Upload a .glb file for 3D models or a .gif for animations.</p>
+            
+            <div class="viewer3d-container" id="viewer-container">
+                <model-viewer id="glb-viewer" camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1" environment-image="neutral" exposure="1.0" alt="3D Model" ar></model-viewer>
+                <div class="viewer-placeholder" id="viewer-placeholder">
+                    <div class="icon">🔧</div>
+                    <div data-i18n="placeholder_t">No 3D Model or GIF yet</div>
+                    <div style="font-size: 0.8rem; margin-top: 0.3rem;" data-i18n="placeholder_d">Upload .glb or .gif below</div>
                 </div>
-            </details>
+            </div>
+            <div class="gif-viewer-container hidden" id="gif-container">
+                <img id="gif-viewer" src="" alt="GIF Animation">
+            </div>
+            <p class="viewer-hint" data-i18n="viewer_hint">🖱️ Drag to rotate (GLB) | 🔍 Scroll to zoom</p>
+            
+            <div class="viewer-controls" id="viewer-controls" style="display: none;">
+                <button class="viewer-btn active-btn" id="btn-rotate" onclick="toggleAutoRotate()" data-i18n="btn_rotate">🔄 Auto Rotate</button>
+                <button class="viewer-btn" onclick="resetCamera()" data-i18n="btn_reset">🎯 Reset View</button>
+            </div>
+            <div class="speed-control" id="speed-control" style="display: none;">
+                <label data-i18n="speed_label">⏱️ Speed:</label>
+                <input type="range" id="rotate-speed" min="1" max="100" value="10" oninput="updateRotationSpeed(this.value)">
+                <span id="speed-label">10°/s</span>
+            </div>
 
-            <details class="accordion-item" id="detailcat3d">
-                <summary>CAT3D</summary>
-                <div class="detail-content">
-                    <p>การใช้งาน CATIA V5 สร้าง Part และ Assembly</p>
-                    <ul><li>Part Design: สร้างชิ้นส่วนหลัก</li><li>Assembly Design: ประกอบชิ้นส่วน</li><li>DMU: ตรวจสอบการเคลื่อนที่</li></ul>
+            <div class="file-manager">
+                <div class="file-input-wrapper">
+                    <input type="file" id="upload-media" accept=".glb,.gltf,.gif">
+                    <label for="upload-media" class="upload-button" data-i18n="up_media">📦 Add GLB or GIF File</label>
                 </div>
-            </details>
+                <div class="file-list" id="list-media"></div>
+            </div>
 
-            <details class="accordion-item" id="detailcat2d">
-                <summary>CAT2D</summary>
-                <div class="detail-content">
-                    <p>การดึงแบบแปลน 2D จากโมเดล 3D สำหรับการผลิต</p>
-                    <ul><li>แสดงขนาด ความคลาดเคลื่อน (Tolerance)</li><li>สัญลักษณ์ผิวงาน (Surface Finish)</li><li>GD&T สำหรับการผลิต CNC</li></ul>
-                </div>
-            </details>
+            <h2 data-i18n="intro_types">Types of Pneumatic Cylinders</h2>
+            <ul>
+                <li><strong data-i18n="type1">Single Acting:</strong> <span data-i18n="type1_d">Uses air pressure for one direction, spring returns it.</span></li>
+                <li><strong data-i18n="type2">Double Acting:</strong> <span data-i18n="type2_d">Uses air for both extension and retraction (most common).</span></li>
+                <li><strong data-i18n="type3">Rodless Cylinder:</strong> <span data-i18n="type3_d">No piston rod extends out, saves space.</span></li>
+                <li><strong data-i18n="type4">Rotary Actuator:</strong> <span data-i18n="type4_d">Provides rotational motion.</span></li>
+            </ul>
+            
+            <h2 data-i18n="intro_apps">Applications</h2>
+            <p data-i18n="intro_apps_d">Widely used in automated production lines such as automotive, packaging, electronics, food industry, and workpiece clamping systems.</p>
+        </section>
 
-            <details class="accordion-item" id="detailboom">
-                <summary>BOOM (Bill of Materials)</summary>
-                <div class="detail-content">
-                    <table class="data-table">
-                        <tr><th>ลำดับ</th><th>ชิ้นส่วน</th><th>วัสดุ</th><th>จำนวน</th></tr>
-                        <tr><td>1</td><td>Barrel</td><td>Aluminum</td><td>1</td></tr>
-                        <tr><td>2</td><td>Piston</td><td>Steel</td><td>1</td></tr>
-                        <tr><td>3</td><td>Rod</td><td>Stainless</td><td>1</td></tr>
-                        <tr><td>4</td><td>End Cap</td><td>Aluminum</td><td>2</td></tr>
-                        <tr><td>5</td><td>Seals</td><td>NBR/PTFE</td><td>4</td></tr>
-                    </table>
+        <section id="design3d" class="page-section hidden">
+            <h1 data-i18n="sec_3d">2.1 3D Design</h1>
+            <p data-i18n="desc_3d">Creating 3D models helps verify assembly and simulate operations before actual manufacturing. Software like SolidWorks, Inventor, or CATIA can be used.</p>
+            <div class="file-manager">
+                <div class="file-input-wrapper">
+                    <input type="file" id="upload-design3d" multiple accept=".stl,.obj,.step,.stp,.fbx,.3mf,.png,.jpg,.jpeg,.pdf">
+                    <label for="upload-design3d" class="upload-button" data-i18n="up_3d">📦 Add 3D Files</label>
                 </div>
-            </details>
+                <div class="file-list" id="list-design3d"></div>
+            </div>
+        </section>
 
-            <details class="accordion-item" id="detailmat">
-                <summary>Materials</summary>
-                <div class="detail-content">
-                    <ul>
-                        <li><strong>Aluminum 6061-T6:</strong> น้ำหนักเบา ทนกัดกร่อน</li>
-                        <li><strong>Stainless Steel 304:</strong> แข็งแรง ไม่เป็นสนิม</li>
-                        <li><strong>NBR Rubber:</strong> ซีลทนน้ำมันและลมอัด</li>
-                        <li><strong>PTFE:</strong> แรงเสียดทานต่ำ ทนความร้อน</li>
-                    </ul>
+        <section id="cat3d" class="page-section hidden">
+            <h1 data-i18n="sec_cat3d">2.2 CAT3D (CATIA V5 3D Modeling)</h1>
+            <p data-i18n="desc_cat3d">Using CATIA V5 to create Parts and Assemblies for pneumatic cylinders.</p>
+            <ul>
+                <li data-i18n="cat3d_1">Part Design: Create main components (Barrel, Piston, Rod)</li>
+                <li data-i18n="cat3d_2">Assembly Design: Assemble components together</li>
+                <li data-i18n="cat3d_3">DMU Kinematics: Check motion and interference</li>
+            </ul>
+            <div class="file-manager">
+                <div class="file-input-wrapper">
+                    <input type="file" id="upload-cat3d" multiple accept=".catpart,.catproduct,.stl,.obj,.png,.jpg,.pdf">
+                    <label for="upload-cat3d" class="upload-button" data-i18n="up_cat3d">📦 Add CAT3D Files</label>
                 </div>
-            </details>
+                <div class="file-list" id="list-cat3d"></div>
+            </div>
+        </section>
+
+        <section id="cat2d" class="page-section hidden">
+            <h1 data-i18n="sec_cat2d">2.3 CAT2D (Engineering Drawing)</h1>
+            <p data-i18n="desc_cat2d">Extracting 2D drawings from 3D models for manufacturing, showing dimensions, tolerances, and surface finish symbols.</p>
+            <ul>
+                <li data-i18n="cat2d_1">Show Orthographic Projection & Section Views</li>
+                <li data-i18n="cat2d_2">Specify GD&T for CNC processes</li>
+                <li data-i18n="cat2d_3">Export as .PDF or .DXF for production</li>
+            </ul>
+            <div class="file-manager">
+                <div class="file-input-wrapper">
+                    <input type="file" id="upload-cat2d" multiple accept=".dwg,.dxf,.pdf,.png,.jpg,.jpeg">
+                    <label for="upload-cat2d" class="upload-button" data-i18n="up_cat2d">📐 Add CAT2D Files</label>
+                </div>
+                <div class="file-list" id="list-cat2d"></div>
+            </div>
+        </section>
+
+        <section id="boom" class="page-section hidden">
+            <h1 data-i18n="sec_boom">2.4 BOM (Bill of Materials)</h1>
+            <p data-i18n="desc_boom">List of materials and components used to assemble the pneumatic cylinder.</p>
+            <table class="data-table">
+                <tr><th data-i18n="th_no">No.</th><th data-i18n="th_comp">Component</th><th data-i18n="th_mat">Material</th><th data-i18n="th_qty">Qty</th></tr>
+                <tr><td>1</td><td>Barrel</td><td>Aluminum</td><td>1</td></tr>
+                <tr><td>2</td><td>Piston</td><td>Steel</td><td>1</td></tr>
+                <tr><td>3</td><td>Rod</td><td>Stainless</td><td>1</td></tr>
+                <tr><td>4</td><td>End Cap</td><td>Aluminum</td><td>2</td></tr>
+                <tr><td>5</td><td>Seals</td><td>NBR/PTFE</td><td>4</td></tr>
+            </table>
+            <div class="file-manager">
+                <div class="file-input-wrapper">
+                    <input type="file" id="upload-boom" multiple accept=".xlsx,.xls,.csv,.pdf,.png,.jpg">
+                    <label for="upload-boom" class="upload-button" data-i18n="up_boom">📊 Add BOM Files</label>
+                </div>
+                <div class="file-list" id="list-boom"></div>
+            </div>
+        </section>
+
+        <section id="materials" class="page-section hidden">
+            <h1 data-i18n="sec_mat">2.5 Materials</h1>
+            <ul>
+                <li><strong>Aluminum 6061-T6:</strong> <span data-i18n="mat1">Lightweight, corrosion resistant. Ideal for Barrel and End Caps.</span></li>
+                <li><strong>Stainless Steel 304:</strong> <span data-i18n="mat2">High strength, rust-proof. Used for Piston Rod.</span></li>
+                <li><strong>NBR Rubber:</strong> <span data-i18n="mat3">Good elasticity, resistant to oil and compressed air. Used for seals.</span></li>
+                <li><strong>PTFE:</strong> <span data-i18n="mat4">Low friction coefficient, high heat resistance.</span></li>
+            </ul>
+            <div class="file-manager">
+                <div class="file-input-wrapper">
+                    <input type="file" id="upload-materials" multiple accept=".pdf,.xlsx,.png,.jpg,.doc,.docx">
+                    <label for="upload-materials" class="upload-button" data-i18n="up_mat">📦 Add Material Files</label>
+                </div>
+                <div class="file-list" id="list-materials"></div>
+            </div>
         </section>
 
         <section id="members" class="page-section hidden">
-            <h1>3. สมาชิกกลุ่ม</h1>
+            <h1 data-i18n="sec_mem">3. Team Members</h1>
             <div class="members-grid">
-                <div class="member-card"><div class="member-icon">👨‍🔧</div><h3>นาย ก.กา</h3><p>หัวหน้ากลุ่ม<br>รหัส: 6401001</p></div>
-                <div class="member-card"><div class="member-icon">👩‍🔧</div><h3>นางสาว ข.ขอ</h3><p>ออกแบบ 2D/3D<br>รหัส: 6401002</p></div>
-                <div class="member-card"><div class="member-icon">👨‍🔧</div><h3>นาย ค.คอ</h3><p>BOM & วัสดุ<br>รหัส: 6401003</p></div>
-                <div class="member-card"><div class="member-icon">👩‍</div><h3>นางสาว ง.งอ</h3><p>เอกสาร & รายงาน<br>รหัส: 6401004</p></div>
+                <div class="member-card"><div class="member-icon">เจ.jpg</div><h3 data-i18n="mem1_n">Mr. A. Ka</h3><p><span data-i18n="mem1_r">Team Leader</span><br>ID: 2411220078</p></div>
+                <div class="member-card"><div class="member-icon">โย.jpg</div><h3 data-i18n="mem2_n">Ms. B. Khor</h3><p><span data-i18n="mem2_r">2D/3D Designer</span><br>ID: 2411220342</p></div>
+                <div class="member-card"><div class="member-icon">อั๋น.jpg</div><h3 data-i18n="mem3_n">Mr. C. Kor</h3><p><span data-i18n="mem3_r">BOM & Materials</span><br>ID: 2511220127</p></div>
+                <div class="member-card"><div class="member-icon">เนะ.jpg</div><h3 data-i18n="mem4_n">Ms. D. Ngor</h3><p><span data-i18n="mem4_r">Documentation & Report</span><br>ID:  2411220268/p></div>
             </div>
         </section>
 
         <section id="references" class="page-section hidden">
-            <h1>4. แหล่งอ้างอิง</h1>
+            <h1 data-i18n="sec_ref">4. References</h1>
             <div class="ref-item">1. Festo Didactic. (2023). <em>Pneumatic Technology Basic Level.</em> Germany.</div>
             <div class="ref-item">2. SMC Corporation. (2024). <em>Pneumatic Cylinder Catalog.</em> <a href="https://www.smcworld.com" target="_blank">smcworld.com</a></div>
             <div class="ref-item">3. Dassault Systèmes. (2023). <em>CATIA V5 Documentation.</em> France.</div>
             <div class="ref-item">4. ISO 6431:2022. <em>Pneumatic fluid power - Cylinders - Mounting dimensions.</em></div>
-            <div class="ref-item">5. วิศวกรรมนิวเมติกส์. (2565). <em>หลักการทำงานและประยุกต์ใช้กระบอกสูบลมอัด.</em> กรุงเทพฯ.</div>
+            <div class="ref-item">5. Pneumatic Engineering. (2022). <em>Principles and Applications of Pneumatic Cylinders.</em> Bangkok.</div>
+            <p class="file-note" data-i18n="ref_note">💡 Note: GitHub Pages is static hosting. Uploaded files are only visible in your current browser session. To make them permanent, upload files to your Repository folder and update the links in the code.</p>
         </section>
     </main>
 
-    <footer>&copy; 2026 รายงานกระบอกสูบนิวเมติกส์ | กลุ่มวิศวกรรมเครื่องกล</footer>
+    <footer>
+        <p data-i18n="footer">© 2026 Pneumatic Cylinder Report | Mechanical Engineering Group</p>
+    </footer>
 
     <script>
-        // Toggle Mobile Menu (Hamburger)
-        function toggleMobileMenu() {
-            document.getElementById('navMenu').classList.toggle('active');
-            document.querySelector('.hamburger').classList.toggle('active');
+        // ===== i18n Translations =====
+        const translations = {
+            th: {
+                nav_home: "Home", nav_intro: "บทนำ", nav_design: "พาสดีไซน์", nav_members: "สมาชิกกลุ่ม", nav_ref: "แหล่งอ้างอิง",
+                drop_3d: "ดีไซน์ 3D", drop_cat3d: "CAT3D", drop_cat2d: "CAT2D", drop_boom: "BOOM", drop_mat: "Materials",
+                hero_title: "Pneumatics Part Project", hero_sub: "Engineering Materials", hero_desc: "ศึกษาการออกแบบและผลิตกระบอกสูบนิวเมติกส์ด้วยเทคโนโลยี CAD/CAM",
+                hero_btn1: "📖 เริ่มเรียนรู้", hero_btn2: "🎨 ดูแบบ 3D",
+                feat1_t: "บทนำ", feat1_d: "เรียนรู้พื้นฐานเกี่ยวกับกระบอกสูบนิวเมติกส์ ประเภท และการใช้งาน",
+                feat2_t: "ออกแบบ 3D", feat2_d: "ดูโมเดล 3 มิติ และแบบแปลนการออกแบบด้วย CATIA",
+                feat3_t: "แบบ 2D", feat3_d: "แบบแปลนวิศวกรรมสำหรับการผลิต",
+                feat4_t: "BOOM", feat4_d: "รายการวัสดุและชิ้นส่วนที่ใช้ในการประกอบ",
+                sec_intro: "1. บทนำ", intro_what: "กระบอกสูบนิวเมติกส์คืออะไร?", intro_what_d: "กระบอกสูบนิวเมติกส์ (Pneumatic Cylinder) คือ อุปกรณ์แปลงพลังงานลมอัดเป็นการเคลื่อนที่เชิงเส้น ใช้ขับเคลื่อนลูกสูบภายในกระบอก โดยอาศัยความแตกต่างของความดันลมทั้งสองฝั่ง",
+                media_t: "🧊 ดูโมเดล 3D (GLB) หรือ GIF", media_d: "อัปโหลดไฟล์ .glb สำหรับโมเดล 3 มิติ หรือ .gif สำหรับภาพเคลื่อนไหว",
+                placeholder_t: "ยังไม่มีโมเดล 3D หรือ GIF", placeholder_d: "อัปโหลดไฟล์ .glb หรือ .gif ด้านล่าง",
+                viewer_hint: "🖱️ ลากเมาส์เพื่อหมุน (GLB) | 🔍 Scroll เพื่อซูม",
+                btn_rotate: "🔄 หมุนอัตโนมัติ", btn_reset: "🎯 รีเซ็ตมุมมอง", speed_label: "⏱️ ความเร็ว:",
+                up_media: "📦 เพิ่มไฟล์ GLB หรือ GIF",
+                intro_types: "ประเภทของกระบอกสูบนิวเมติกส์",
+                type1: "Single Acting:", type1_d: "ใช้ลมดันออกทางเดียว สปริงช่วยคืนตัว",
+                type2: "Double Acting:", type2_d: "ใช้ลมดันทั้งจังหวะออกและเข้า (นิยมสุด)",
+                type3: "Rodless Cylinder:", type3_d: "ไม่มีก้านลูกสูบ ประหยัดพื้นที่",
+                type4: "Rotary Actuator:", type4_d: "ให้การเคลื่อนที่แบบหมุน",
+                intro_apps: "การใช้งาน", intro_apps_d: "ใช้แพร่หลายในสายการผลิตอัตโนมัติ เช่น อุตสาหกรรมยานยนต์ บรรจุภัณฑ์ อิเล็กทรอนิกส์ อาหาร และระบบจับยึดชิ้นงาน",
+                sec_3d: "2.1 เดไซน์ 3D", desc_3d: "การสร้างโมเดล 3 มิติช่วยตรวจสอบการประกอบและจำลองการทำงานก่อนผลิตจริง สามารถใช้ซอฟต์แวร์เช่น SolidWorks, Inventor หรือ CATIA ในการออกแบบ", up_3d: "📦 เพิ่มไฟล์ 3D",
+                sec_cat3d: "2.2 CAT3D (CATIA V5 3D Modeling)", desc_cat3d: "การใช้งาน CATIA V5 สร้าง Part และ Assembly สำหรับกระบอกสูบนิวเมติกส์",
+                cat3d_1: "Part Design: สร้างชิ้นส่วนหลัก (Barrel, Piston, Rod)", cat3d_2: "Assembly Design: ประกอบชิ้นส่วนเข้าด้วยกัน", cat3d_3: "DMU Kinematics: ตรวจสอบการเคลื่อนที่และ Interference", up_cat3d: "📦 เพิ่มไฟล์ CAT3D",
+                sec_cat2d: "2.3 CAT2D (Engineering Drawing)", desc_cat2d: "การดึงแบบแปลน 2D จากโมเดล 3D สำหรับการผลิต โดยแสดงรายละเอียดขนาด ความคลาดเคลื่อน (Tolerance) และสัญลักษณ์ผิวงาน",
+                cat2d_1: "แสดง Orthographic Projection & Section Views", cat2d_2: "ระบุ GD&T สำหรับกระบวนการ CNC", cat2d_3: "Export เป็น .PDF หรือ .DXF สำหรับส่งผลิต", up_cat2d: "📐 เพิ่มไฟล์ CAT2D",
+                sec_boom: "2.4 BOOM (Bill of Materials)", desc_boom: "รายการวัสดุและชิ้นส่วนที่ใช้ในการประกอบกระบอกสูบนิวเมติกส์",
+                th_no: "ลำดับ", th_comp: "ชิ้นส่วน", th_mat: "วัสดุ", th_qty: "จำนวน", up_boom: "📊 เพิ่มไฟล์ BOOM",
+                sec_mat: "2.5 Materials (วัสดุที่ใช้งาน)",
+                mat1: "น้ำหนักเบา ทนกัดกร่อน เหมาะสำหรับ Barrel และฝาปิด", mat2: "แข็งแรง ไม่เป็นสนิม ใช้ทำก้านลูกสูบ (Piston Rod)",
+                mat3: "ยืดหยุ่นดี ทนต่อน้ำมันและลมอัด ใช้ทำซีลกันรั่ว", mat4: "ค่าสัมประสิทธิ์แรงเสียดทานต่ำ ทนความร้อนสูง", up_mat: "📦 เพิ่มไฟล์ Materials",
+                sec_mem: "3. สมาชิกกลุ่ม",
+                mem1_n: "ธีรภัทร เก่งนอก", mem1_r: "หัวหน้ากลุ่ม", mem2_n: "พีระพัฒน์ โภคพูล", mem2_r: "", mem3_n: "อนุรักษ์ ศิริภักดี", mem3_r: "", mem4_n: "ศรัญยู ภูเขาใหญ่ Saranyu", mem4_r: "",
+                sec_ref: "4. แหล่งอ้างอิง", ref_note: "💡 หมายเหตุ: GitHub Pages เป็นเว็บแบบ Static ไฟล์ที่เลือกผ่านปุ่มอัปโหลดจะแสดงเฉพาะในเครื่องของคุณเท่านั้น หากต้องการให้ผู้อื่นเห็นถาวร ให้อัปโหลดไฟล์เข้าโฟลเดอร์ใน Repository แล้วแก้ลิงก์ในโค้ดแทน",
+                footer: "© 2026 รายงานกระบอกสูบนิวเมติกส์ | กลุ่มวิศวกรรมเครื่องกล"
+            },
+            en: {
+                nav_home: "Home", nav_intro: "Introduction", nav_design: "Part Design", nav_members: "Team Members", nav_ref: "References",
+                drop_3d: "3D Design", drop_cat3d: "CAT3D", drop_cat2d: "CAT2D", drop_boom: "BOM", drop_mat: "Materials",
+                hero_title: "Pneumatics Part Project", hero_sub: "Engineering Materials", hero_desc: "Study the design and manufacturing of pneumatic cylinders using CAD/CAM technology.",
+                hero_btn1: "📖 Start Learning", hero_btn2: "🎨 View 3D Model",
+                feat1_t: "Introduction", feat1_d: "Learn basics about pneumatic cylinders, types, and applications.",
+                feat2_t: "3D Design", feat2_d: "View 3D models and design drafts using CATIA software.",
+                feat3_t: "2D Drawings", feat3_d: "Engineering blueprints ready for manufacturing.",
+                feat4_t: "BOM", feat4_d: "Bill of materials and components list for assembly.",
+                sec_intro: "1. Introduction", intro_what: "What is a Pneumatic Cylinder?", intro_what_d: "A pneumatic cylinder is a mechanical device that converts the energy of compressed air into linear motion. It drives a piston inside a barrel using pressure differences on both sides.",
+                media_t: "🧊 View 3D Model (GLB) or GIF", media_d: "Upload a .glb file for 3D models or a .gif for animations.",
+                placeholder_t: "No 3D Model or GIF yet", placeholder_d: "Upload .glb or .gif below",
+                viewer_hint: "🖱️ Drag to rotate (GLB) | 🔍 Scroll to zoom",
+                btn_rotate: "🔄 Auto Rotate", btn_reset: "🎯 Reset View", speed_label: "⏱️ Speed:",
+                up_media: "📦 Add GLB or GIF File",
+                intro_types: "Types of Pneumatic Cylinders",
+                type1: "Single Acting:", type1_d: "Uses air pressure for one direction, spring returns it.",
+                type2: "Double Acting:", type2_d: "Uses air for both extension and retraction (most common).",
+                type3: "Rodless Cylinder:", type3_d: "No piston rod extends out, saves space.",
+                type4: "Rotary Actuator:", type4_d: "Provides rotational motion.",
+                intro_apps: "Applications", intro_apps_d: "Widely used in automated production lines such as automotive, packaging, electronics, food industry, and workpiece clamping systems.",
+                sec_3d: "2.1 3D Design", desc_3d: "Creating 3D models helps verify assembly and simulate operations before actual manufacturing. Software like SolidWorks, Inventor, or CATIA can be used.", up_3d: "📦 Add 3D Files",
+                sec_cat3d: "2.2 CAT3D (CATIA V5 3D Modeling)", desc_cat3d: "Using CATIA V5 to create Parts and Assemblies for pneumatic cylinders.",
+                cat3d_1: "Part Design: Create main components (Barrel, Piston, Rod)", cat3d_2: "Assembly Design: Assemble components together", cat3d_3: "DMU Kinematics: Check motion and interference", up_cat3d: "📦 Add CAT3D Files",
+                sec_cat2d: "2.3 CAT2D (Engineering Drawing)", desc_cat2d: "Extracting 2D drawings from 3D models for manufacturing, showing dimensions, tolerances, and surface finish symbols.",
+                cat2d_1: "Show Orthographic Projection & Section Views", cat2d_2: "Specify GD&T for CNC processes", cat2d_3: "Export as .PDF or .DXF for production", up_cat2d: "📐 Add CAT2D Files",
+                sec_boom: "2.4 BOM (Bill of Materials)", desc_boom: "List of materials and components used to assemble the pneumatic cylinder.",
+                th_no: "No.", th_comp: "Component", th_mat: "Material", th_qty: "Qty", up_boom: "📊 Add BOM Files",
+                sec_mat: "2.5 Materials",
+                mat1: "Lightweight, corrosion resistant. Ideal for Barrel and End Caps.", mat2: "High strength, rust-proof. Used for Piston Rod.",
+                mat3: "Good elasticity, resistant to oil and compressed air. Used for seals.", mat4: "Low friction coefficient, high heat resistance.", up_mat: "📦 Add Material Files",
+                sec_mem: "3. Team Members",
+                mem1_n: "Mr. A. Ka", mem1_r: "Team Leader", mem2_n: "Ms. B. Khor", mem2_r: "2D/3D Designer", mem3_n: "Mr. C. Kor", mem3_r: "BOM & Materials", mem4_n: "Ms. D. Ngor", mem4_r: "Documentation & Report",
+                sec_ref: "4. References", ref_note: "💡 Note: GitHub Pages is static hosting. Uploaded files are only visible in your current browser session. To make them permanent, upload files to your Repository folder and update the links in the code.",
+                footer: "© 2026 Pneumatic Cylinder Report | Mechanical Engineering Group"
+            }
+        };
+
+        let currentLang = localStorage.getItem('lang') || 'th';
+
+        function toggleLang() {
+            currentLang = currentLang === 'th' ? 'en' : 'th';
+            localStorage.setItem('lang', currentLang);
+            updateText();
+            document.getElementById('lang-toggle').textContent = currentLang === 'th' ? 'EN' : 'TH';
         }
 
-        // Close Mobile Menu
-        function closeMobileMenu() {
-            document.getElementById('navMenu').classList.remove('active');
-            document.querySelector('.hamburger').classList.remove('active');
+        function updateText() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    el.textContent = translations[currentLang][key];
+                }
+            });
+            document.documentElement.lang = currentLang;
         }
 
-        // สลับแสดง Section
+        // ===== File Manager =====
+        function initFileManager(inputId, listId) {
+            const input = document.getElementById(inputId);
+            const list = document.getElementById(listId);
+            if (!input || !list) return;
+            input.addEventListener('change', (e) => {
+                list.innerHTML = '';
+                Array.from(e.target.files).forEach(file => {
+                    const item = document.createElement('div'); item.className = 'file-item';
+                    const icon = getFileIcon(file.name); const url = URL.createObjectURL(file);
+                    const size = formatSize(file.size); const ext = file.name.split('.').pop().toLowerCase();
+                    let previewHTML = '';
+                    if (['jpg','jpeg','png','gif','webp'].includes(ext)) previewHTML = `<img src="${url}" class="file-preview" alt="${file.name}">`;
+                    else if (ext === 'pdf') previewHTML = `<a href="${url}" target="_blank" class="file-link">${currentLang==='th'?'เปิด PDF':'Open PDF'}</a>`;
+                    else if (['xlsx','xls','csv'].includes(ext)) previewHTML = `<a href="${url}" target="_blank" class="file-link">${currentLang==='th'?'เปิด Excel':'Open Excel'}</a>`;
+                    else previewHTML = `<a href="${url}" target="_blank" class="file-link">${currentLang==='th'?'ดูไฟล์':'View'}</a>`;
+                    item.innerHTML = `<div class="file-icon">${icon}</div><div class="file-info"><div class="file-name">${file.name}</div><div class="file-size">${size}</div></div>${previewHTML}`;
+                    list.appendChild(item);
+                });
+            });
+        }
+
+        // ===== GLB/GIF Viewer =====
+        let isAutoRotating = true;
+        let glbUrl = null;
+        let rotateAnimFrame = null;
+        let currentRotation = 0;
+        let currentMediaType = null;
+
+        function initMediaViewer() {
+            const input = document.getElementById('upload-media');
+            const list = document.getElementById('list-media');
+            const viewer = document.getElementById('glb-viewer');
+            const placeholder = document.getElementById('viewer-placeholder');
+            const controls = document.getElementById('viewer-controls');
+            const speedControl = document.getElementById('speed-control');
+            const gifContainer = document.getElementById('gif-container');
+            const gifViewer = document.getElementById('gif-viewer');
+            
+            if (!input) return;
+            
+            input.addEventListener('change', (e) => {
+                list.innerHTML = '';
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const url = URL.createObjectURL(file);
+                const ext = file.name.split('.').pop().toLowerCase();
+                
+                viewer.removeAttribute('src');
+                gifViewer.src = '';
+                gifContainer.classList.add('hidden');
+                placeholder.style.display = 'none';
+                
+                if (ext === 'gif') {
+                    currentMediaType = 'gif';
+                    gifViewer.src = url;
+                    gifContainer.classList.remove('hidden');
+                    controls.style.display = 'none';
+                    speedControl.style.display = 'none';
+                } else if (ext === 'glb' || ext === 'gltf') {
+                    currentMediaType = 'glb';
+                    glbUrl = url;
+                    setTimeout(() => { viewer.src = glbUrl; }, 100);
+                    controls.style.display = 'flex';
+                    speedControl.style.display = 'flex';
+                    currentRotation = 0;
+                    isAutoRotating = true;
+                    startSmoothRotation();
+                }
+                
+                const item = document.createElement('div'); item.className = 'file-item';
+                item.innerHTML = `<div class="file-icon">${ext === 'gif' ? '🎬' : '🧊'}</div><div class="file-info"><div class="file-name">${file.name}</div><div class="file-size">${formatSize(file.size)}</div></div><a href="${url}" download="${file.name}" class="file-link">${currentLang==='th'?'ดาวน์โหลด':'Download'}</a>`;
+                list.appendChild(item);
+            });
+        }
+
+        function startSmoothRotation() {
+            if (rotateAnimFrame) cancelAnimationFrame(rotateAnimFrame);
+            if (currentMediaType !== 'glb') return;
+            const speed = document.getElementById('rotate-speed').value;
+            const degPerFrame = speed / 60;
+            function animate() {
+                if (isAutoRotating) {
+                    currentRotation += degPerFrame;
+                    const viewer = document.getElementById('glb-viewer');
+                    if (viewer) viewer.cameraOrbit = `${currentRotation}deg auto auto`;
+                }
+                rotateAnimFrame = requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        function resetCamera() {
+            const viewer = document.getElementById('glb-viewer');
+            currentRotation = 0;
+            if (viewer) viewer.cameraOrbit = '0deg auto auto';
+        }
+
+        function toggleAutoRotate() {
+            if (currentMediaType !== 'glb') return;
+            const btn = document.getElementById('btn-rotate');
+            isAutoRotating = !isAutoRotating;
+            if (isAutoRotating) { btn.textContent = translations[currentLang].btn_rotate; btn.classList.add('active-btn'); }
+            else { btn.textContent = currentLang==='th'?'⏸️ หยุดหมุน':'⏸️ Stop Rotate'; btn.classList.remove('active-btn'); }
+        }
+
+        function updateRotationSpeed(val) {
+            document.getElementById('speed-label').textContent = `${val}°/s`;
+            if (isAutoRotating && currentMediaType === 'glb') { stopSmoothRotation(); startSmoothRotation(); }
+        }
+        function stopSmoothRotation() { if (rotateAnimFrame) cancelAnimationFrame(rotateAnimFrame); rotateAnimFrame = null; }
+
+        // ===== UI Navigation =====
+        function toggleMobileMenu() { document.getElementById('navMenu').classList.toggle('active'); document.querySelector('.hamburger').classList.toggle('active'); }
+        function closeMobileMenu() { document.getElementById('navMenu').classList.remove('active'); document.querySelector('.hamburger').classList.remove('active'); }
+        
         function showSection(sectionId) {
             document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
-            const target = document.getElementById(sectionId);
+            const target = document.getElementById(sectionId); 
             if (target) target.classList.remove('hidden');
-            
-            document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
-            const navLink = document.getElementById('nav-' + sectionId);
+            document.querySelectorAll('.nav-menu > li > a').forEach(a => a.classList.remove('active'));
+            const navLink = document.getElementById('nav-' + sectionId); 
             if (navLink) navLink.classList.add('active');
-            
             document.getElementById('design-dropdown').classList.remove('open');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // เปิด/ปิด Dropdown
-        function toggleDropdown(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            document.getElementById('design-dropdown').classList.toggle('open');
-        }
+        document.getElementById('nav-design').addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); document.getElementById('design-dropdown').classList.toggle('open'); });
+        window.addEventListener('click', (e) => { if (!e.target.closest('.dropdown')) document.getElementById('design-dropdown').classList.remove('open'); if (!e.target.closest('nav')) closeMobileMenu(); });
 
-        // Accordion เปิดทีละหัวข้อ
-        document.querySelectorAll('#design details').forEach(details => {
-            details.addEventListener('toggle', function() {
-                if (this.open) {
-                    document.querySelectorAll('#design details').forEach(d => {
-                        if (d !== this) d.removeAttribute('open');
-                    });
-                }
-            });
-        });
+        function getFileIcon(name) { const ext = name.split('.').pop().toLowerCase(); const icons = { stl:'🧊', obj:'🧊', step:'📐', stp:'📐', fbx:'🧊', '3mf':'🧊', glb:'🧊', gltf:'🧊', gif:'🎬', catpart:'🔷', catproduct:'🔷', dwg:'📐', dxf:'📐', xlsx:'📊', xls:'📊', csv:'📊', jpg:'🖼️', jpeg:'🖼️', png:'🖼️', pdf:'📄', doc:'📝', docx:'📝', txt:'📄' }; return icons[ext] || '📁'; }
+        function formatSize(bytes) { if (bytes===0) return '0 B'; const k=1024, sizes=['B','KB','MB','GB']; const i=Math.floor(Math.log(bytes)/Math.log(k)); return parseFloat((bytes/Math.pow(k,i)).toFixed(1))+' '+sizes[i]; }
 
-        // คลิกจาก Dropdown ให้เปิด Section + เปิดหัวข้อนั้นอัตโนมัติ
-        document.querySelectorAll('.dropdown-content a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const sectionId = this.getAttribute('data-section');
-                const targetId = this.getAttribute('data-target');
-                
-                showSection(sectionId);
-                closeMobileMenu();
-                
-                setTimeout(() => {
-                    const targetDetail = document.getElementById(targetId);
-                    if (targetDetail) {
-                        targetDetail.setAttribute('open', '');
-                        targetDetail.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                }, 100);
-            });
-        });
-
-        // คลิกที่อื่นปิด Dropdown และ Mobile Menu
-        window.addEventListener('click', function(e) {
-            if (!e.target.closest('.dropdown')) {
-                document.getElementById('design-dropdown').classList.remove('open');
-            }
-            if (!e.target.closest('nav')) {
-                closeMobileMenu();
-            }
+        window.addEventListener('DOMContentLoaded', () => {
+            updateText();
+            document.getElementById('lang-toggle').textContent = currentLang === 'th' ? 'EN' : 'TH';
+            initFileManager('upload-design3d', 'list-design3d');
+            initFileManager('upload-cat3d', 'list-cat3d');
+            initFileManager('upload-cat2d', 'list-cat2d');
+            initFileManager('upload-boom', 'list-boom');
+            initFileManager('upload-materials', 'list-materials');
+            initMediaViewer();
         });
     </script>
 </body>
