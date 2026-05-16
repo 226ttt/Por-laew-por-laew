@@ -61,7 +61,8 @@
         .members-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
         .member-card { background: linear-gradient(135deg, #4a6cf7, #6348f1); color: #fff; padding: 1.8rem; border-radius: 12px; text-align: center; transition: 0.3s; }
         .member-card:hover { transform: translateY(-5px); box-shadow: 0 8px 18px rgba(74,108,247,0.3); }
-        .member-icon { font-size: 3rem; margin-bottom: 0.5rem; }
+        .member-icon { display: flex; justify-content: center; margin-bottom: 0.8rem; }
+        .member-icon img { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 3px solid rgba(255,255,255,0.9); }
         .member-card h3 { color: #fff; font-size: 1.4rem; margin-bottom: 0.3rem; }
         .member-card p { color: rgba(255,255,255,0.9); margin: 0; }
 
@@ -337,10 +338,26 @@
         <section id="members" class="page-section hidden">
             <h1 data-i18n="sec_mem">3. Team Members</h1>
             <div class="members-grid">
-                <div class="member-card"><div class="member-icon">เจ.jpg</div><h3 data-i18n="mem1_n">Mr. A. Ka</h3><p><span data-i18n="mem1_r">Team Leader</span><br>ID: 2411220078</p></div>
-                <div class="member-card"><div class="member-icon">โย.jpg</div><h3 data-i18n="mem2_n">Ms. B. Khor</h3><p><span data-i18n="mem2_r">2D/3D Designer</span><br>ID: 2411220342</p></div>
-                <div class="member-card"><div class="member-icon">อั๋น.jpg</div><h3 data-i18n="mem3_n">Mr. C. Kor</h3><p><span data-i18n="mem3_r">BOM & Materials</span><br>ID: 2511220127</p></div>
-                <div class="member-card"><div class="member-icon">เนะ.jpg</div><h3 data-i18n="mem4_n">Ms. D. Ngor</h3><p><span data-i18n="mem4_r">Documentation & Report</span><br>ID:  2411220268/p></div>
+                <div class="member-card">
+                    <div class="member-icon"><img src="เจ.jpg" alt="Mr. A. Ka"></div>
+                    <h3 data-i18n="mem1_n">Mr. A. Ka</h3>
+                    <p><span data-i18n="mem1_r">Team Leader</span><br>ID: 2411220078</p>
+                </div>
+                <div class="member-card">
+                    <div class="member-icon"><img src="โย.jpg" alt="Ms. B. Khor"></div>
+                    <h3 data-i18n="mem2_n">Ms. B. Khor</h3>
+                    <p><span data-i18n="mem2_r">2D/3D Designer</span><br>ID: 2411220342</p>
+                </div>
+                <div class="member-card">
+                    <div class="member-icon"><img src="อั๋น.jpg" alt="Mr. C. Kor"></div>
+                    <h3 data-i18n="mem3_n">Mr. C. Kor</h3>
+                    <p><span data-i18n="mem3_r">BOM & Materials</span><br>ID: 2511220127</p>
+                </div>
+                <div class="member-card">
+                    <div class="member-icon"><img src="เนะ.jpg" alt="Ms. D. Ngor"></div>
+                    <h3 data-i18n="mem4_n">Ms. D. Ngor</h3>
+                    <p><span data-i18n="mem4_r">Documentation & Report</span><br>ID: 2411220268</p>
+                </div>
             </div>
         </section>
 
