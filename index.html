@@ -79,7 +79,7 @@
         .modal button { background: linear-gradient(135deg, #4a6cf7, #6348f1); color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: 'Sarabun', sans-serif; margin-right: 0.5rem; }
         .modal button:hover { opacity: 0.9; }
         .modal button.cancel { background: #cbd5e1; color: #333; }
-        /* ✅ แก้ไขชื่อไม่ขึ้นบรรทัดใหม่ */
+        
         .member-card h3 { 
             color: #fff; font-size: 1.25rem; margin-bottom: 0.4rem; 
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;
@@ -115,9 +115,9 @@
         .viewer-btn:hover { background: #4a6cf7; color: #fff; border-color: #4a6cf7; }
         .viewer-btn.active-btn { background: #4a6cf7; color: #fff; border-color: #4a6cf7; box-shadow: 0 2px 8px rgba(74,108,247,0.3); }
 
-        .speed-control { display: flex; align-items: center; gap: 10px; margin-top: 0.8rem; justify-content: center; }
-        .speed-control label { font-size: 0.9rem; color: #64748b; }
-        .speed-control input[type="range"] { width: 200px; accent-color: #4a6cf7; cursor: pointer; }
+        .speed-control, .volume-control { display: flex; align-items: center; gap: 10px; margin-top: 0.8rem; justify-content: center; }
+        .speed-control label, .volume-control label { font-size: 0.9rem; color: #64748b; }
+        .speed-control input[type="range"], .volume-control input[type="range"] { width: 200px; accent-color: #4a6cf7; cursor: pointer; }
 
         .gif-viewer-container { width: 100%; min-height: 300px; background: linear-gradient(145deg, #f1f5f9, #e2e8f0); border-radius: 16px; margin: 1.5rem 0; overflow: hidden; position: relative; border: 2px solid #cbd5e1; display: flex; align-items: center; justify-content: center; }
         .gif-viewer-container img { max-width: 100%; max-height: 500px; object-fit: contain; }
@@ -252,26 +252,13 @@
                 <span id="speed-label">100°/s</span>
             </div>
 
-            <!-- <h2 style="margin-top: 2rem;" data-i18n="audio_title">🎵 Background Music</h2>
-            <p style="color: #64748b; font-size: 0.95rem;" data-i18n="audio_desc">Upload an MP3 file to play during auto-rotation.</p>
-            <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin: 1rem 0;">
-                <div class="file-input-wrapper">
-                    <input type="file" id="upload-audio" accept=".mp3,.wav,.ogg,.m4a">
-                    <label for="upload-audio" class="upload-button" data-i18n="up_audio">🎵 Select Audio File</label>
-                </div>
-                <button class="viewer-btn" id="btn-play-music" onclick="toggleMusicPlayback()" style="display: none;" data-i18n="btn_play">▶️ Play Music</button>
+            <div class="volume-control" id="volume-control-panel">
+                <label id="volume-label" data-i18n="volume_label">🔊 ระดับเสียง:</label>
+                <input type="range" id="audio-volume" min="0" max="100" value="50" oninput="updateVolume(this.value)">
+                <span id="volume-txt-label">50%</span>
             </div>
-            <audio id="background-music" src="/FUNKY TOWN.mp3" style="display: none;" loop></audio>
-            <div id="audio-info" style="color: #64748b; font-size: 0.9rem; margin-top: 0.5rem;"></div> -->
-            <audio id="background-music" src="./FUNKY TOWN.mp3" loop></audio>
 
-            <!-- <div class="file-manager">
-                <div class="file-input-wrapper">
-                    <input type="file" id="upload-media" accept=".glb,.gltf,.gif">
-                    <label for="upload-media" class="upload-button" data-i18n="up_media">📦 Add GLB or GIF File</label>
-                </div>
-                <div class="file-list" id="list-media"></div>
-            </div> -->
+            <audio id="background-music" src="./FUNKY TOWN.mp3" loop></audio>
 
             <h2 data-i18n="intro_types">Types of Pneumatic Cylinders</h2>
             <ul>
@@ -368,7 +355,6 @@
             </div>
         </section>
 
-        <!-- ✅ แก้ไขส่วนสมาชิกกลุ่มให้ชื่ออยู่บรรทัดเดียว -->
         <section id="members" class="page-section hidden">
             <h1 data-i18n="sec_mem">3. Team Members</h1>
             <div class="members-grid">
@@ -376,44 +362,32 @@
                     <div class="member-photo-container" data-member="1">
                         <img id="photo-1" class="member-photo" src="./เจ.jpg" alt="Member Photo">
                         <div class="member-icon hidden">👨‍🔧</div>
-                        <!-- <input type="file" class="photo-upload-input" accept="image/*" onchange="uploadMemberPhoto(1, event)"> -->
-                        <!-- <div class="photo-upload-btn" onclick="document.querySelector('[data-member=\"1\"] .photo-upload-input').click();"></div>
-                        <div class="photo-link-btn" onclick="showPhotoLinkModal(1);"></div> -->
                     </div>
-                    <h3 data-i18n="mem1_n">Teerapat Kangnoke</h3>
+                    <h3 data-i18n="mem1_n">ธีรพัฒน์ กังนก</h3>
                     <p><span data-i18n="mem1_r">Team Leader</span><br>ID: 2411220078</p>
                 </div>
                 <div class="member-card">
                     <div class="member-photo-container" data-member="2">
                         <img id="photo-2" class="member-photo" src="./โย.jpg" alt="Member Photo">
                         <div class="member-icon hidden">👩‍🔧</div>
-                        <!-- <input type="file" class="photo-upload-input" accept="image/*" onchange="uploadMemberPhoto(2, event)"> -->
-                        <!-- <div class="photo-upload-btn" onclick="document.querySelector('[data-member=\"2\"] .photo-upload-input').click();"></div>
-                        <div class="photo-link-btn" onclick="showPhotoLinkModal(2);"></div> -->
                     </div>
-                    <h3 data-i18n="mem2_n">Peerapat Pokpool</h3>
+                    <h3 data-i18n="mem2_n">พีรพัฒน์ โพธิ์พูล</h3>
                     <p><span data-i18n="mem2_r">2D/3D Designer</span><br>ID: 2411220342</p>
                 </div>
                 <div class="member-card">
                     <div class="member-photo-container" data-member="3">
                         <img id="photo-3" class="member-photo" src="./อั๋น.jpg" alt="Member Photo">
                         <div class="member-icon hidden">👨‍🔧</div>
-                        <!-- <input type="file" class="photo-upload-input" accept="image/*" onchange="uploadMemberPhoto(3, event)"> -->
-                        <!-- <div class="photo-upload-btn" onclick="document.querySelector('[data-member=\"3\"] .photo-upload-input').click();"></div>
-                        <div class="photo-link-btn" onclick="showPhotoLinkModal(3);"></div> -->
                     </div>
-                    <h3 data-i18n="mem3_n">Anuluk Siriphagdee</h3>
+                    <h3 data-i18n="mem3_n">อนุลักษณ์ ศิริภักดี</h3>
                     <p><span data-i18n="mem3_r">BOM & Materials</span><br>ID: 2511220127</p>
                 </div>
                 <div class="member-card">
                     <div class="member-photo-container" data-member="4">
                         <img id="photo-4" class="member-photo" src="./เนะ.jpg" alt="Member Photo">
                         <div class="member-icon hidden">👩‍🔧</div>
-                        <!-- <input type="file" class="photo-upload-input" accept="image/*" onchange="uploadMemberPhoto(4, event)"> -->
-                        <!-- <div class="photo-upload-btn" onclick="document.querySelector('[data-member=\"4\"] .photo-upload-input').click();"></div>
-                        <div class="photo-link-btn" onclick="showPhotoLinkModal(4);"></div> -->
                     </div>
-                    <h3 data-i18n="mem4_n">Saranyu Phukhaoyai</h3>
+                    <h3 data-i18n="mem4_n">ศรัญญู ภูเขาใหญ่</h3>
                     <p><span data-i18n="mem4_r">Documentation</span><br>ID: 2411220268</p>
                 </div>
             </div>
@@ -434,7 +408,6 @@
         <p data-i18n="footer">© 2026 Pneumatic Cylinder Report | Mechanical Engineering Group</p>
     </footer>
 
-    <!-- Modal for Photo URL Link -->
     <div id="photoLinkModal" class="modal">
         <div class="modal-content">
             <span class="modal-close" onclick="closePhotoLinkModal();">&times;</span>
@@ -466,6 +439,7 @@
                 placeholder_t: "ยังไม่มีโมเดล 3D หรือ GIF", placeholder_d: "อัปโหลดไฟล์ .glb หรือ .gif ด้านล่าง",
                 viewer_hint: "🖱️ ลากเมาส์เพื่อหมุน (GLB) | 🔍 Scroll เพื่อซูม",
                 btn_rotate: "🔄 หมุนอัตโนมัติ", btn_reset: "🎯 รีเซ็ตมุมมอง", speed_label: "⏱️ ความเร็ว:",
+                volume_label: "🔊 ระดับเสียง:",
                 up_media: "📦 เพิ่มไฟล์ GLB หรือ GIF",
                 intro_types: "ประเภทของกระบอกสูบนิวเมติกส์",
                 type1: "Single Acting:", type1_d: "ใช้ลมดันออกทางเดียว สปริงช่วยคืนตัว",
@@ -503,6 +477,7 @@
                 placeholder_t: "No 3D Model or GIF yet", placeholder_d: "Upload .glb or .gif below",
                 viewer_hint: "🖱️ Drag to rotate (GLB) | 🔍 Scroll to zoom",
                 btn_rotate: "🔄 Auto Rotate", btn_reset: "🎯 Reset View", speed_label: "⏱️ Speed:",
+                volume_label: "🔊 Volume:",
                 up_media: "📦 Add GLB or GIF File",
                 intro_types: "Types of Pneumatic Cylinders",
                 type1: "Single Acting:", type1_d: "Uses air pressure for one direction, spring returns it.",
@@ -680,6 +655,15 @@
             animate();
         }
 
+        // ฟังก์ชันควบคุมสไลเดอร์เสียงวอลุ่ม
+        function updateVolume(val) {
+            const audio = document.getElementById('background-music');
+            if (audio) {
+                audio.volume = val / 100;
+            }
+            document.getElementById('volume-txt-label').textContent = `${val}%`;
+        }
+
         function resetCamera() {
             const viewer = document.getElementById('glb-viewer');
             currentRotation = 0;
@@ -713,40 +697,25 @@
         function stopSmoothRotation() { if (rotateAnimFrame) cancelAnimationFrame(rotateAnimFrame); rotateAnimFrame = null; }
 
         // ===== Audio Manager =====
-        function initAudioUpload() {
-            const input = document.getElementById('upload-audio');
-            const audioInfoEl = document.getElementById('audio-info');
-            const playBtn = document.getElementById('btn-play-music');
-            if (!input) return;
-            input.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                audioUrl = URL.createObjectURL(file);
-                const audio = document.getElementById('background-music');
-                audio.src = audioUrl;
-                playBtn.style.display = 'inline-flex';
-                audioInfoEl.textContent = `✅ ${currentLang==='th'?'ไฟล์เสียงที่เลือก:':'Selected audio:'} ${file.name}`;
-                isMusicPlaying = false;
-                playBtn.textContent = translations[currentLang]['btn_play'] || '▶️ Play Music';
-            });
-        }
-
         function playBackgroundMusic() {
             const audio = document.getElementById('background-music');
             if (!audio) return;
 
-            // Keep user-uploaded audio as priority, otherwise use default src from HTML.
             if (audioUrl) audio.src = audioUrl;
             if (!audio.src) return;
 
             const infoEl = document.getElementById('audio-info');
             const btn = document.getElementById('btn-play-music');
+            
+            // ซิงค์ระดับเสียงของพอร์ตรันตามระดับสไลด์หน้าบทนำก่อนเล่น
+            const currentVol = document.getElementById('audio-volume').value;
+            audio.volume = currentVol / 100;
+
             audio.play().then(() => {
                 isMusicPlaying = true;
                 if (btn) btn.textContent = translations[currentLang]['btn_pause'] || '⏸️ Pause Music';
             }).catch(() => {
                 if (infoEl) infoEl.textContent = currentLang==='th'?'⚠️ ไม่สามารถเล่นเสียงได้':'⚠️ Unable to play audio';
-                // Fallback for browsers that require user gesture before audio playback.
                 setupAudioAutoplayFallback();
             });
         }
@@ -770,11 +739,6 @@
             if (audio) audio.pause();
             isMusicPlaying = false;
             if (btn) btn.textContent = translations[currentLang]['btn_play'] || '▶️ Play Music';
-        }
-
-        function toggleMusicPlayback() {
-            if (!audioUrl) return;
-            if (isMusicPlaying) pauseBackgroundMusic(); else playBackgroundMusic();
         }
 
         // ===== UI Navigation =====
@@ -854,7 +818,6 @@
             currentPhotoMemberId = null;
         }
 
-        // Close modal when clicking outside
         window.addEventListener('click', (e) => {
             const modal = document.getElementById('photoLinkModal');
             if (e.target === modal) {
@@ -862,7 +825,6 @@
             }
         });
 
-        // Close modal with Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closePhotoLinkModal();
@@ -880,7 +842,6 @@
             const photoImg = document.getElementById(`photo-${currentPhotoMemberId}`);
             const icon = document.querySelector(`[data-member="${currentPhotoMemberId}"] .member-icon`);
             
-            // Test if image URL is valid
             const testImg = new Image();
             testImg.onload = () => {
                 photoImg.src = urlInput;
@@ -896,7 +857,6 @@
             testImg.src = urlInput;
         }
 
-        // Allow Enter key to submit URL
         document.addEventListener('DOMContentLoaded', () => {
             const photoUrlInput = document.getElementById('photoUrlInput');
             if (photoUrlInput) {
@@ -917,7 +877,11 @@
             initFileManager('upload-materials', 'list-materials');
             initMediaViewer();
             initDefaultModelSource();
-            initAudioUpload();
+            
+            const defaultAudio = document.getElementById('background-music');
+            if (defaultAudio) {
+                defaultAudio.volume = 0.5; // กำหนดค่าเสียงตั้งต้น 50% ให้สัมพันธ์กับสไลเดอร์หน้าเว็บ
+            }
         });
     </script>
 </body>
