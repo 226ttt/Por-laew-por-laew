@@ -21,7 +21,6 @@
             --nav-bg: rgba(255, 255, 255, 0.85);
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.02);
             --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
-            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.03);
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
@@ -40,7 +39,6 @@
             --nav-bg: rgba(11, 19, 41, 0.85);
             --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.15);
             --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.25);
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -65,11 +63,11 @@
         .nav-right-zone { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
         .lang-btn, .theme-btn {
             background: var(--primary-light); color: var(--text-main); border: 1px solid var(--border-color);
-            padding: 6px 14px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 600; font-size: 0.85rem;
+            padding: 8px 14px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 600; font-size: 0.85rem;
             transition: var(--transition); font-family: 'Sarabun', sans-serif; display: inline-flex; align-items: center; justify-content: center;
         }
         .lang-btn:hover, .theme-btn:hover { background: var(--text-main); color: var(--bg-card); border-color: var(--text-main); }
-        .theme-btn { font-size: 1rem; padding: 6px 10px; }
+        .theme-btn { font-size: 1rem; padding: 8px 10px; }
 
         /* Hamburger Menu */
         .hamburger { display: none; flex-direction: column; cursor: pointer; padding: 6px; z-index: 1001; }
@@ -193,7 +191,7 @@
         .premium-info-box h3 { color: var(--primary); font-size: 1.2rem; font-weight: 700; margin: 0; }
         .premium-info-box p { font-size: 0.95rem; color: var(--text-muted); margin: 0; line-height: 1.6; text-align: justify; }
 
-        /* Responsive Breakpoints */
+        /* Responsive Breakpoints & Mobile Optimization */
         @media (max-width: 968px) {
             .hamburger { display: flex; }
             nav { height: auto; padding: 1rem 1.5rem; }
@@ -217,6 +215,40 @@
             main { margin-top: 80px; padding: 1rem; }
             .full-drawing-grid { grid-template-columns: 1fr; gap: 1.5rem; }
             .premium-image-box { height: 220px; }
+        }
+
+        /* Mobile specific styling overrides (Max-width 640px) */
+        @media (max-width: 640px) {
+            .gdrive-banner {
+                flex-direction: column;
+                align-items: stretch !important;
+                text-align: center;
+                padding: 1.25rem !important;
+            }
+            .gdrive-banner-inner {
+                flex-direction: column;
+                align-items: center !important;
+                gap: 0.75rem !important;
+            }
+            .gdrive-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .video-container-card {
+                padding: 0.75rem !important;
+            }
+            .video-title {
+                font-size: 1rem !important;
+            }
+            .viewer3d-container {
+                height: 280px;
+            }
+            .calc-inputs-grid {
+                grid-template-columns: 1fr;
+            }
+            .calc-box {
+                padding: 1rem;
+            }
         }
 
         footer { text-align: center; padding: 2.5rem 1.5rem; background: #0f172a; color: #94a3b8; margin-top: 3rem; font-size: 0.9rem; }
@@ -282,8 +314,8 @@
             </div>
 
             <!-- แถวลิงก์ Google Drive เชิงพรีเมียมในหน้าหลัก -->
-            <!-- <div style="margin-top: 2rem; padding: 2rem; background: var(--primary-light); border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;">
-                <div style="display: flex; align-items: center; gap: 1.5rem;">
+            <!-- <div class="gdrive-banner" style="margin-top: 2rem; padding: 2rem; background: var(--primary-light); border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;">
+                <div class="gdrive-banner-inner" style="display: flex; align-items: center; gap: 1.5rem;">
                     <div style="font-size: 2.5rem; color: var(--primary);">📁</div>
                     <div>
                         <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-main);" data-i18n="gdrive_title">เอกสารประกอบการนำเสนอเพิ่มเติม (Google Drive)</h3>
@@ -295,9 +327,9 @@
                 </a>
             </div> -->
 
-            <!-- โซนเครื่องเล่นวิดีโอจากลิ้งค์ Google Drive ขนาดใหญ่เต็มตา -->
-            <div style="margin-top: 2rem; padding: 1.5rem; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-lg);">
-                <h3 style="margin-top: 0; margin-bottom: 1rem; color: var(--primary); font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+            <!-- โซนเครื่องเล่นวิดีโอจากลิ้งค์ Google Drive ขนาดใหญ่เต็มตา และเหมาะสำหรับพกพา (Responsive) -->
+            <div class="video-container-card" style="margin-top: 2rem; padding: 1.5rem; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-lg);">
+                <h3 class="video-title" style="margin-top: 0; margin-bottom: 1rem; color: var(--primary); font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; gap: 8px;">
                     🎬 <span data-i18n="gdrive_video_title">วิดีโอนำเสนอผลงานและการทำงาน (Google Drive Video Showcase)</span>
                 </h3>
                 <div style="width: 100%; aspect-ratio: 16/9; background: #000; border-radius: var(--radius-md); overflow: hidden; position: relative; border: 1px solid var(--border-color);">
@@ -715,6 +747,7 @@
     </footer>
 
     <script>
+        // System Translation Engine (TH / EN)
         const translations = {
             th: {
                 nav_home: "หน้าหลัก", nav_intro: "บทนำและแนวคิด", nav_design: "พาร์ทดีไซน์", nav_members: "สมาชิกกลุ่ม", nav_ref: "แหล่งอ้างอิง",
