@@ -21,6 +21,7 @@
             --nav-bg: rgba(255, 255, 255, 0.85);
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.02);
             --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.03);
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
@@ -39,6 +40,7 @@
             --nav-bg: rgba(11, 19, 41, 0.85);
             --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.15);
             --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.25);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -46,7 +48,7 @@
 
         html { scroll-behavior: smooth; }
 
-        /* Navigation Bar Layout - แก้ไขป้องกันข้อความทับซ้อนและจัดพื้นที่ให้เหมาะสม */
+        /* Navigation Bar Layout */
         header { position: fixed; top: 0; width: 100%; z-index: 1000; background: var(--nav-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-color); transition: var(--transition); }
         nav { max-width: 1240px; margin: 0 auto; padding: 0.5rem 1.5rem; display: flex; justify-content: space-between; align-items: center; min-height: 72px; gap: 1rem; }
         
@@ -143,11 +145,6 @@
 
         .volume-control { display: flex; align-items: center; gap: 10px; margin-top: 1rem; justify-content: center; font-size: 0.85rem; color: var(--text-muted); }
         .volume-control input[type="range"] { width: 120px; accent-color: var(--primary); cursor: pointer; }
-        
-        /* Video & Image Containers */
-        .video-card-container { width: 100%; max-width: 760px; margin: 1.5rem auto; background: var(--bg-card); border-radius: var(--radius-md); overflow: hidden; }
-        .video-wrapper { width: 100%; aspect-ratio: 16/9; background: #000; display: flex; align-items: center; justify-content: center; }
-        .video-wrapper video { width: 100%; height: 100%; object-fit: contain; }
 
         /* Hero Banner Section */
         .hero-section { 
@@ -176,18 +173,14 @@
             50% { transform: translateY(-8px); }
         }
 
-        /* Drawings Showcase Gallery */
-        .drawing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
-        .drawing-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden; transition: var(--transition); display: flex; flex-direction: column; }
-        .drawing-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--primary); }
-        .drawing-image { width: 100%; height: 180px; background: #ffffff; display: flex; align-items: center; justify-content: center; padding: 12px; border-bottom: 1px solid var(--border-color); }
-        .drawing-image img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in; }
-        
-        .drawing-viewer3d { width: 100%; height: 180px; background: #0f172a; border-bottom: 1px solid var(--border-color); }
-        .drawing-card h4 { text-align: center; padding: 0.75rem; color: var(--text-main); font-size: 0.95rem; font-weight: 600; background: var(--primary-light); }
-        .drawing-info { padding: 1.25rem; flex-grow: 1; }
-        .drawing-info h3 { color: var(--primary); font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
-        .drawing-info p { font-size: 0.85rem; color: var(--text-muted); margin: 0; line-height: 1.6; }
+        /* Google Drive Section Link Button Custom Transitions */
+        .gdrive-btn {
+            transition: var(--transition);
+        }
+        .gdrive-btn:hover {
+            background: var(--primary-hover) !important;
+            transform: translateX(4px);
+        }
 
         /* 2D Drawing Layout Styles Optimization */
         .full-drawing-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; width: 100%; margin-top: 1.5rem; }
@@ -247,7 +240,6 @@
                     <div class="dropdown-content">
                         <a onclick="showSection('cylinder-selection'); closeMobileMenu();" data-i18n="drop_selection">ประเภทและการเลือกใช้งาน</a>
                         <a onclick="showSection('material-selection-principles'); closeMobileMenu();" data-i18n="drop_mat_principles">หลักการเลือกใช้วัสดุ</a>
-                        <a onclick="showSection('cat3d'); closeMobileMenu();" data-i18n="drop_cat3d">การแบบจำลองเชิงกล 3 มิติ</a>
                         <a onclick="showSection('cat2d'); closeMobileMenu();" data-i18n="drop_cat2d">การเขียนแบบเครื่องกล 2 มิติ</a>
                         <a onclick="showSection('pneumatic-circuits'); closeMobileMenu();" data-i18n="drop_pneumatic_circuits">นิวเมติกส์และวงจรควบคุม</a>
                         <a onclick="showSection('boom'); closeMobileMenu();" data-i18n="drop_boom">รายการวัสดุ</a>
@@ -255,7 +247,6 @@
                 </li>
                 
                 <li class="dropdown" id="system-dropdown">
-                    <!-- ผูก data-i18n="nav_system" เพื่อรองรับระบบสลับภาษาเรียบร้อยแล้ว -->
                     <a href="#system" onclick="toggleDropdown(event, 'system-dropdown');" id="nav-system" data-i18n="nav_system">ระบบและการจัดการ <span class="dropdown-arrow">▼</span></a>
                     <div class="dropdown-content">
                         <a onclick="showSection('sys-variety'); closeMobileMenu();" data-i18n="drop_sys_variety">ด้านความหลากหลายของสินค้า</a>
@@ -289,6 +280,37 @@
                     <img src="./Generated_Image.png" class="hero-display-img" alt="Pneumatic Cylinder Mockup">
                 </div>
             </div>
+
+            <!-- แถวลิงก์ Google Drive เชิงพรีเมียมในหน้าหลัก -->
+            <!-- <div style="margin-top: 2rem; padding: 2rem; background: var(--primary-light); border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 1.5rem;">
+                    <div style="font-size: 2.5rem; color: var(--primary);">📁</div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-main);" data-i18n="gdrive_title">เอกสารประกอบการนำเสนอเพิ่มเติม (Google Drive)</h3>
+                        <p style="margin: 0.25rem 0 0; font-size: 0.9rem; color: var(--text-muted);" data-i18n="gdrive_desc">ดาวน์โหลดรายงานฉบับสมบูรณ์ แบบจำลอง และเอกสารแนบเชิงลึกผ่าน Google Drive</p>
+                    </div>
+                </div>
+                <a href="https://drive.google.com/file/d/1oirEeOMMjuqqBkm2fsGKBUnlezE3y1KD/view?usp=drive_link" target="_blank" style="background: var(--primary); color: white; text-decoration: none; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; transition: var(--transition);" class="gdrive-btn">
+                    <span data-i18n="gdrive_btn">เปิดใน Google Drive</span> ➔
+                </a>
+            </div> -->
+
+            <!-- โซนเครื่องเล่นวิดีโอจากลิ้งค์ Google Drive ขนาดใหญ่เต็มตา -->
+            <div style="margin-top: 2rem; padding: 1.5rem; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-lg);">
+                <h3 style="margin-top: 0; margin-bottom: 1rem; color: var(--primary); font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                    🎬 <span data-i18n="gdrive_video_title">วิดีโอนำเสนอผลงานและการทำงาน (Google Drive Video Showcase)</span>
+                </h3>
+                <div style="width: 100%; aspect-ratio: 16/9; background: #000; border-radius: var(--radius-md); overflow: hidden; position: relative; border: 1px solid var(--border-color);">
+                    <iframe 
+                        src="https://drive.google.com/file/d/1oirEeOMMjuqqBkm2fsGKBUnlezE3y1KD/preview" 
+                        width="100%" 
+                        height="100%" 
+                        style="border: none; position: absolute; top: 0; left: 0;" 
+                        allow="autoplay; encrypted-media" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
         </section>
 
         <section id="intro" class="page-section hidden">
@@ -298,7 +320,7 @@
             <p data-i18n="intro_origin_desc">คำว่า "นิวเมติกส์" (Pneumatics) มีรากศัพท์มาจากภาษากรีกโบราณคำว่า "Pneuma" ซึ่งแปลว่าลมหรือลมหายใจ ในทางวิศวกรรมนิวเมติกส์คือศาสตร์ที่นำพลังงานจาก "ลมอัด" (Compressed Air) มาประยุกต์ใช้ในการขับเคลื่อนเชิงกล โดยมี <strong>กระบอกสูบนิวเมติกส์ (Pneumatic Cylinder)</strong> เป็นอุปกรณ์ทำงานหรืออุปกรณ์ขับเคลื่อนหลัก (Actuator) ที่ทำหน้าที่เปลี่ยนพลังงานความดันของลมอัดให้เป็นพลังงานกลในแนวเส้นตรงหรือแนวหมุน ถือเป็นหัวใจสำคัญในระบบอัตโนมัติยุคอุตสาหกรรมเนื่องจากมีโครงสร้างไม่ซับซ้อน ปลอดภัย และบำรุงรักษาง่าย</p>
 
             <h2 data-i18n="intro_why_choose">เหตุผลในการเลือกใช้กระบอกสูบประเภทนี้</h2>
-            <p data-i18n="intro_why_choose_d">Inกระบวนการจัดแพ็คขวดน้ำดื่ม PET ขนาด 550 ml จำนวน 12 ขวด (เรียงแบบ 3×4 บล็อก) จะมีน้ำหนักโหลดรวมตัวผลิตภัณฑ์ (Gross Load) อยู่ที่ประมาณ 6.8 - 7.0 kg ซึ่งระบบต้องการกลไกผลักคัดแยกที่มีเสถียรภาพสูง กระบอกสูบแบบทำงานสองทาง (Double Acting) จึงตอบโจทย์ทางวิศวกรรมได้ดีที่สุดด้วยคุณสมบัติเด่น 3 ประการ: 1) ความสามารถในการควบคุมแรงดันแปรผัน (Bi-directional Force Control) ทั้งจังหวะเดินหน้าผลักกลุ่มขวดน้ำ และจังหวะถอยกลับเพื่อเตรียมรับชุดถัดไป ทำให้รอบเวลาทำงาน (Cycle Time) คงที่ 2) ความสม่ำเสมอของความเร็ว (Velocity Profiles) เนื่องจากสามารถติดตั้งวาล์วปรับความเร็วลมอัด (Speed Controller) แยกอิสระทั้งสองทาง ป้องกันไม่ให้แรงกระแทกกระทำต่อขวด PET แรงเกินไปจนเกิดการล้มหรือโครงสร้างขวดบิดเบี้ยว และ 3) การไม่มีแรงต้านทานจากสปริงภายในเหมือนระบบ Single Acting ทำให้สามารถใช้แรงดันสถิต (Static Pressure) จากระบบลมอัดอุตสาหกรรมขนาด 5 - 7 บาร์ ขับเคลื่อนได้อย่างเต็มประสิทธิภาพ ส่งผลให้จังหวะการทำงานมีความแม่นยำสูง (High Repeatability) เหมาะแก่สายการผลิตบรรจุภัณฑ์อัตโนมัติที่ทำงานต่อเนื่องระยะยาว</p>
+            <p data-i18n="intro_why_choose_d">ในกระบวนการจัดแพ็คขวดน้ำดื่ม PET ขนาด 550 ml จำนวน 12 ขวด (เรียงแบบ 3×4 บล็อก) จะมีน้ำหนักโหลดรวมตัวผลิตภัณฑ์ (Gross Load) อยู่ที่ประมาณ 6.8 - 7.0 kg ซึ่งระบบต้องการกลไกผลักคัดแยกที่มีเสถียรภาพสูง กระบอกสูบแบบทำงานสองทาง (Double Acting) จึงตอบโจทย์ทางวิศวกรรมได้ดีที่สุดด้วยคุณสมบัติเด่น 3 ประการ: 1) ความสามารถในการควบคุมแรงดันแปรผัน (Bi-directional Force Control) ทั้งจังหวะเดินหน้าผลักกลุ่มขวดน้ำ และจังหวะถอยกลับเพื่อเตรียมรับชุดถัดไป ทำให้รอบเวลาทำงาน (Cycle Time) คงที่ 2) ความสม่ำเสมอของความเร็ว (Velocity Profiles) เนื่องจากสามารถติดตั้งวาล์วปรับความเร็วลมอัด (Speed Controller) แยกอิสระทั้งสองทาง ป้องกันไม่ให้แรงกระแทกกระทำต่อขวด PET แรงเกินไปจนเกิดการล้มหรือโครงสร้างขวดบิดเบี้ยว และ 3) การไม่มีแรงต้านทานจากสปริงภายในเหมือนระบบ Single Acting ทำให้สามารถใช้แรงดันสถิต (Static Pressure) จากระบบลมอัดอุตสาหกรรมขนาด 5 - 7 บาร์ ขับเคลื่อนได้อย่างเต็มประสิทธิภาพ ส่งผลให้จังหวะการทำงานมีความแม่นยำสูง (High Repeatability) เหมาะแก่สายการผลิตบรรจุภัณฑ์อัตโนมัติที่ทำงานต่อเนื่องระยะยาว</p>
             
             <h2 data-i18n="media_t">ดูโมเดล 3D</h2>
             <div class="viewer3d-container">
@@ -425,48 +447,6 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
-        </section>
-
-        <section id="cat3d" class="page-section hidden">
-            <h1 data-i18n="sec_cat3d">การแบบจำลองเชิงกล 3 มิติ</h1>
-            
-            <div style="text-align: center; margin-bottom: 1.5rem;">
-                <img src="./boomนิวเมติก.png" alt="Mechanical Showcase" style="max-width: 100%; height: auto; border-radius: var(--radius-md); max-height: 320px; object-fit: cover;">
-            </div>
-            
-            <div class="video-card-container">
-                <div class="video-wrapper">
-                    <video src="./Pneumatic cylinder working 3D.mp4" controls preload="metadata"></video>
-                </div>
-            </div>
-
-            <h2 style="color: var(--primary); font-size: 1.2rem; font-weight: 600; margin-top: 2rem;">CAT3D Components</h2>
-            <div class="drawing-grid">
-                <div class="drawing-card">
-                    <model-viewer class="drawing-viewer3d" src="./Front Plate.glb" camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1" environment-image="neutral" exposure="1.0" ar></model-viewer>
-                    <h4>Front Plate</h4>
-                </div>
-                <div class="drawing-card">
-                    <model-viewer class="drawing-viewer3d" src="./Rear_Plate.glb" camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1" environment-image="neutral" exposure="1.0" ar></model-viewer>
-                    <h4>Rear Plate</h4>
-                </div>
-                <div class="drawing-card">
-                    <model-viewer class="drawing-viewer3d" src="./Tube.glb" camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1" environment-image="neutral" exposure="1.0" ar></model-viewer>
-                    <h4>Tube</h4>
-                </div>
-                <div class="drawing-card">
-                    <model-viewer class="drawing-viewer3d" src="./Slider_Shaft.glb" camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1" environment-image="neutral" exposure="1.0" ar></model-viewer>
-                    <h4>Slider Shaft</h4>
-                </div>
-                <div class="drawing-card">
-                    <model-viewer class="drawing-viewer3d" src="./Shaft.glb" camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1" environment-image="neutral" exposure="1.0" ar></model-viewer>
-                    <h4>Shaft</h4>
-                </div>
-                <div class="drawing-card">
-                    <model-viewer class="drawing-viewer3d" src="./O-Ring.glb" camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1" environment-image="neutral" exposure="1.0" ar></model-viewer>
-                    <h4>O-Ring</h4>
-                </div>
             </div>
         </section>
 
@@ -607,7 +587,7 @@
 
             <h2 data-i18n="speed_control_title">การควบคุมความเร็วด้วย Speed Controller (Meter-out Control)</h2>
             <p data-i18n="speed_control_desc">ในการประยุกต์ใช้ผลักขวดน้ำ PET ขนาด 550 ml นั้น การควบคุมความเร็วและอัตราเร่งมีความอ่อนไหวสูงมาก หากกระบอกสูบเคลื่อนที่เร็วเกินไป แรงกระแทกจากการชน (Dynamic Impact Force) จะทำให้ขวดน้ำล้มระเนระนาด หรือโครงสร้างขวดบิดเบี้ยวเสียหาย ทางวิศวกรรมจึงเลือกใช้ Speed Controller (วาล์วหรี่ควบคุมอัตราไหลชนิดปรับได้) ติดตั้งที่พอร์ตลมทั้งจังหวะเดินหน้าและถอยกลับ</p>
-            <p data-i18n="meter_out_desc">โดยมีหลักการสำคัญคือใชวงจรควบคุมแบบ Meter-out (การหรี่ลมระบายทิ้ง) ซึ่งจะปล่อยให้ลมอัดฝั่งต้นทางจ่ายเข้ากระบอกสูบอย่างเต็มที่ (ส่งผลให้สร้างแรงดันสถิตได้คงที่ตามผลคำนวณด้านบน) แต่จะทำการหรี่หน่วงลมระบายออก (Exhaust Air) ฝั่งตรงข้ามเอาไว้ การควบคุมแบบนี้จะช่วยสร้าง "แรงต้านย้อนกลับ (Cushioning Pressure)" ทำให้ก้านสูบเคลื่อนที่ได้อย่างนุ่มนวล สม่ำเสมอ ไม่กระตุก และสามารถปรับลดความเร็วในการดันขวดเข้าสถานีแพ็คได้อย่างแม่นยำ ป้องกันความเสียหายต่อบรรจุภัณฑ์ได้อย่างสมบูรณ์</p>
+            <p data-i18n="meter_out_desc">โดยมีหลักการสำคัญคือใช้วงจรควบคุมแบบ Meter-out (การหรี่ลมระบายทิ้ง) ซึ่งจะปล่อยให้ลมอัดฝั่งต้นทางจ่ายเข้ากระบอกสูบอย่างเต็มที่ (ส่งผลให้สร้างแรงดันสถิตได้คงที่ตามผลคำนวณด้านบน) แต่จะทำการหรี่หน่วงลมระบายออก (Exhaust Air) ฝั่งตรงข้ามเอาไว้ การควบคุมแบบนี้จะช่วยสร้าง "แรงต้านย้อนกลับ (Cushioning Pressure)" ทำให้ก้านสูบเคลื่อนที่ได้อย่างนุ่มนวล สม่ำเสมอ ไม่กระตุก และสามารถปรับลดความเร็วในการดันขวดเข้าสถานีแพ็คได้อย่างแม่นยำ ป้องกันความเสียหายต่อบรรจุภัณฑ์ได้อย่างสมบูรณ์</p>
         </section>
 
         <section id="boom" class="page-section hidden">
@@ -735,12 +715,11 @@
     </footer>
 
     <script>
-        // System Translation Engine (TH / EN)
         const translations = {
             th: {
                 nav_home: "หน้าหลัก", nav_intro: "บทนำและแนวคิด", nav_design: "พาร์ทดีไซน์", nav_members: "สมาชิกกลุ่ม", nav_ref: "แหล่งอ้างอิง",
                 nav_system: "ระบบและการจัดการ ▼",
-                drop_cat3d: "การแบบจำลองเชิงกล 3 มิติ", drop_cat2d: "การเขียนแบบเครื่องกล 2 มิติ", drop_selection: "ประเภทและการเลือกใช้งาน", drop_mat_principles: "หลักการเลือกใช้วัสดุ", drop_pneumatic_circuits: "นิวเมติกส์และวงจรควบคุม", drop_boom: "รายการวัสดุ",
+                drop_cat2d: "การเขียนแบบเครื่องกล 2 มิติ", drop_selection: "ประเภทและการเลือกใช้งาน", drop_mat_principles: "หลักการเลือกใช้วัสดุ", drop_pneumatic_circuits: "นิวเมติกส์และวงจรควบคุม", drop_boom: "รายการวัสดุ",
                 drop_sys_variety: "ด้านความหลากหลายของสินค้า", drop_sys_control: "ด้านระบบควบคุมและซอฟต์แวร์", drop_sys_standard: "ด้านมาตรฐานเชิงกล",
                 sec_sys_variety: "ด้านความหลากหลายของสินค้า (Product Versatility)",
                 var_intro: "การออกแบบระบบปฏิบัติการและกลไกของกระบอกสูบให้รองรับการทำงานกับสินค้าที่มีความหลากหลาย ถือเป็นหัวใจสำคัญที่ทำให้ระบบอัตโนมัติมีความคุ้มค่า ซึ่งในโปรเจกต์นี้มีจุดเด่น 3 ประการดังนี้:",
@@ -768,6 +747,10 @@
                 std_desc2: "ออกแบบมาให้รองรับการติดตั้งเข้ากับ Aluminium Profile (ขนาด 30x30 หรือ 40x40 mm) ได้ทันทีโดยไม่ต้องผ่านการเชื่อมเหล็ก (Without Welding) ช่วยลดระยะเวลาในการติดตั้ง (Setup Time) และลดความเสียหายต่อโครงสร้างเดิมของเครื่องจักร",
                 
                 hero_title: "PNEUMATICS PART PROJECT", hero_sub: "ENGINEERING MATERIALS",
+                gdrive_title: "เอกสารประกอบการนำเสนอเพิ่มเติม (Google Drive)",
+                gdrive_desc: "ดาวน์โหลดรายงานฉบับสมบูรณ์ แบบจำลอง และเอกสารแนบเชิงลึกผ่าน Google Drive",
+                gdrive_btn: "เปิดใน Google Drive",
+                gdrive_video_title: "VDO นำเสนองาน",
                 sec_intro: "บทนำ", 
                 intro_origin_title: "ที่มาและความหมายของกระบอกสูบนิวเมติกส์",
                 intro_origin_desc: "คำว่า \"นิวเมติกส์\" (Pneumatics) มีรากศัพท์มาจากภาษากรีกโบราณคำว่า \"Pneuma\" ซึ่งแปลว่าลมหรือลมหายใจ ในทางวิศวกรรมนิวเมติกส์คือศาสตร์ที่นำพลังงานจาก \"ลมอัด\" (Compressed Air) มาประยุกต์ใช้ในการขับเคลื่อนเชิงกล โดยมี กระบอกสูบนิวเมติกส์ (Pneumatic Cylinder) เป็นอุปกรณ์ทำงานหรืออุปกรณ์ขับเคลื่อนหลัก (Actuator) ที่ทำหน้าที่เปลี่ยนพลังงานความดันของลมอัดให้เป็นพลังงานกลในแนวเส้นตรงหรือแนวหมุน ถือเป็นหัวใจสำคัญในระบบอัตโนมัติยุคอุตสาหกรรมเนื่องจากมีโครงสร้างไม่ซับซ้อน ปลอดภัย และบำรุงรักษาง่าย",
@@ -783,7 +766,6 @@
                 type4: "Rotary Actuator:", type4_d: "อุปกรณ์ขับเคลื่อนที่ให้ส่งแรงออกมาในลักษณะของการเคลื่อนที่แบบหมุน",
                 intro_apps: "อุตสาหกรรมที่นำไปใช้งาน",
                 intro_apps_d: "ถูกนำไปใช้งานอย่างแพร่หลายในสายการผลิตอัตโนมัติ เช่น อุตสาหกรรมยานยนต์, บรรจุภัณฑ์, ชิ้นส่วนอิเล็กทรอนิกส์, อุตสาหกรรมอาหาร รวมถึงระบบจับยึดชิ้นงานต่าง ๆ",
-                sec_cat3d: "การแบบจำลองเชิงกล 3 มิติ", 
                 sec_cat2d: "2.3 การเขียนแบบเครื่องกล 2 มิติ (Engineering Drawing)", 
                 desc_cat2d: "การดึงแบบแปลน 2 มิติ (2D Drawing) จากโมเดล 3 มิติเพื่อใช้ในกระบวนการผลิต",
                 dwg_tube_title: "ตัวกระบอกสูบ (Cylinder Tube)",
@@ -818,7 +800,7 @@
                 factor2: "น้ำหนักและความหนาแน่น (Weight & Density):", factor2_d: "ชิ้นส่วนที่เคลื่อนที่ เช่น ก้านสูบและลูกสูบ ควรมีน้ำหนักเบาเพื่อลดความเฉื่อย (Inertia) ส่งผลให้ตอบสนองการเคลื่อนที่ได้อย่างรวดเร็วและประหยัดพลังงาน",
                 factor3: "ความต้านทานแรงเสียดทานและการสึกหรอ (Wear Resistance):", factor3_d: "ผิวด้านในกระบอกสูบ (Bore) ต้องมีความเรียบลื่นสูง และทนต่อแรงเสียดสีของซีลยาง NBR/PTFE ตลอดอายุการใช้งาน",
                 factor4: "ความทนทานต่อการกัดกร่อน (Corrosion Resistance):", factor4_d: "ในระบบนิวแมติกส์มักมีความชื้นสะสมปนมากับลมอัด วัสดุจึงต้องไม่เป็นสนิมง่ายเพื่อป้องกันความเสียหายต่อซีลกันรั่ว",
-                mat_case_study_title: " กรณีศึกษา: การเลือกใช้วาดูในโปรเจกต์นี้ (Project Material Configuration Case)",
+                mat_case_study_title: " กรณีศึกษา: การเลือกใช้วัสดุในโปรเจกต์นี้ (Project Material Configuration Case)",
                 th_p_part: "ชิ้นส่วนโครงสร้าง", th_p_mat: "วัสดุที่เลือกใช้", th_p_reason: "เหตุผลสำคัญทางวิศวกรรม (Engineering Reasons)",
                 td_p1: "น้ำหนักเบามาก ช่วยลดภาระโครงสร้างโดยรวม, อลูมิเนียมเกรด 6063 มีคุณสมบัติในการรีดขึ้นรูปทรงกระบอกกลวงได้เรียบเนียน (Excellent Extrudability) และทนต่อการกัดกร่อนจากความชื้นในอากาศได้ดีเยี่ยม",
                 td_p2: "เหล็กกล้าให้ค่าความเค้นดึง (Tensile Strength) สูงมาก รองรับแรงกดและแรงดัดงอขณะทำงานหนัก และการเคลือบผิวด้วยฮาร์ดโครม (Chrome-Plating) ช่วยเพิ่มความแข็งที่ผิว ลดแรงเสียดทาน และป้องกันรอยขีดข่วนจากการเคลื่อนที่ผ่านซีล",
@@ -858,7 +840,7 @@
             en: {
                 nav_home: "Home", nav_intro: "Introduction & Concept", nav_design: "Part Design", nav_members: "Team Members", nav_ref: "References",
                 nav_system: "System & Management ▼",
-                drop_cat3d: "3D Mechanical Modeling", drop_cat2d: "2D Mechanical Drafting", drop_selection: "Cylinder Selection", drop_mat_principles: "Material Principles", drop_pneumatic_circuits: "Pneumatics & Circuits", drop_boom: "BOM",
+                drop_cat2d: "2D Mechanical Drafting", drop_selection: "Cylinder Selection", drop_mat_principles: "Material Principles", drop_pneumatic_circuits: "Pneumatics & Circuits", drop_boom: "BOM",
                 drop_sys_variety: "Product Variety", drop_sys_control: "Control System & Software", drop_sys_standard: "Mechanical Standards",
                 sec_sys_variety: "Product Versatility",
                 var_intro: "Designing the operating system and cylinder mechanism to accommodate a variety of products is crucial for the cost-effectiveness of an automated system. This project features three main highlights:",
@@ -886,6 +868,10 @@
                 std_desc2: "Designed for immediate mounting onto Aluminium Profiles (30x30 or 40x40 mm) without welding, which significantly reduces setup time and prevents damage to existing machinery structures.",
                 
                 hero_title: "PNEUMATICS PART PROJECT", hero_sub: "ENGINEERING MATERIALS",
+                gdrive_title: "Additional Presentation Documents (Google Drive)",
+                gdrive_desc: "Download complete reports, 3D models, and deep-dive attachments via Google Drive",
+                gdrive_btn: "Open in Google Drive",
+                gdrive_video_title: "Video presentation of the work.",
                 sec_intro: "Introduction", 
                 intro_origin_title: "Origin and Meaning of Pneumatic Cylinders",
                 intro_origin_desc: "The term \"Pneumatics\" originates from the ancient Greek word \"Pneuma\", which translates to air or breath. In engineering, pneumatics is the science of utilizing compressed air to create mechanical movement.",
@@ -900,8 +886,7 @@
                 type3: "Rodless Cylinder:", type3_d: "No piston rod extends out, saves space.",
                 type4: "Rotary Actuator:", type4_d: "Provides rotational motion.",
                 intro_apps: "Applicable Industries", intro_apps_d: "Widely used in automated production lines such as automotive, packaging, electronics, food industry, and workpiece clamping systems.",
-                sec_cat3d: "3D Mechanical Modeling", 
-                sec_cat2d: "2D Mechanical Drafting", desc_cat2d: "Extracting 2D drawings from 3D models for manufacturing.",
+                sec_cat2d: "2.3 2D Mechanical Drafting", desc_cat2d: "Extracting 2D drawings from 3D models for manufacturing.",
                 dwg_tube_title: "Cylinder Tube",
                 dwg_tube_desc: "Blueprint displaying hollow internal channel structure with a total length of 120.00 mm, ø34.00 mm outer diameter, ø33.50 mm internal bore spec with a 0.25 mm wall thickness.",
                 dwg_slider_title: "Piston Slider Shaft",
@@ -1077,7 +1062,6 @@
         }
 
         function showSection(sectionId) {
-            if (sectionId === 'design3d') sectionId = 'cat3d';
             document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
             const target = document.getElementById(sectionId); 
             if (target) target.classList.remove('hidden');
@@ -1141,7 +1125,6 @@
             calculatePneumatics(); 
             isAutoRotating = true;
             syncRotateButton();
-            // startSmoothRotation();
         });
     </script>
 </body>
