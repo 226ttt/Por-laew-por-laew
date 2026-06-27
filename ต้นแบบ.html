@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pneumatic Cylinder Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <link rel="icon" href="/po-laew.jpg" type="image/jpeg">
+    <style>
+        /* Modern Premium Soft Variables */
+        :root {
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #f1f5f9;
+            --border-color: #e2e8f0;
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.02);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --transition: all 0.25s ease;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0b1329;
+            --bg-card: #111a36;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --primary-hover: #60a5fa;
+            --primary-light: rgba(59, 130, 246, 0.08);
+            --border-color: #1e293b;
+            --nav-bg: rgba(11, 19, 41, 0.85);
+            --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.15);
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Sarabun', sans-serif; background: var(--bg-body); color: var(--text-main); line-height: 1.7; transition: var(--transition); -webkit-font-smoothing: antialiased; }
+
+        html { scroll-behavior: smooth; }
+
+        /* Navigation Bar Layout - แก้ไขป้องกันข้อความทับซ้อนและจัดพื้นที่ให้เหมาะสม */
+        header { position: fixed; top: 0; width: 100%; z-index: 1000; background: var(--nav-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-color); transition: var(--transition); }
+        nav { max-width: 1240px; margin: 0 auto; padding: 0.5rem 1.5rem; display: flex; justify-content: space-between; align-items: center; min-height: 72px; gap: 1rem; }
+        
+        .logo { color: var(--text-main); font-weight: 700; font-size: 1.25rem; text-decoration: none; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 10px; letter-spacing: -0.3px; flex-shrink: 0; }
+        .logo:hover { opacity: 0.9; }
+        
+        .nav-menu { display: flex; gap: 1.5rem; list-style: none; align-items: center; flex-grow: 1; justify-content: center; flex-wrap: wrap; }
+        .nav-menu > li { position: relative; white-space: nowrap; }
+        .nav-menu > li > a { color: var(--text-muted); text-decoration: none; font-weight: 500; padding: 0.5rem 0; font-size: 0.95rem; position: relative; transition: var(--transition); cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+        .nav-menu > li > a:hover, .nav-menu > li > a.active { color: var(--primary); }
+        .nav-menu > li > a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: var(--primary); transition: var(--transition); border-radius: 2px; }
+        .nav-menu > li > a.active::after { width: 100%; }
+
+        .nav-right-zone { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
+        .lang-btn, .theme-btn {
+            background: var(--primary-light); color: var(--text-main); border: 1px solid var(--border-color);
+            padding: 6px 14px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 600; font-size: 0.85rem;
+            transition: var(--transition); font-family: 'Sarabun', sans-serif; display: inline-flex; align-items: center; justify-content: center;
+        }
+        .lang-btn:hover, .theme-btn:hover { background: var(--text-main); color: var(--bg-card); border-color: var(--text-main); }
+        .theme-btn { font-size: 1rem; padding: 6px 10px; }
+
+        /* Hamburger Menu */
+        .hamburger { display: none; flex-direction: column; cursor: pointer; padding: 6px; z-index: 1001; }
+        .hamburger span { width: 22px; height: 2px; background: var(--text-main); margin: 3px 0; transition: var(--transition); border-radius: 1px; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* Dropdown Menu */
+        .dropdown { position: relative; }
+        .dropdown-content { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(8px); background: var(--bg-card); min-width: 230px; border-radius: var(--radius-md); box-shadow: var(--shadow-md); overflow: hidden; z-index: 10; border: 1px solid var(--border-color); }
+        .dropdown-content a { display: block; padding: 10px 16px; color: var(--text-main); font-size: 0.9rem; border-bottom: 1px solid var(--border-color); transition: var(--transition); cursor: pointer; text-decoration: none; }
+        .dropdown-content a:last-child { border-bottom: none; }
+        .dropdown-content a:hover { background: var(--primary-light); color: var(--primary); padding-left: 20px; }
+        .dropdown.open .dropdown-content { display: block; }
+        .dropdown-arrow { font-size: 0.7rem; margin-left: 2px; display: inline-block; opacity: 0.7; }
+
+        /* Content Layout */
+        main { margin-top: 120px; max-width: 1140px; margin-left: auto; margin-right: auto; padding: 1.5rem; min-height: calc(100vh - 240px); }
+        .page-section { background: var(--bg-card); padding: 2.5rem; border-radius: var(--radius-md); margin-bottom: 2rem; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); animation: fadeIn 0.35s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .hidden { display: none !important; }
+        
+        h1 { color: var(--text-main); font-size: 1.75rem; margin-bottom: 1.5rem; font-weight: 700; letter-spacing: -0.5px; }
+        h2 { color: var(--primary); margin: 1.75rem 0 1rem; font-size: 1.25rem; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        h3 { color: var(--text-main); font-size: 1.1rem; margin: 1.25rem 0 0.5rem; font-weight: 600; }
+        p { margin-bottom: 1rem; text-align: justify; color: var(--text-muted); font-size: 0.95rem; }
+        ul { margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        li { margin-bottom: 0.5rem; color: var(--text-muted); font-size: 0.95rem; }
+        li strong { color: var(--text-main); font-weight: 600; }
+
+        /* Calculation Box Class */
+        .calc-box { background: var(--primary-light); border: 1px dashed var(--primary); padding: 1.5rem; border-radius: var(--radius-md); margin: 1.5rem 0; font-family: 'Sarabun', sans-serif; }
+        .calc-box code { font-family: 'Courier New', Courier, monospace; font-weight: bold; color: var(--primary); background: rgba(0,0,0,0.04); padding: 2px 6px; border-radius: 4px; }
+        [data-theme="dark"] .calc-box code { background: rgba(255,255,255,0.08); }
+
+        /* Interactive Form Controls within Calc Box */
+        .calc-inputs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+        .input-group { display: flex; flex-direction: column; gap: 0.4rem; }
+        .input-group label { font-size: 0.85rem; font-weight: 600; color: var(--text-main); }
+        .input-group input { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.95rem; font-family: 'Sarabun', sans-serif; background: var(--bg-card); color: var(--text-main); transition: var(--transition); }
+        .input-group input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 2px var(--primary-light); }
+        
+        .calc-result-badge { display: inline-block; background: var(--primary); color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
+
+        /* Modernized Elegant Table */
+        .data-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; text-align: left; }
+        .data-table th { background: var(--primary-light); color: var(--text-main); padding: 12px 16px; font-weight: 600; border-bottom: 2px solid var(--border-color); }
+        .data-table td { padding: 14px 16px; border-bottom: 1px solid var(--border-color); color: var(--text-muted); background: var(--bg-card); }
+        .data-table tr:hover td { background: var(--primary-light); color: var(--text-main); }
+
+        /* Members Clean Grid */
+        .members-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+        .member-card { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main); padding: 2rem 1rem; border-radius: var(--radius-md); text-align: center; transition: var(--transition); }
+        .member-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--primary); }
+        .member-photo-container { width: 90px; height: 90px; margin: 0 auto 1rem; border-radius: 50%; overflow: hidden; background: var(--primary-light); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; }
+        .member-photo { width: 100%; height: 100%; object-fit: cover; }
+        .member-card h3 { font-size: 1.05rem; margin-bottom: 0.25rem; color: var(--text-main); font-weight: 600; }
+        .member-card p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+
+        .ref-item { background: var(--primary-light); padding: 1rem; margin-bottom: 0.75rem; border-left: 3px solid var(--primary); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: 0.9rem; color: var(--text-muted); }
+        .ref-item a { color: var(--primary); text-decoration: none; }
+        .ref-item a:hover { text-decoration: underline; }
+
+        /* Interactive 3D Canvas Minimalist Container */
+        .viewer3d-container { width: 100%; height: 440px; background: #0f172a; border-radius: var(--radius-md); margin: 1.5rem 0; overflow: hidden; position: relative; }
+        model-viewer { width: 100%; height: 100%; background: transparent; }
+        
+        .viewer-controls { display: flex; justify-content: center; gap: 0.75rem; margin-top: 1rem; }
+        .viewer-btn { padding: 8px 16px; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; transition: var(--transition); font-family: 'Sarabun', sans-serif; font-weight: 500; }
+        .viewer-btn:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+        .viewer-btn.active-btn { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+        .volume-control { display: flex; align-items: center; gap: 10px; margin-top: 1rem; justify-content: center; font-size: 0.85rem; color: var(--text-muted); }
+        .volume-control input[type="range"] { width: 120px; accent-color: var(--primary); cursor: pointer; }
+        
+        /* Video & Image Containers */
+        .video-card-container { width: 100%; max-width: 760px; margin: 1.5rem auto; background: var(--bg-card); border-radius: var(--radius-md); overflow: hidden; }
+        .video-wrapper { width: 100%; aspect-ratio: 16/9; background: #000; display: flex; align-items: center; justify-content: center; }
+        .video-wrapper video { width: 100%; height: 100%; object-fit: contain; }
+
+        /* Hero Banner Section */
+        .hero-section { 
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); 
+            color: white; 
+            padding: 4rem 3rem; 
+            border-radius: var(--radius-lg); 
+            margin-bottom: 2rem; 
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+        [data-theme="dark"] .hero-section {
+            background: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+        }
+        .hero-content { flex: 1; }
+        .hero-section h1 { color: white; font-size: 2.25rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .hero-section h2 { color: #93c5fd; font-size: 1.1rem; margin: 0; font-weight: 600; letter-spacing: 1px; }
+
+        .hero-image-container { flex: 1; display: flex; justify-content: center; }
+        .hero-display-img { max-width: 280px; height: auto; animation: floatEffect 4s ease-in-out infinite; }
+
+        @keyframes floatEffect {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* Drawings Showcase Gallery */
+        .drawing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+        .drawing-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden; transition: var(--transition); display: flex; flex-direction: column; }
+        .drawing-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--primary); }
+        .drawing-image { width: 100%; height: 180px; background: #ffffff; display: flex; align-items: center; justify-content: center; padding: 12px; border-bottom: 1px solid var(--border-color); }
+        .drawing-image img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in; }
+        
+        .drawing-viewer3d { width: 100%; height: 180px; background: #0f172a; border-bottom: 1px solid var(--border-color); }
+        .drawing-card h4 { text-align: center; padding: 0.75rem; color: var(--text-main); font-size: 0.95rem; font-weight: 600; background: var(--primary-light); }
+        .drawing-info { padding: 1.25rem; flex-grow: 1; }
+        .drawing-info h3 { color: var(--primary); font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .drawing-info p { font-size: 0.85rem; color: var(--text-muted); margin: 0; line-height: 1.6; }
+
+        /* 2D Drawing Layout Styles Optimization */
+        .full-drawing-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; width: 100%; margin-top: 1.5rem; }
+        .premium-drawing-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow: hidden; transition: var(--transition); display: flex; flex-direction: column; box-shadow: var(--shadow-sm); }
+        .premium-drawing-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: var(--primary); }
+        .premium-image-box { width: 100%; height: 280px; background: #ffffff; display: flex; align-items: center; justify-content: center; padding: 1rem; border-bottom: 1px solid var(--border-color); position: relative; }
+        .premium-image-box img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in; transition: transform 0.3s ease; }
+        .premium-image-box img:hover { transform: scale(1.02); }
+        .premium-info-box { padding: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; background: linear-gradient(to bottom, var(--bg-card), var(--primary-light)); flex-grow: 1; }
+        .premium-info-box h3 { color: var(--primary); font-size: 1.2rem; font-weight: 700; margin: 0; }
+        .premium-info-box p { font-size: 0.95rem; color: var(--text-muted); margin: 0; line-height: 1.6; text-align: justify; }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 968px) {
+            .hamburger { display: flex; }
+            nav { height: auto; padding: 1rem 1.5rem; }
+            .logo { font-size: 1.15rem; }
+            .nav-menu { 
+                display: none; position: absolute; top: 64px; left: 0; right: 0; 
+                background: var(--bg-card); flex-direction: column; padding: 1rem 0; gap: 0; 
+                box-shadow: var(--shadow-md); border-top: 1px solid var(--border-color);
+                max-height: calc(100vh - 64px); overflow-y: auto;
+            }
+            .nav-menu.active { display: flex; }
+            .nav-menu > li { width: 100%; }
+            .nav-menu > li > a { display: block; padding: 0.75rem 1.5rem; width: 100%; }
+            .nav-menu > li > a::after { display: none; }
+            .dropdown-content { position: static; box-shadow: none; transform: none; background: var(--primary-light); min-width: 100%; border-radius: 0; border: none; }
+            .dropdown-content a { padding: 0.75rem 2.25rem; }
+            .hero-section { flex-direction: column; text-align: center; padding: 3rem 1.5rem; }
+            .hero-section h1 { font-size: 1.75rem; }
+            .hero-display-img { max-width: 200px; }
+            .page-section { padding: 1.75rem 1.25rem; }
+            main { margin-top: 80px; padding: 1rem; }
+            .full-drawing-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .premium-image-box { height: 220px; }
+        }
+
+        footer { text-align: center; padding: 2.5rem 1.5rem; background: #0f172a; color: #94a3b8; margin-top: 3rem; font-size: 0.9rem; }
+        [data-theme="dark"] footer { background: #020617; }
+        footer p { text-align: center; color: #94a3b8; margin: 0; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="logo" onclick="showSection('home'); return false;"> 
+                <img src="./po-laew.jpg" alt="Logo" style="width: 28px; height: 28px; border-radius: 4px;">
+                Pneumatic Project
+            </a>
+
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" onclick="showSection('home'); closeMobileMenu();" id="nav-home" class="active" data-i18n="nav_home">หน้าหลัก</a></li>
+                <li><a href="#intro" onclick="showSection('intro'); closeMobileMenu();" id="nav-intro" data-i18n="nav_intro">บทนำ</a></li>
+                <li class="dropdown" id="design-dropdown">
+                    <a href="#design" onclick="toggleDropdown(event, 'design-dropdown');" id="nav-design" data-i18n="nav_design">พาร์ทดีไซน์▼ <span class="dropdown-arrow">▼</span></a>
+                    <div class="dropdown-content">
+                        <a onclick="showSection('cylinder-selection'); closeMobileMenu();" data-i18n="drop_selection">ประเภทและการเลือกใช้งาน</a>
+                        <a onclick="showSection('material-selection-principles'); closeMobileMenu();" data-i18n="drop_mat_principles">หลักการเลือกใช้วัสดุ</a>
+                        <a onclick="showSection('cat3d'); closeMobileMenu();" data-i18n="drop_cat3d">การแบบจำลองเชิงกล 3 มิติ</a>
+                        <a onclick="showSection('cat2d'); closeMobileMenu();" data-i18n="drop_cat2d">การเขียนแบบเครื่องกล 2 มิติ</a>
+                        <a onclick="showSection('pneumatic-circuits'); closeMobileMenu();" data-i18n="drop_pneumatic_circuits">นิวเมติกส์และวงจรควบคุม</a>
+                        <a onclick="showSection('boom'); closeMobileMenu();" data-i18n="drop_boom">รายการวัสดุ</a>
+                    </div>
+                </li>
+                
+                <li class="dropdown" id="system-dropdown">
+                    <!-- ผูก data-i18n="nav_system" เพื่อรองรับระบบสลับภาษาเรียบร้อยแล้ว -->
+                    <a href="#system" onclick="toggleDropdown(event, 'system-dropdown');" id="nav-system" data-i18n="nav_system">ระบบและการจัดการ <span class="dropdown-arrow">▼</span></a>
+                    <div class="dropdown-content">
+                        <a onclick="showSection('sys-variety'); closeMobileMenu();" data-i18n="drop_sys_variety">ด้านความหลากหลายของสินค้า</a>
+                        <a onclick="showSection('sys-control'); closeMobileMenu();" data-i18n="drop_sys_control">ด้านระบบควบคุมและซอฟต์แวร์</a>
+                        <a onclick="showSection('sys-standard'); closeMobileMenu();" data-i18n="drop_sys_standard">ด้านมาตรฐานเชิงกล</a>
+                    </div>
+                </li>
+
+                <li><a href="#members" onclick="showSection('members'); closeMobileMenu();" id="nav-members" data-i18n="nav_members">สมาชิกกลุ่ม</a></li>
+                <li><a href="#references" onclick="showSection('references'); closeMobileMenu();" id="nav-references" data-i18n="nav_ref">แหล่งอ้างอิง</a></li>
+            </ul>
+            
+            <div class="nav-right-zone">
+                <button id="theme-toggle" class="theme-btn" onclick="toggleTheme()" aria-label="Toggle Theme">🌙</button>
+                <button id="lang-toggle" class="lang-btn" onclick="toggleLang()">EN</button>
+                <div class="hamburger" onclick="toggleMobileMenu()">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="page-section">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h1 data-i18n="hero_title">PNEUMATICS PART PROJECT</h1>
+                    <h2 data-i18n="hero_sub">ENGINEERING MATERIALS</h2>
+                </div>
+                <div class="hero-image-container">
+                    <img src="./Generated_Image.png" class="hero-display-img" alt="Pneumatic Cylinder Mockup">
+                </div>
+            </div>
+        </section>
+
+        <section id="intro" class="page-section hidden">
+            <h1 data-i18n="sec_intro">บทนำ</h1>
+            
+            <h2 data-i18n="intro_origin_title">ที่มาและความหมายของกระบอกสูบนิวเมติกส์</h2>
+            <p data-i18n="intro_origin_desc">คำว่า "นิวเมติกส์" (Pneumatics) มีรากศัพท์มาจากภาษากรีกโบราณคำว่า "Pneuma" ซึ่งแปลว่าลมหรือลมหายใจ ในทางวิศวกรรมนิวเมติกส์คือศาสตร์ที่นำพลังงานจาก "ลมอัด" (Compressed Air) มาประยุกต์ใช้ในการขับเคลื่อนเชิงกล โดยมี <strong>กระบอกสูบนิวเมติกส์ (Pneumatic Cylinder)</strong> เป็นอุปกรณ์ทำงานหรืออุปกรณ์ขับเคลื่อนหลัก (Actuator) ที่ทำหน้าที่เปลี่ยนพลังงานความดันของลมอัดให้เป็นพลังงานกลในแนวเส้นตรงหรือแนวหมุน ถือเป็นหัวใจสำคัญในระบบอัตโนมัติยุคอุตสาหกรรมเนื่องจากมีโครงสร้างไม่ซับซ้อน ปลอดภัย และบำรุงรักษาง่าย</p>
+
+            <h2 data-i18n="intro_why_choose">เหตุผลในการเลือกใช้กระบอกสูบประเภทนี้</h2>
+            <p data-i18n="intro_why_choose_d">Inกระบวนการจัดแพ็คขวดน้ำดื่ม PET ขนาด 550 ml จำนวน 12 ขวด (เรียงแบบ 3×4 บล็อก) จะมีน้ำหนักโหลดรวมตัวผลิตภัณฑ์ (Gross Load) อยู่ที่ประมาณ 6.8 - 7.0 kg ซึ่งระบบต้องการกลไกผลักคัดแยกที่มีเสถียรภาพสูง กระบอกสูบแบบทำงานสองทาง (Double Acting) จึงตอบโจทย์ทางวิศวกรรมได้ดีที่สุดด้วยคุณสมบัติเด่น 3 ประการ: 1) ความสามารถในการควบคุมแรงดันแปรผัน (Bi-directional Force Control) ทั้งจังหวะเดินหน้าผลักกลุ่มขวดน้ำ และจังหวะถอยกลับเพื่อเตรียมรับชุดถัดไป ทำให้รอบเวลาทำงาน (Cycle Time) คงที่ 2) ความสม่ำเสมอของความเร็ว (Velocity Profiles) เนื่องจากสามารถติดตั้งวาล์วปรับความเร็วลมอัด (Speed Controller) แยกอิสระทั้งสองทาง ป้องกันไม่ให้แรงกระแทกกระทำต่อขวด PET แรงเกินไปจนเกิดการล้มหรือโครงสร้างขวดบิดเบี้ยว และ 3) การไม่มีแรงต้านทานจากสปริงภายในเหมือนระบบ Single Acting ทำให้สามารถใช้แรงดันสถิต (Static Pressure) จากระบบลมอัดอุตสาหกรรมขนาด 5 - 7 บาร์ ขับเคลื่อนได้อย่างเต็มประสิทธิภาพ ส่งผลให้จังหวะการทำงานมีความแม่นยำสูง (High Repeatability) เหมาะแก่สายการผลิตบรรจุภัณฑ์อัตโนมัติที่ทำงานต่อเนื่องระยะยาว</p>
+            
+            <h2 data-i18n="media_t">ดูโมเดล 3D</h2>
+            <div class="viewer3d-container">
+                <model-viewer id="glb-viewer" src="./Assembly.glb" camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1" environment-image="neutral" exposure="1.0" alt="3D Model Tube" ar></model-viewer>
+            </div>
+            
+            <div class="viewer-controls">
+                <button class="viewer-btn active-btn" id="btn-rotate" onclick="toggleAutoRotate()" data-i18n="btn_rotate">🔄 หมุนอัตโนมัติ</button>
+                <button class="viewer-btn" onclick="resetCamera()" data-i18n="btn_reset">🎯 รีเซ็ตมุมมอง</button>
+            </div>
+
+            <div class="volume-control">
+                <label id="volume-label" data-i18n="volume_label">🔊 ระดับเสียง:</label>
+                <input type="range" id="audio-volume" min="0" max="100" value="50" oninput="updateVolume(this.value)">
+                <span id="volume-txt-label">50%</span>
+            </div>
+            <audio id="background-music" src="./FUNKY TOWN.mp3" loop></audio>
+
+            <h2 data-i18n="intro_prin_title">หลักการในการเลือกกระบอกสูบ</h2>
+            <p data-i18n="intro_prin_desc">ในการเลือกกระบอกสูบนิวเมติกส์ไปใช้งานเบื้องต้น จะต้องพิจารณาจากปัจจัยหลัก 4 ประการ ได้แก่ <strong>แรงที่ต้องการใช้งาน (Force)</strong> เพื่อคำนวณหาขนาดเส้นผ่านศูนย์กลางกระบอกสูบ, <strong>ระยะก้านชัก (Stroke)</strong> ให้สอดคล้องกับระยะการเคลื่อนที่ของเครื่องจักร, <strong>ความเร็ว (Speed)</strong> ที่ต้องการในวงจร, และ <strong>ความดันลมอัด (Operating Pressure)</strong> ในระบบ เพื่อให้กระบอกสูบทำงานได้อย่างมีประสิทธิภาพและปลอดภัย</p>
+
+            <h2 data-i18n="intro_types">ประเภทของกระบอกสูบนิวเมติกส์</h2>
+            <ul>
+                <li><strong data-i18n="type1">Single Acting:</strong> <span data-i18n="type1_d">ใช้ลมดันออกทางเดียว และใช้สปริงช่วยในการดันลูกสูบคืนตัว</span></li>
+                <li><strong data-i18n="type2">Double Acting:</strong> <span data-i18n="type2_d">ใช้แรงดันลมในการขับเคลื่อนทั้งจังหวะออกและจังหวะเข้า (เป็นประเภทที่นิยมใช้งานมากที่สุด)</span></li>
+                <li><strong data-i18n="type3">Rodless Cylinder:</strong> <span data-i18n="type3_d">กระบอกสูบแบบไม่มีก้านสูบยื่นออกมาภายนอก ช่วยในการประหยัดพื้นที่ติดตั้ง</span></li>
+                <li><strong data-i18n="type4">Rotary Actuator:</strong> <span data-i18n="type4_d">อุปกรณ์ขับเคลื่อนที่ให้ส่งแรงออกมาในลักษณะของการเคลื่อนที่แบบหมุน</span></li>
+            </ul>
+            
+            <h2 data-i18n="intro_apps">อุตสาหกรรมที่นำไปใช้งาน</h2>
+            <p data-i18n="intro_apps_d">ถูกนำไปใช้งานอย่างแพร่หลายในสายการผลิตอัตโนมัติ เช่น อุตสาหกรรมยานยนต์, บรรจุภัณฑ์, ชิ้นส่วนอิเล็กทรอนิกส์, อุตสาหกรรมอาหาร รวมถึงระบบจับยึดชิ้นงานต่าง ๆ</p>
+        </section>
+
+        <section id="cylinder-selection" class="page-section hidden">
+            <h1 data-i18n="sec_selection">ประเภทและการเลือกใช้กระบอกสูบแบบนิวแมติก</h1>
+            <p data-i18n="selection_intro">การเลือกใช้ประเภทกระบอกสูบนิวเมติกส์และขนาดที่ถูกต้อง มีความสำคัญเป็นอย่างยิ่งต่อประสิทธิภาพ ความทนทาน และความปลอดภัยของระบบกลไกอัตโนมัติในงานวิศวกรรม</p>
+            
+            <h2 data-i18n="selection_criteria_title"> เกณฑ์สำคัญในการเลือกใช้งาน (Key Selection Criteria)</h2>
+            <ul>
+                <li><strong data-i18n="crit1">ระยะช่วงชัก (Stroke Length):</strong> <span data-i18n="crit1_d">ระยะทางที่ก้านสูบเคลื่อนที่เข้า-ออกจริงตามความต้องการของจลนศาสตร์ของเครื่องจักร</span></li>
+                <li><strong data-i18n="crit2">ขนาดเส้นผ่านศูนย์กลางกระบอกสูบ (Bore Size):</strong> <span data-i18n="crit2_d">ส่งผลโดยตรงต่อแรงผลัก (Push Force) และแรงดึง (Pull Force) ของกระบอกสูบตามหลักการกลศาสตร์ของไหล</span></li>
+                <li><strong data-i18n="crit3">แรงดันใช้งาน (Operating Pressure):</strong> <span data-i18n="crit3_d">ระดับความดันลมอัดของระบบ (ปกติคำนวณที่ความดันมาตรฐานของอุตสาหกรรมประมาณ 5 - 7 บาร์)</span></li>
+                <li><strong data-i18n="crit4">สภาพแวดล้อมและอุณหภูมิ (Environment & Temperature):</strong> <span data-i18n="crit4_d">สำหรับเลือกชนิดวัสดุโครงสร้างและชนิดของซีลกันรั่วให้เหมาะสม เช่น งานความร้อนสูงหรืองานด้านอาหาร (Food Grade)</span></li>
+            </ul>
+
+            <h2 data-i18n="selection_table_title"> ตารางเปรียบเทียบการเลือกใช้งานกระบอกสูบแต่ละประเภท</h2>
+            <div style="overflow-x: auto; width: 100%;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="th_cyl_type">ประเภทกระบอกสูบ</th>
+                            <th data-i18n="th_cyl_force">ลักษณะแรง/การทำงาน</th>
+                            <th data-i18n="th_cyl_app">แอปพลิเคชันที่เหมาะสม</th>
+                            <th data-i18n="th_cyl_limit">ข้อจำกัด</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Single Acting Cylinder</strong></td>
+                            <td data-i18n="td1_1">กระทำด้วยลมทิศทางเดียว คืนตัวด้วยสปริง</td>
+                            <td data-i18n="td1_2">งานหนีบยึดชิ้นงานชั่วคราว, งานตัด, งานดันวัตถุขนาดเล็ก</td>
+                            <td data-i18n="td1_3">ระยะ Stroke สั้น (เนื่องจากข้อจำกัดความยาวสปริงภายใน)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Double Acting Cylinder</strong></td>
+                            <td data-i18n="td2_1">กระทำด้วยแรงดันลมทั้ง 2 ทิศทาง (เข้า-ออก)</td>
+                            <td data-i18n="td2_2">สายพานลำเลียง, แขนกลจับชิ้นงาน, อุตสาหกรรมยานยนต์ทั่วไป</td>
+                            <td data-i18n="td2_3">ใช้ปริมาณลมอัดมากกว่าแบบ Single Acting เท่าตัว</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Compact / Short Stroke</strong></td>
+                            <td data-i18n="td3_1">โครงสร้างสั้นและบาง แรงดันสูงในพื้นที่จำกัด</td>
+                            <td data-i18n="td3_2">อุตสาหกรรมอิเล็กทรอนิกส์, เครื่องจักรประกอบชิ้นส่วนขนาดเล็ก</td>
+                            <td data-i18n="td3_3">มีช่วงชักสั้นมาก ไม่เหมาะกับงานระยะยาว</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rodless Cylinder</strong></td>
+                            <td data-i18n="td4_1">ขับเคลื่อนตลับเลื่อนภายนอกโดยไม่มีก้านสูบยื่น</td>
+                            <td data-i18n="td4_2">งานเปิด-ปิดประตูอัตโนมัติบานกว้าง, ระบบเลื่อนตัดวัสดุแนวยาว</td>
+                            <td data-i18n="td4_3">การป้องกันฝุ่นละอองเข้าสู่ร่องสไลด์ทำได้ยากกว่าปกติ</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="material-selection-principles" class="page-section hidden">
+            <h1 data-i18n="sec_mat_principles">หลักการเลือกใช้วัสดุสำหรับกระบอกสูบนิวแมติก</h1>
+            <p data-i18n="mat_principles_intro">ในการออกแบบทางวิศวกรรมวัสดุ (Engineering Materials) การเลือกใช้วัสดุมาผลิตชิ้นส่วนต่าง ๆ ของกระบอกสูบนิวแมติก จะต้องพิจารณาจากคุณสมบัติทางกล (Mechanical Properties), น้ำหนัก, ความทนทานต่อการกัดกร่อน และต้นทุนการผลิต เพื่อให้กระบอกสูบสามารถทำงานภายใต้สภาวะลมอัดได้อย่างมีประสิทธิภาพสูงสุด</p>
+            
+            <h2 data-i18n="mat_factors_title">🛠️ ปัจจัยหลักทางวิศวกรรมในการพิจารณาเลือกวัสดุ</h2>
+            <ul>
+                <li><strong data-i18n="factor1">ความแข็งแรงเชิงกล (Mechanical Strength):</strong> <span data-i18n="factor1_d">วัสดุต้องทนทานต่อความเค้นแรงดัน (Pressure Stress) ของลมอัดภายในกระบอกสูบ และทนแรงกระแทกซ้ำ ๆ ได้ดีโดยไม่เกิดการเปลี่ยนรูปถาวร</span></li>
+                <li><strong data-i18n="factor2">น้ำหนักและความหนาแน่น (Weight & Density):</strong> <span data-i18n="factor2_d">ชิ้นส่วนที่เคลื่อนที่ เช่น ก้านสูบและลูกสูบ ควรมีน้ำหนักเบาเพื่อลดความเฉื่อย (Inertia) ส่งผลให้ตอบสนองการเคลื่อนที่ได้อย่างรวดเร็วและประหยัดพลังงาน</span></li>
+                <li><strong data-i18n="factor3">ความต้านทานแรงเสียดทานและการสึกหรอ (Wear Resistance):</strong> <span data-i18n="factor3_d">ผิวด้านในกระบอกสูบ (Bore) ต้องมีความเรียบลื่นสูง และทนต่อแรงเสียดสีของซีลยาง NBR/PTFE ตลอดอายุการใช้งาน</span></li>
+                <li><strong data-i18n="factor4">ความทนทานต่อการกัดกร่อน (Corrosion Resistance):</strong> <span data-i18n="factor4_d">ในระบบนิวแมติกส์มักมีความชื้นสะสมปนมากับลมอัด วัสดุจึงต้องไม่เป็นสนิมง่ายเพื่อป้องกันความเสียหายต่อซีลกันรั่ว</span></li>
+            </ul>
+
+            <h2 data-i18n="mat_case_study_title">กรณีศึกษา: การเลือกใช้วัสดุในโปรเจกต์นี้ (Project Material Design Case)</h2>
+            <div style="overflow-x: auto; width: 100%;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="th_p_part">ชิ้นส่วนโครงสร้าง</th>
+                            <th data-i18n="th_p_mat">วัสดุที่เลือกใช้</th>
+                            <th data-i18n="th_p_reason">เหตุผลสำคัญทางวิศวกรรม (Engineering Reasons)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>ตัวกระบอก (Cylinder Tube)</strong></td>
+                            <td>Aluminum 6063</td>
+                            <td data-i18n="td_p1">น้ำหนักเบามาก ช่วยลดภาระโครงสร้างโดยรวม, อลูมิเนียมเกรด 6063 มีคุณสมบัติในการรีดขึ้นรูปทรงกระบอกกลวงได้เรียบเนียน (Excellent Extrudability) และทนต่อการกัดกร่อนจากความชื้นในอากาศได้ดีเยี่ยม</td>
+                        </tr>
+                        <tr>
+                            <td><strong>แกนเพลาลูกสูบ (Piston Rod)</strong></td>
+                            <td>Chrome-Plated Steel</td>
+                            <td data-i18n="td_p2">เหล็กกล้าให้ค่าความเค้นดึง (Tensile Strength) สูงมาก รองรับแรงกดและแรงดัดงอขณะทำงานหนัก และการเคลือบผิวด้วยฮาร์ดโครม (Chrome-Plating) ช่วยเพิ่มความแข็งที่ผิว ลดแรงเสียดทาน และป้องกันรอยขีดข่วนจากการเคลื่อนที่ผ่านซีล</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ฝาปิดหน้า-หลัง (End Caps)</strong></td>
+                            <td>Aluminum 6061-T6 / 6063</td>
+                            <td data-i18n="td_p3">ให้อัตราส่วนความแข็งแรงต่อน้ำหนักที่ดีเยี่ยม (Strength-to-Weight Ratio) สามารถแปรรูปขึ้นรูปด้วยเครื่องจักร (Machinability) เพื่อเจาะรูนำลม รูร้อยสลักยึด (Tie-rods) และทำบ่าซีลได้อย่างแม่นยำสูง</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="cat3d" class="page-section hidden">
+            <h1 data-i18n="sec_cat3d">การแบบจำลองเชิงกล 3 มิติ</h1>
+            
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <img src="./boomนิวเมติก.png" alt="Mechanical Showcase" style="max-width: 100%; height: auto; border-radius: var(--radius-md); max-height: 320px; object-fit: cover;">
+            </div>
+            
+            <div class="video-card-container">
+                <div class="video-wrapper">
+                    <video src="./Pneumatic cylinder working 3D.mp4" controls preload="metadata"></video>
+                </div>
+            </div>
+
+            <h2 style="color: var(--primary); font-size: 1.2rem; font-weight: 600; margin-top: 2rem;">CAT3D Components</h2>
+            <div class="drawing-grid">
+                <div class="drawing-card">
+                    <model-viewer class="drawing-viewer3d" src="./Front Plate.glb" camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1" environment-image="neutral" exposure="1.0" ar></model-viewer>
+                    <h4>Front Plate</h4>
+                </div>
+                <div class="drawing-card">
+                    <model-viewer class="drawing-viewer3d" src="./Rear_Plate.glb" camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1" environment-image="neutral" exposure="1.0" ar></model-viewer>
+                    <h4>Rear Plate</h4>
+                </div>
+                <div class="drawing-card">
+                    <model-viewer class="drawing-viewer3d" src="./Tube.glb" camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1" environment-image="neutral" exposure="1.0" ar></model-viewer>
+                    <h4>Tube</h4>
+                </div>
+                <div class="drawing-card">
+                    <model-viewer class="drawing-viewer3d" src="./Slider_Shaft.glb" camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1" environment-image="neutral" exposure="1.0" ar></model-viewer>
+                    <h4>Slider Shaft</h4>
+                </div>
+                <div class="drawing-card">
+                    <model-viewer class="drawing-viewer3d" src="./Shaft.glb" camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1" environment-image="neutral" exposure="1.0" ar></model-viewer>
+                    <h4>Shaft</h4>
+                </div>
+                <div class="drawing-card">
+                    <model-viewer class="drawing-viewer3d" src="./O-Ring.glb" camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1" environment-image="neutral" exposure="1.0" ar></model-viewer>
+                    <h4>O-Ring</h4>
+                </div>
+            </div>
+        </section>
+
+        <section id="cat2d" class="page-section hidden" style="max-width: 100%; width: 100%;">
+            <h1 data-i18n="sec_cat2d" style="border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">2.3 การเขียนแบบเครื่องกล 2 มิติ (Engineering Drawing)</h1>
+            <p data-i18n="desc_cat2d" style="font-size: 1.05rem; margin-bottom: 2rem;">การดึงแบบแปลน 2 มิติ (2D Drawing) จากโมเดล 3 มิติ เพื่อแสดงรายละเอียดขนาด (Dimensions) และความคลาดเคลื่อน (Tolerances) สำหรับการผลิตจริง</p>
+            
+            <div class="full-drawing-grid">
+                <div class="premium-drawing-card">
+                    <div class="premium-image-box">
+                        <img src="./Tube.jpg" alt="Cylinder Tube Drawing" onclick="window.open(this.src)">
+                    </div>
+                    <div class="premium-info-box">
+                        <h3 data-i18n="dwg_tube_title">ตัวกระบอกสูบ (Cylinder Tube)</h3>
+                        <p data-i18n="dwg_tube_desc">แบบแปลนแสดงโครงสร้างทรงกระบอกกลวง มีความยาวรวมชิ้นงาน 120.00 มม. ระบุขนาดเส้นผ่านศูนย์กลางภายนอก ø34.00 มม. และเส้นผ่านศูนย์กลางภายในสำหรับคว้านรู (Bore Size) ø33.50 มม. มีความหนาผนังกระบอกสูบอยู่ที่ 0.25 มม.</p>
+                    </div>
+                </div>
+
+                <div class="premium-drawing-card">
+                    <div class="premium-image-box">
+                        <img src="./Slider Shaft.jpg" alt="Piston Slider Shaft Drawing" onclick="window.open(this.src)">
+                    </div>
+                    <div class="premium-info-box">
+                        <h3 data-i18n="dwg_slider_title">แกนเพลาและลูกสูบ (Piston Slider Shaft)</h3>
+                        <p data-i18n="dwg_slider_desc">แบบขยายโครงสร้างแกนเพลาขับเคลื่อนหลักและชุดลูกสูบ แสดงระยะชักหลักแนวยาว 110.00 มม. ขนาดเส้นผ่านศูนย์กลางตัวลูกสูบหลัก ø32.96 มม. มีร่องติดตั้งซีลโอริงขนาด ø12.15 มม. และ ø13.07 มม. ปลายแกนเพลาส่งกำลังลดขนาดสเตปเหลือ ø10.00 มม.</p>
+                    </div>
+                </div>
+
+                <div class="premium-drawing-card">
+                    <div class="premium-image-box">
+                        <img src="./Front Plate.jpg" alt="Front End Cap Drawing" onclick="window.open(this.src)">
+                    </div>
+                    <div class="premium-info-box">
+                        <h3 data-i18n="dwg2_title">ฝาปิดด้านหน้า (Front Plate)</h3>
+                        <p data-i18n="dwg2_desc">พิมพ์เขียวแสดงมุมมองออร์โธกราฟิกและโครงสร้างตัดขวางของฝาปิดหน้า ขนาดภายนอก 47.00x47.00 มม. มีบ่าทรงกลมยื่นความยาว 12.70 มม. ขนาด ø30.00 มม. เจาะรูคว้านตรงกลาง ø15.00 มม. พร้อมร่องยึดสกรู Tie-rod ø8.00 มม. ทั้ง 4 มุม</p>
+                    </div>
+                </div>
+
+                <div class="premium-drawing-card">
+                    <div class="premium-image-box">
+                        <img src="./Rear Plate.jpg" alt="Rear End Cap Drawing" onclick="window.open(this.src)">
+                    </div>
+                    <div class="premium-info-box">
+                        <h3 data-i18n="dwg1_title">ฝาปิดด้านหลัง (Rear Plate)</h3>
+                        <p data-i18n="dwg1_desc">แบบแปลนแสดงมิติส่วนประกอบของฝาปิดท้ายกระบอกสูบหนา 27.00 มม. มีรูนำลมเข้า-ออก (Air Port) เจาะลึกระบุตำแหน่งระยะ 13.00 มม. ตัวรับแกนบ่ากระบอกสูบ ø30.00 มม. ยื่นออก 0.50 มม. และเจาะรูร้อยสลักเกลียว ø4.20 มม.</p>
+                    </div>
+                </div>
+
+                <div class="premium-drawing-card">
+                    <div class="premium-image-box">
+                        <img src="./O-Ring.jpg" alt="O-Ring Drawing" onclick="window.open(this.src)">
+                    </div>
+                    <div class="premium-info-box">
+                        <h3 data-i18n="dwg3_title">วงแหวนยางกันรั่ว (O-Ring)</h3>
+                        <p data-i18n="dwg3_desc">พิมพ์เขียวแสดงมิติมนมาตรฐานของชิ้นส่วนยางกันลมรั่วไหล (Seals) ระบุขนาดเส้นผ่านศูนย์กลางภายนอก (Outer Diameter) ø34.00 มม. ขนาดเส้นผ่านศูนย์กลางภายใน (Inner Diameter) ø30.00 มม. และมีความหนาของตัวหน้าตัดโอริงอยู่ที่ 2.00 มม.</p>
+                    </div>
+                </div>
+
+                <div class="premium-drawing-card">
+                    <div class="premium-image-box">
+                        <img src="./Shaft.jpg" alt="Tie Rod Drawing" onclick="window.open(this.src)">
+                    </div>
+                    <div class="premium-info-box">
+                        <h3 data-i18n="dwg4_title">สลักเกลียวยึดโครงสร้าง (Shaft / Tie Rod)</h3>
+                        <p data-i18n="dwg4_desc">แบบแสดงมิติชิ้นส่วนแกนเหล็กขันยึดประกอบโครงสร้างกระบอกสูบ ส่วนแกนเรียวยาวระบุขนาดความยาว 130.00 มม. เส้นผ่านศูนย์กลาง ø5.00 มม. ปลายหัวล็อกหกเหลี่ยมหนา 5.40 มม. ขนาด ø12.00 มม. พร้อมร่องบ่ารับแรงยาว 19.00 มม.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pneumatic-circuits" class="page-section hidden">
+            <h1 data-i18n="sec_pneumatic_circuits">3.6 นิวเมติกส์และวงจรควบคุม</h1>
+            <p data-i18n="pneu_circuits_intro">นอกเหนือจากการเลือกใช้วัสดุโครงสร้างที่มีความเหมาะสมตามลักษณะงาน เช่น โครงสร้างภายนอกแบบอลูมิเนียมโปรไฟล์น้ำหนักเบา หรือการเลือกใช้สแตนเลส (Stainless Steel) ในอุตสาหกรรมอาหารและเครื่องดื่มเพื่อสุขอนามัยแล้ว การออกแบบระบบทำงานและวงจรควบคุมลมอัดเบื้องต้น (Fundamental Pneumatic Circuit) ถือเป็นปัจจัยสำคัญที่วิศวกรต้องตระหนักถึง เพื่อเสถียรภาพและยืดอายุการใช้งานเครื่องจักร</p>
+            
+            <h2 data-i18n="frl_title">💨 ระบบเตรียมลมสะอาด (FRL Unit)</h2>
+            <p data-i18n="frl_desc">ลมอัดที่ถูกผลิตจากปั๊มลมทั่วไปมักจะมีความชื้น ละอองน้ำ ฝุ่นละออง และคราบน้ำมันปะปนมาด้วย ซึ่งเป็นอันตรายอย่างยิ่งต่อระบบซีลภายใน (NBR/PTFE) ของกระบอกสูบ ทำให้อายุการใช้งานสั้นลงและเกิดการรั่วไหลภายใน (Internal Leakage) ดังนั้น ระบบจึงจำเป็นต้องติดตั้ง <strong>ชุดเตรียมลมสะอาด (FRL Unit)</strong> ก่อนเข้าสู่ส่วนควบคุม โดย FRL ประกอบด้วยอุปกรณ์ 3 ชิ้นหลักคือ:</p>
+            <ul>
+                <li><strong>Filter (ตัวกรองลม):</strong> ทำหน้าที่ดักจับละอองน้ำ ความชื้น และฝุ่นผงขนาดเล็กเพื่อควบแน่นและระบายทิ้ง</li>
+                <li><strong>Regulator (ตัวควบคุมแรงดัน):</strong> ทำหน้าที่รักษาแรงดันใช้งานให้อยู่ในเกณฑ์สม่ำเสมอคงที่ (ปกติกำหนดไว้ที่ 5 - 6 บาร์) แม้แรงดันในถังจ่ายลมจะแกว่งตัว</li>
+                <li><strong>Lubricator (ตัวผสมน้ำมันหล่อลื่น):</strong> จ่ายละอองน้ำมันหล่อลื่นปริมาณเล็กน้อยปนไปกับลมอัด เพื่อช่วยลดแรงเสียดทานระหว่างซีลและผิวกระบอกสูบ</li>
+            </ul>
+
+            <h2 data-i18n="calc_title">🧮 เครื่องคำนวณทางวิศวกรรมเพื่อเลือกขนาดกระบอกสูบ (Interactive Design Calculator)</h2>
+            <p data-i18n="calc_interactive_desc">คุณสามารถปรับเปลี่ยนและกรอกข้อมูลตัวเลขน้ำหนักผลิตภัณฑ์ จำนวน หรือแรงดันใช้งานด้านล่างนี้ ระบบจะทำการประมวลผลคำนวณพารามิเตอร์ทางกลและหลักกลศาสตร์ของไหลให้แบบ Real-time ทันที:</p>
+            
+            <div class="calc-box">
+                <div class="calc-inputs-grid">
+                    <div class="input-group">
+                        <label id="lbl_input_mass" for="input-mass">น้ำหนักขวดน้ำ 1 ขวด (kg):</label>
+                        <input type="number" id="input-mass" value="0.55" step="0.01" min="0" oninput="calculatePneumatics()">
+                    </div>
+                    <div class="input-group">
+                        <label id="lbl_input_qty" for="input-qty">จำนวนขวดทั้งหมดในแพ็ค (ขวด):</label>
+                        <input type="number" id="input-qty" value="12" step="1" min="1" oninput="calculatePneumatics()">
+                    </div>
+                    <div class="input-group">
+                        <label id="lbl_input_extra" for="input-extra">น้ำหนักแผ่นเพลตดัน + แพ็คเกจ (kg):</label>
+                        <input type="number" id="input-extra" value="0.4" step="0.1" min="0" oninput="calculatePneumatics()">
+                    </div>
+                    <div class="input-group">
+                        <label id="lbl_input_sf" for="input-sf">ค่าความปลอดภัย (Safety Factor, SF):</label>
+                        <input type="number" id="input-sf" value="2.0" step="0.1" min="1" oninput="calculatePneumatics()">
+                    </div>
+                    <div class="input-group">
+                        <label id="lbl_input_press" for="input-press">แรงดันลมอัดใช้งาน (Pressure, bar):</label>
+                        <input type="number" id="input-press" value="5.0" step="0.5" min="1" oninput="calculatePneumatics()">
+                    </div>
+                </div>
+
+                <div id="calculator-output-zone">
+                    <h3 style="margin-top:0;" data-i18n="calc_step1_t">1. วิเคราะห์แรงกระทำจากภาระโหลด (Load Analysis)</h3>
+                    <p>
+                        <span data-i18n="calc_out_w1">น้ำหนักรวมของขวดน้ำ ผลิตภัณฑ์</span> = <code id="out-prod-mass">6.60</code> kg<br>
+                        <span data-i18n="calc_out_w2">โหลดรวมจริงทั้งหมด (Gross Load, m)</span> = <code id="out-gross-mass">7.00</code> kg<br>
+                        <span data-i18n="calc_out_w3">แรงต้านเนื่องจากแรงโน้มถ่วง (F_g = m × g)</span> = <code id="out-fg">68.67</code> N
+                    </p>
+                    
+                    <h3 data-i18n="calc_step2_t">2. กำหนดค่าสัมประสิทธิ์ความปลอดภัย (Safety Factor)</h3>
+                    <p><span data-i18n="calc_out_sf_desc">แรงผลักเป้าหมายขั้นต่ำที่กระบอกสูบต้องทำได้จริง (Required Target Force, F = F_g × SF)</span> = <code id="out-target-force">137.34</code> N</p>
+
+                    <h3 data-i18n="calc_step2_t">3. คำนวณขนาดกระบอกสูบจากแรงดันใช้งาน (Bore Size Calculation)</h3>
+                    <p>
+                        <span data-i18n="calc_out_p_desc">แรงดันใช้งานที่แปลงหน่วยแล้ว (P)</span> = <code id="out-p-mpa">0.50</code> N/mm²<br>
+                        <span data-i18n="calc_out_formula">จากสูตรความเค้นแรงดันขยายตัว F = P × A โดยที่ A = (π × D²) / 4 จะได้ขนาดทางทฤษฎีคือ:</span><br>
+                        D = √[ (F × 4) / (P × π) ] = <code id="out-calc-d">18.70</code> mm
+                    </p>
+
+                    <h3 data-i18n="calc_step4_t">4. สรุปผลและการเลือกขนาดมาตรฐาน (Engineering Standardization)</h3>
+                    <p>
+                        <span data-i18n="calc_out_std_desc">ขนาดเส้นผ่านศูนย์กลาง Bore Size ขั้นต่ำในทางปฏิบัติคือ</span> <code id="out-final-min-d">18.70</code> mm.<br>
+                        <span data-i18n="calc_out_match_blueprint">เพื่อให้ระบบเสถียรและทนแรงกระแทกซ้ำ ๆ ในโปรเจกต์นี้จึงเลือกใช้ขนาดมาตรฐานอุตสาหกรรมทดแทนคือ</span> <span class="calc-result-badge" id="out-standard-bore">Bore Size 40 mm</span> 
+                        (<span data-i18n="calc_out_match_blueprint2">ซึ่งตรงกับแบบพิมพ์เขียวผิวด้านในกระบอกสูบขนาด ø40.00 mm ของกลุ่มพอแล้ว พอแล้ว</span>)<br>
+                        <strong><span data-i18n="calc_out_verify_title">ตรวจสอบแรงผลักจริงที่เกิดขึ้นที่ขนาด 40 mm:</span></strong> <span data-i18n="calc_out_actual_f">แรงผลักจริงที่สร้างได้</span> = <code id="out-actual-force">628.32</code> N 
+                        (<span style="color: green; font-weight: bold;" data-i18n="calc_out_safe_status">ปลอดภัยสูงสุด แรงเหลือเฟือเอาชนะโหลดได้แน่นอน</span>)
+                    </p>
+                </div>
+            </div>
+
+            <h2 data-i18n="speed_control_title">การควบคุมความเร็วด้วย Speed Controller (Meter-out Control)</h2>
+            <p data-i18n="speed_control_desc">ในการประยุกต์ใช้ผลักขวดน้ำ PET ขนาด 550 ml นั้น การควบคุมความเร็วและอัตราเร่งมีความอ่อนไหวสูงมาก หากกระบอกสูบเคลื่อนที่เร็วเกินไป แรงกระแทกจากการชน (Dynamic Impact Force) จะทำให้ขวดน้ำล้มระเนระนาด หรือโครงสร้างขวดบิดเบี้ยวเสียหาย ทางวิศวกรรมจึงเลือกใช้ Speed Controller (วาล์วหรี่ควบคุมอัตราไหลชนิดปรับได้) ติดตั้งที่พอร์ตลมทั้งจังหวะเดินหน้าและถอยกลับ</p>
+            <p data-i18n="meter_out_desc">โดยมีหลักการสำคัญคือใชวงจรควบคุมแบบ Meter-out (การหรี่ลมระบายทิ้ง) ซึ่งจะปล่อยให้ลมอัดฝั่งต้นทางจ่ายเข้ากระบอกสูบอย่างเต็มที่ (ส่งผลให้สร้างแรงดันสถิตได้คงที่ตามผลคำนวณด้านบน) แต่จะทำการหรี่หน่วงลมระบายออก (Exhaust Air) ฝั่งตรงข้ามเอาไว้ การควบคุมแบบนี้จะช่วยสร้าง "แรงต้านย้อนกลับ (Cushioning Pressure)" ทำให้ก้านสูบเคลื่อนที่ได้อย่างนุ่มนวล สม่ำเสมอ ไม่กระตุก และสามารถปรับลดความเร็วในการดันขวดเข้าสถานีแพ็คได้อย่างแม่นยำ ป้องกันความเสียหายต่อบรรจุภัณฑ์ได้อย่างสมบูรณ์</p>
+        </section>
+
+        <section id="boom" class="page-section hidden">
+            <h1 data-i18n="sec_boom">รายการวัสดุ</h1>
+            <p data-i18n="desc_boom">List of materials and components used to assemble the pneumatic cylinder.</p>
+            
+            <div style="text-align: center; margin-top: 1.5rem; margin-bottom: 2rem; background: #ffffff; padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                <img src="./Pneumatic cylinder01.png" alt="Pneumatic Cylinder Exploded View" style="max-width: 100%; height: auto; border-radius: var(--radius-sm); cursor: zoom-in;" onclick="window.open(this.src)">
+                <p style="text-align: center; margin-top: 0.75rem; font-size: 0.85rem; font-weight: 600; color: var(--primary);">ภาพแสดงโครงสร้างและการประกอบชิ้นส่วน (Exploded View)</p>
+            </div>
+            
+            <div style="overflow-x: auto; width: 100%;">
+                <table class="data-table">
+                    <thead>
+                        <tr><th data-i18n="th_no">ลำดับ</th><th data-i18n="th_comp">ชิ้นส่วน</th><th data-i18n="th_mat">วัสดุ</th><th data-i18n="th_qty">จำนวน</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Tube (Cylinder Barrel)</td><td>Aluminum 6063</td><td>1</td></tr>
+                        <tr><td>2</td><td>O-Ring</td><td>NBR / PTFE</td><td>4</td></tr>
+                        <tr><td>3</td><td>Rear Plate (End Cap)</td><td>Aluminum 6061-T6 / 6063</td><td>1</td></tr>
+                        <tr><td>4</td><td>Slider Shaft (Piston & Rod)</td><td>Chrome-Plated Steel</td><td>1</td></tr>
+                        <tr><td>5</td><td>Front Plate (End Cap)</td><td>Aluminum 6061-T6 / 6063</td><td>1</td></tr>
+                        <tr><td>6</td><td>Shaft (Tie Rod)</td><td>Steel</td><td>4</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="sys-variety" class="page-section hidden">
+            <h1 data-i18n="sec_sys_variety">ด้านความหลากหลายของสินค้า (Product Versatility)</h1>
+            <p data-i18n="var_intro">การออกแบบระบบปฏิบัติการและกลไกของกระบอกสูบให้รองรับการทำงานกับสินค้าที่มีความหลากหลาย ถือเป็นหัวใจสำคัญที่ทำให้ระบบอัตโนมัติมีความคุ้มค่า ซึ่งในโปรเจกต์นี้มีจุดเด่น 3 ประการดังนี้:</p>
+            <ul style="list-style-type: none; margin-left: 0;">
+                <li style="margin-bottom: 1.25rem; background: var(--primary-light); padding: 1.25rem; border-radius: var(--radius-sm); border-left: 4px solid var(--primary);">
+                    <strong data-i18n="var_bullet1" style="display: block; color: var(--primary); font-size: 1.1rem; margin-bottom: 0.25rem;">Modular Design (การออกแบบโมดูลาร์)</strong> 
+                    <span data-i18n="var_desc1">การออกแบบชิ้นส่วนต่างๆ ให้สามารถถอดประกอบและปรับเปลี่ยนรูปแบบได้ตามความต้องการของสายการผลิต (Flexible Adaptability) ช่วยให้ระบบมีความยืดหยุ่นสูง รองรับขนาดและรูปแบบของบรรจุภัณฑ์ที่หลากหลายโดยไม่ต้องรื้อสร้างระบบเครื่องจักรใหม่ทั้งหมด</span>
+                </li>
+                <li style="margin-bottom: 1.25rem; background: var(--primary-light); padding: 1.25rem; border-radius: var(--radius-sm); border-left: 4px solid var(--primary);">
+                    <strong data-i18n="var_bullet2" style="display: block; color: var(--primary); font-size: 1.1rem; margin-bottom: 0.25rem;">Modular Pusher Plate (แผ่นผลักที่ถอดเปลี่ยนได้)</strong> 
+                    <span data-i18n="var_desc2">แผ่นหน้าสัมผัสสำหรับผลักบรรจุภัณฑ์ถูกออกแบบมาให้ถอดเปลี่ยนได้สะดวกรวดเร็ว (Quick Change) เพื่อให้รับกับรูปทรงของขวด PET ขนาดต่างๆ หรือสินค้าแบบอื่น ป้องกันไม่ให้เกิดความเสียหายหรือเสียรูปทรงขณะทำการผลักคัดแยก</span>
+                </li>
+                <li style="margin-bottom: 1.25rem; background: var(--primary-light); padding: 1.25rem; border-radius: var(--radius-sm); border-left: 4px solid var(--primary);">
+                    <strong data-i18n="var_bullet3" style="display: block; color: var(--primary); font-size: 1.1rem; margin-bottom: 0.25rem;">Capacity Handling (สมรรถนะการรองรับน้ำหนัก)</strong> 
+                    <span data-i18n="var_desc3">โครงสร้างกลไกและกระบอกสูบมีสมรรถนะสูง สามารถจัดการกับภาระโหลดรวม (Gross Payload) ตั้งแต่ 10 กิโลกรัม จนถึงระดับ 20 กิโลกรัมได้อย่างมั่นคงและมีเสถียรภาพ ทำให้พร้อมประยุกต์ใช้งานกับสินค้ากลุ่มแพ็คใหญ่ได้ทันที</span>
+                </li>
+            </ul>
+        </section>
+
+        <section id="sys-control" class="page-section hidden">
+            <h1 data-i18n="sec_sys_control">ด้านระบบควบคุมและซอฟต์แวร์ (Control & Automation Compatibility)</h1>
+            <p data-i18n="ctrl_intro">การบูรณาการกระบอกสูบนิวเมติกส์เข้ากับระบบควบคุมอัตโนมัติเป็นสิ่งสำคัญเพื่อให้เกิดประสิทธิภาพสูงสุด โปรเจกต์นี้ได้รับการออกแบบให้รองรับสถาปัตยกรรมซอฟต์แวร์และฮาร์ดแวร์ที่หลากหลาย:</p>
+            <ul style="list-style-type: none; margin-left: 0;">
+                <li style="margin-bottom: 1.25rem; background: var(--primary-light); padding: 1.25rem; border-radius: var(--radius-sm); border-left: 4px solid var(--primary);">
+                    <strong data-i18n="ctrl_bullet1" style="display: block; color: var(--primary); font-size: 1.1rem; margin-bottom: 0.25rem;">Universal PLC Support (รองรับมาตรฐาน PLC สากล)</strong>
+                    <span data-i18n="ctrl_desc1">สามารถทำงานร่วมกับชุดควบคุมตรรกะแบบโปรแกรมได้ (PLC) ชั้นนำของอุตสาหกรรม เช่น Mitsubishi MELSEC, SIEMENS S7-1200 และ OMRON รวมถึงรองรับไมโครคอนโทรลเลอร์ทางเลือกอย่าง Arduino และ ESP32 สำหรับงานต้นแบบและระบบขนาดเล็ก</span>
+                </li>
+                <li style="margin-bottom: 1.25rem; background: var(--primary-light); padding: 1.25rem; border-radius: var(--radius-sm); border-left: 4px solid var(--primary);">
+                    <strong data-i18n="ctrl_bullet2" style="display: block; color: var(--primary); font-size: 1.1rem; margin-bottom: 0.25rem;">IoT Ready (พร้อมเชื่อมต่อโครงข่าย IoT)</strong>
+                    <span data-i18n="ctrl_desc2">โครงสร้างระบบถูกเตรียมความพร้อมสำหรับการอัปเกรดเข้าสู่ระบบ Internet of Things (IoT) ช่วยให้สามารถดึงข้อมูลสถานะการทำงานแบบเรียลไทม์ (Real-time monitoring) ส่งไปยังคลาวด์หรือศูนย์ควบคุมส่วนกลางได้ทันที</span>
+                </li>
+                <li style="margin-bottom: 1.25rem; background: var(--primary-light); padding: 1.25rem; border-radius: var(--radius-sm); border-left: 4px solid var(--primary);">
+                    <strong data-i18n="ctrl_bullet3" style="display: block; color: var(--primary); font-size: 1.1rem; margin-bottom: 0.25rem;">Flexible Sensing (รองรับเซนเซอร์หลากหลายรูปแบบ)</strong>
+                    <span data-i18n="ctrl_desc3">ออกแบบให้สามารถสลับหรือติดตั้งเซนเซอร์ตรวจจับได้หลากหลายประเภทตามลักษณะชิ้นงาน เช่น Photoelectric Sensor สำหรับตรวจจับวัตถุทึบแสง, Proximity Sensor สำหรับโลหะ, และรองรับการทำงานร่วมกับระบบ Camera (Machine Vision) สำหรับงานคัดแยกที่ต้องการความแม่นยำสูง</span>
+                </li>
+            </ul>
+        </section>
+
+        <section id="sys-standard" class="page-section hidden">
+            <h1 data-i18n="sec_sys_standard">ด้านมาตรฐานเชิงกล (Mechanical & Standard Compatibility)</h1>
+            <p data-i18n="std_intro">ระบบถูกพัฒนาโดยคำนึงถึงมาตรฐานการประกอบเชิงกลสากล เพื่อความสะดวกในการซ่อมบำรุง การจัดหาอะไหล่ และการบูรณาการเข้ากับโครงสร้างพื้นฐานเดิมของโรงงาน:</p>
+            <ul style="list-style-type: none; margin-left: 0;">
+                <li style="margin-bottom: 1.25rem; background: var(--primary-light); padding: 1.25rem; border-radius: var(--radius-sm); border-left: 4px solid var(--primary);">
+                    <strong data-i18n="std_bullet1" style="display: block; color: var(--primary); font-size: 1.1rem; margin-bottom: 0.25rem;">ISO Standard Compliance (มาตรฐานสากล ISO)</strong>
+                    <span data-i18n="std_desc1">กระบอกสูบและอุปกรณ์หลักผ่านการรับรองมาตรฐานสากล เช่น ISO 15552 และ ISO 6431 ซึ่งเป็นบรรทัดฐานที่แบรนด์อุปกรณ์ลมชั้นนำระดับโลกอย่าง SMC, FESTO และ AIRTAC ยึดถือ ทำให้มั่นใจได้ว่าอุปกรณ์สามารถใช้งานทดแทนกันได้ (Interchangeable) อย่างสมบูรณ์</span>
+                </li>
+                <li style="margin-bottom: 1.25rem; background: var(--primary-light); padding: 1.25rem; border-radius: var(--radius-sm); border-left: 4px solid var(--primary);">
+                    <strong data-i18n="std_bullet2" style="display: block; color: var(--primary); font-size: 1.1rem; margin-bottom: 0.25rem;">Industrial Frame Integration (ติดตั้งง่ายกับโครงสร้างมาตรฐาน)</strong>
+                    <span data-i18n="std_desc2">ออกแบบมาให้รองรับการติดตั้งเข้ากับ Aluminium Profile (ขนาด 30x30 หรือ 40x40 mm) ได้ทันทีโดยไม่ต้องผ่านการเชื่อมเหล็ก (Without Welding) ช่วยลดระยะเวลาในการติดตั้ง (Setup Time) และลดความเสียหายต่อโครงสร้างเดิมของเครื่องจักร</span>
+                </li>
+            </ul>
+        </section>
+
+        <section id="members" class="page-section hidden">
+            <h1 data-i18n="sec_mem">3. สมาชิกกลุ่ม</h1>
+            <div class="members-grid">
+                <div class="member-card">
+                    <div class="member-photo-container">
+                        <img id="photo-1" class="member-photo" src="./เจ.jpg" alt="Member Photo">
+                    </div>
+                    <h3 data-i18n="mem1_n"> ธีรภัทร เก่งนอก</h3>
+                    <p><span data-i18n="mem1_r">Team Leader</span><br>ID: 2411220078</p>
+                </div>
+                <div class="member-card">
+                    <div class="member-photo-container">
+                        <img id="photo-2" class="member-photo" src="./โย.jpg" alt="Member Photo">
+                    </div>
+                    <h3 data-i18n="mem2_n"> พีระพัฒน์ โภคพูล</h3>
+                    <p>ID: 2411220342</p>
+                </div>
+                <div class="member-card">
+                    <div class="member-photo-container">
+                        <img id="photo-3" class="member-photo" src="./อั๋น.jpg" alt="Member Photo">
+                    </div>
+                    <h3 data-i18n="mem3_n">อนุรักษ์ ศิริภักดี</h3>
+                    <p>ID: 2511220127</p>
+                </div>
+                <div class="member-card">
+                    <div class="member-photo-container">
+                        <img id="photo-4" class="member-photo" src="./เนะ.jpg" alt="Member Photo">
+                    </div>
+                    <h3 data-i18n="mem4_n">ศรัญญู ภูเขาใหญ่</h3>
+                    <p>ID: 2411220268</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="references" class="page-section hidden">
+            <h1 data-i18n="sec_ref">4. แหล่งอ้างอิง</h1>
+            <div class="ref-item">1. Festo Didactic. (2023). <em>Pneumatic Technology Basic Level.</em> Germany.</div>
+            <div class="ref-item">2. SMC Corporation. (2024). <em>Pneumatic Cylinder Catalog.</em> <a href="https://www.smcworld.com" target="_blank">smcworld.com</a></div>
+        </section>
+    </main>
+
+    <footer>
+        <p data-i18n="footer">© 2026 รายงานกระบอกสูบนิวเมติกส์ | กลุ่ม พอแล้ว พอแล้ว </p>
+    </footer>
+
+    <script>
+        // System Translation Engine (TH / EN)
+        const translations = {
+            th: {
+                nav_home: "หน้าหลัก", nav_intro: "บทนำและแนวคิด", nav_design: "พาร์ทดีไซน์", nav_members: "สมาชิกกลุ่ม", nav_ref: "แหล่งอ้างอิง",
+                nav_system: "ระบบและการจัดการ ▼",
+                drop_cat3d: "การแบบจำลองเชิงกล 3 มิติ", drop_cat2d: "การเขียนแบบเครื่องกล 2 มิติ", drop_selection: "ประเภทและการเลือกใช้งาน", drop_mat_principles: "หลักการเลือกใช้วัสดุ", drop_pneumatic_circuits: "นิวเมติกส์และวงจรควบคุม", drop_boom: "รายการวัสดุ",
+                drop_sys_variety: "ด้านความหลากหลายของสินค้า", drop_sys_control: "ด้านระบบควบคุมและซอฟต์แวร์", drop_sys_standard: "ด้านมาตรฐานเชิงกล",
+                sec_sys_variety: "ด้านความหลากหลายของสินค้า (Product Versatility)",
+                var_intro: "การออกแบบระบบปฏิบัติการและกลไกของกระบอกสูบให้รองรับการทำงานกับสินค้าที่มีความหลากหลาย ถือเป็นหัวใจสำคัญที่ทำให้ระบบอัตโนมัติมีความคุ้มค่า ซึ่งในโปรเจกต์นี้มีจุดเด่น 3 ประการดังนี้:",
+                var_bullet1: "Modular Design (การออกแบบโมดูลาร์)", 
+                var_desc1: "การออกแบบชิ้นส่วนต่างๆ ให้สามารถถอดประกอบและปรับเปลี่ยนรูปแบบได้ตามความต้องการของสายการผลิต (Flexible Adaptability) ช่วยให้ระบบมีความยืดหยุ่นสูง รองรับขนาดและรูปแบบของบรรจุภัณฑ์ที่หลากหลายโดยไม่ต้องรื้อสร้างระบบเครื่องจักรใหม่ทั้งหมด",
+                var_bullet2: "Modular Pusher Plate (แผ่นผลักที่ถอดเปลี่ยนได้)", 
+                var_desc2: "แผ่นหน้าสัมผัสสำหรับผลักบรรจุภัณฑ์ถูกออกแบบมาให้ถอดเปลี่ยนได้สะดวกรวดเร็ว (Quick Change) เพื่อให้รับกับรูปทรงของขวด PET ขนาดต่างๆ หรือสินค้าแบบอื่น ป้องกันไม่ให้เกิดความเสียหายหรือเสียรูปทรงขณะทำการผลักคัดแยก",
+                var_bullet3: "Capacity Handling (สมรรถนะการรองรับน้ำหนัก)", 
+                var_desc3: "โครงสร้างกลไกและกระบอกสูบมีสมรรถนะสูง สามารถจัดการกับภาระโหลดรวม (Gross Payload) ตั้งแต่ 10 กิโลกรัม จนถึงระดับ 20 กิโลกรัมได้อย่างมั่นคงและมีเสถียรภาพ ทำให้พร้อมประยุกต์ใช้งานกับสินค้ากลุ่มแพ็คใหญ่ได้ทันที",
+                
+                sec_sys_control: "ด้านระบบควบคุมและซอฟต์แวร์ (Control & Automation Compatibility)",
+                ctrl_intro: "การบูรณาการกระบอกสูบนิวเมติกส์เข้ากับระบบควบคุมอัตโนมัติเป็นสิ่งสำคัญเพื่อให้เกิดประสิทธิภาพสูงสุด โปรเจกต์นี้ได้รับการออกแบบให้รองรับสถาปัตยกรรมซอฟต์แวร์และฮาร์ดแวร์ที่หลากหลาย:",
+                ctrl_bullet1: "Universal PLC Support (รองรับมาตรฐาน PLC สากล)",
+                ctrl_desc1: "สามารถทำงานร่วมกับชุดควบคุมตรรกะแบบโปรแกรมได้ (PLC) ชั้นนำของอุตสาหกรรม เช่น Mitsubishi MELSEC, SIEMENS S7-1200 และ OMRON รวมถึงรองรับไมโครคอนโทรลเลอร์ทางเลือกอย่าง Arduino และ ESP32 สำหรับงานต้นแบบและระบบขนาดเล็ก",
+                ctrl_bullet2: "IoT Ready (พร้อมเชื่อมต่อโครงข่าย IoT)",
+                ctrl_desc2: "โครงสร้างระบบถูกเตรียมความพร้อมสำหรับการอัปเกรดเข้าสู่ระบบ Internet of Things (IoT) ช่วยให้สามารถดึงข้อมูลสถานะการทำงานแบบเรียลไทม์ (Real-time monitoring) ส่งไปยังคลาวด์หรือศูนย์ควบคุมส่วนกลางได้ทันที",
+                ctrl_bullet3: "Flexible Sensing (รองรับเซนเซอร์หลากหลายรูปแบบ)",
+                ctrl_desc3: "ออกแบบให้สามารถสลับหรือติดตั้งเซนเซอร์ตรวจจับได้หลากหลายประเภทตามลักษณะชิ้นงาน เช่น Photoelectric Sensor สำหรับตรวจจับวัตถุทึบแสง, Proximity Sensor สำหรับโลหะ, และรองรับการทำงานร่วมกับระบบ Camera (Machine Vision) สำหรับงานคัดแยกที่ต้องการความแม่นยำสูง",
+
+                sec_sys_standard: "ด้านมาตรฐานเชิงกล (Mechanical & Standard Compatibility)",
+                std_intro: "ระบบถูกพัฒนาโดยคำนึงถึงมาตรฐานการประกอบเชิงกลสากล เพื่อความสะดวกในการซ่อมบำรุง การจัดหาอะไหล่ และการบูรณาการเข้ากับโครงสร้างพื้นฐานเดิมของโรงงาน:",
+                std_bullet1: "ISO Standard Compliance (มาตรฐานสากล ISO)",
+                std_desc1: "กระบอกสูบและอุปกรณ์หลักผ่านการรับรองมาตรฐานสากล เช่น ISO 15552 และ ISO 6431 ซึ่งเป็นบรรทัดฐานที่แบรนด์อุปกรณ์ลมชั้นนำระดับโลกอย่าง SMC, FESTO และ AIRTAC ยึดถือ ทำให้มั่นใจได้ว่าอุปกรณ์สามารถใช้งานทดแทนกันได้ (Interchangeable) อย่างสมบูรณ์",
+                std_bullet2: "Industrial Frame Integration (ติดตั้งง่ายกับโครงสร้างมาตรฐาน)",
+                std_desc2: "ออกแบบมาให้รองรับการติดตั้งเข้ากับ Aluminium Profile (ขนาด 30x30 หรือ 40x40 mm) ได้ทันทีโดยไม่ต้องผ่านการเชื่อมเหล็ก (Without Welding) ช่วยลดระยะเวลาในการติดตั้ง (Setup Time) และลดความเสียหายต่อโครงสร้างเดิมของเครื่องจักร",
+                
+                hero_title: "PNEUMATICS PART PROJECT", hero_sub: "ENGINEERING MATERIALS",
+                sec_intro: "บทนำ", 
+                intro_origin_title: "ที่มาและความหมายของกระบอกสูบนิวเมติกส์",
+                intro_origin_desc: "คำว่า \"นิวเมติกส์\" (Pneumatics) มีรากศัพท์มาจากภาษากรีกโบราณคำว่า \"Pneuma\" ซึ่งแปลว่าลมหรือลมหายใจ ในทางวิศวกรรมนิวเมติกส์คือศาสตร์ที่นำพลังงานจาก \"ลมอัด\" (Compressed Air) มาประยุกต์ใช้ในการขับเคลื่อนเชิงกล โดยมี กระบอกสูบนิวเมติกส์ (Pneumatic Cylinder) เป็นอุปกรณ์ทำงานหรืออุปกรณ์ขับเคลื่อนหลัก (Actuator) ที่ทำหน้าที่เปลี่ยนพลังงานความดันของลมอัดให้เป็นพลังงานกลในแนวเส้นตรงหรือแนวหมุน ถือเป็นหัวใจสำคัญในระบบอัตโนมัติยุคอุตสาหกรรมเนื่องจากมีโครงสร้างไม่ซับซ้อน ปลอดภัย และบำรุงรักษาง่าย",
+                intro_why_choose: "เหตุผลในการเลือกใช้กระบอกสูบประเภทนี้", 
+                intro_why_choose_d: "ในกระบวนการจัดแพ็คขวดน้ำดื่ม PET ขนาด 550 ml จำนวน 12 ขวด (เรียงแบบ 3×4 บล็อก) จะมีน้ำหนักโหลดรวมตัวผลิตภัณฑ์ (Gross Load) อยู่ที่ประมาณ 6.8 - 7.0 kg ซึ่งระบบต้องการกลไกผลักคัดแยกที่มีเสถียรภาพสูง กระบอกสูบแบบทำงานสองทาง (Double Acting) จึงตอบโจทย์ทางวิศวกรรมได้ดีที่สุดด้วยคุณสมบัติเด่น 3 ประการ...",
+                intro_prin_title: "หลักการในการเลือกกระบอกสูบ",
+                intro_prin_desc: "ในการเลือกกระบอกสูบนิวเมติกส์ไปใช้งานเบื้องต้น จะต้องพิจารณาจากปัจจัยหลัก 4 ประการ ได้แก่ แรงที่ต้องการใช้งาน (Force) เพื่อคำนวณหาขนาดเส้นผ่านศูนย์กลางกระบอกสูบ, ระยะก้านชัก (Stroke) ให้สอดคล้องกับระยะการเคลื่อนที่ของเครื่องจักร, ความเร็ว (Speed) ที่ต้องการในวงจร, และ ความดันลมอัด (Operating Pressure) ในระบบ เพื่อให้กระบอกสูบทำงานได้อย่างมีประสิทธิภาพและปลอดภัย",
+                btn_rotate: " หยุดหมุน", btn_reset: "🎯 รีเซ็ตมุมมอง", volume_label: "🔊 ระดับเสียง:",
+                intro_types: "ประเภทของกระบอกสูบนิวเมติกส์",
+                type1: "Single Acting:", type1_d: "ใช้ลมดันออกทางเดียว และใช้สปริงช่วยในการดันลูกสูบคืนตัว",
+                type2: "Double Acting:", type2_d: "ใช้แรงดันลมในการขับเคลื่อนทั้งจังหวะออกและจังหวะเข้า (เป็นประเภทที่นิยมใช้งานมากที่สุด)",
+                type3: "Rodless Cylinder:", type3_d: "กระบอกสูบแบบไม่มีก้านสูบยื่นออกมาภายนอก ช่วยในการประหยัดพื้นที่ติดตั้ง",
+                type4: "Rotary Actuator:", type4_d: "อุปกรณ์ขับเคลื่อนที่ให้ส่งแรงออกมาในลักษณะของการเคลื่อนที่แบบหมุน",
+                intro_apps: "อุตสาหกรรมที่นำไปใช้งาน",
+                intro_apps_d: "ถูกนำไปใช้งานอย่างแพร่หลายในสายการผลิตอัตโนมัติ เช่น อุตสาหกรรมยานยนต์, บรรจุภัณฑ์, ชิ้นส่วนอิเล็กทรอนิกส์, อุตสาหกรรมอาหาร รวมถึงระบบจับยึดชิ้นงานต่าง ๆ",
+                sec_cat3d: "การแบบจำลองเชิงกล 3 มิติ", 
+                sec_cat2d: "2.3 การเขียนแบบเครื่องกล 2 มิติ (Engineering Drawing)", 
+                desc_cat2d: "การดึงแบบแปลน 2 มิติ (2D Drawing) จากโมเดล 3 มิติเพื่อใช้ในกระบวนการผลิต",
+                dwg_tube_title: "ตัวกระบอกสูบ (Cylinder Tube)",
+                dwg_tube_desc: "แบบแปลนแสดงโครงสร้างทรงกระบอกกลวง มีความยาวรวมชิ้นงาน 120.00 มม. ระบุขนาดเส้นผ่านศูนย์กลางภายนอก ø34.00 มม. และเส้นผ่านศูนย์กลางภายในสำหรับคว้านรู (Bore Size) ø33.50 มม. มีความหนาผนังกระบอกสูบอยู่ที่ 0.25 มม.",
+                dwg_slider_title: "แกนเพลาและลูกสูบ (Piston Slider Shaft)",
+                dwg_slider_desc: "แบบขยายโครงสร้างแกนเพลาขับเคลื่อนหลักและชุดลูกสูบ แสดงระยะชักหลักแนวยาว 110.00 มม. ขนาดเส้นผ่านศูนย์กลางตัวลูกสูบหลัก ø32.96 มม. มีร่องติดตั้งซีลโอริงขนาด ø12.15 มม. และ ø13.07 มม. ปลายแกนเพลาส่งกำลังลดขนาดสเตปเหลือ ø10.00 มม.",
+                dwg1_title: "ฝาปิดด้านหลัง (Rear Plate)",
+                dwg1_desc: "แบบแปลนแสดงมิติส่วนประกอบของฝาปิดท้ายกระบอกสูบหนา 27.00 มม. มีรูนำลมเข้า-ออก (Air Port) เจาะลึกระบุตำแหน่งระยะ 13.00 มม. ตัวรับแกนบ่ากระบอกสูบ ø30.00 มม. ยื่นออก 0.50 มม. และเจาะรูร้อยสลักเกลียว ø4.20 มม.",
+                dwg2_title: "ฝาปิดด้านหน้า (Front Plate)",
+                dwg2_desc: "พิมพ์เขียวแสดงมุมมองออร์โธกราฟิกและโครงสร้างตัดขวางของฝาปิดหน้า ขนาดภายนอก 47.00x47.00 มม. มีบ่าทรงกลมยื่นความยาว 12.70 มม. ขนาด ø30.00 มม. เจาะรูคว้านตรงกลาง ø15.00 มม. พร้อมร่องยึดสกรู Tie-rod ø8.00 มม. ทั้ง 4 มุม",
+                dwg3_title: "วงแหวนยางกันรั่ว (O-Ring)",
+                dwg3_desc: "พิมพ์เขียวแสดงมิติมนมาตรฐานของชิ้นส่วนยางกันลมรั่วไหล (Seals) ระบุขนาดเส้นผ่านศูนย์กลางภายนอก (Outer Diameter) ø34.00 มม. ขนาดเส้นผ่านศูนย์กลางภายใน (Inner Diameter) ø30.00 มม. และมีความหนาของตัวหน้าตัดโอริงอยู่ที่ 2.00 มม.",
+                dwg4_title: "สลักเกลียวยึดโครงสร้าง (Shaft / Tie Rod)",
+                dwg4_desc: "แบบแสดงมิติชิ้นส่วนแกนเหล็กขันยึดประกอบโครงสร้างกระบอกสูบ ส่วนแกนเรียวยาวระบุขนาดความยาว 130.00 มม. เส้นผ่านศูนย์กลาง ø5.00 มม. ปลายหัวล็อกหกเหลี่ยมหนา 5.40 มม. ขนาด ø12.00 มม. พร้อมร่องบ่ารับแรงยาว 19.00 มม.",
+                sec_selection: "ประเภทและการเลือกใช้กระบอกสูบแบบนิวแมติก",
+                selection_intro: "การเลือกใช้ประเภทกระบอกสูบนิวเมติกส์และขนาดที่ถูกต้อง มีความสำคัญเป็นอย่างยิ่งต่อประสิทธิภาพ ความทนทาน และความปลอดภัยของระบบกลไกอัตโนมัติในงานวิศวกรรม",
+                selection_criteria_title: " เกณฑ์สำคัญในการเลือกใช้งาน (Key Selection Criteria)",
+                crit1: "ระยะช่วงชัก (Stroke Length):", crit1_d: "ระยะทางที่ก้านสูบเคลื่อนที่เข้า-ออกจริงตามความต้องการของจลนศาสตร์ของเครื่องจักร",
+                crit2: "ขนาดเส้นผ่านศูนย์กลางกระบอกสูบ (Bore Size):", crit2_d: "ส่งผลโดยตรงต่อแรงผลัก (Push Force) และแรงดึง (Pull Force) ของกระบอกสูบตามหลักการกลศาสตร์ของไหล",
+                crit3: "แรงดันใช้งาน (Operating Pressure):", crit3_d: "ระดับความดันลมอัดของระบบ (ปกติคำนวณที่ความดันมาตรฐานของอุตสาหกรรมประมาณ 5 - 7 บาร์)",
+                crit4: "สภาพแวดล้อมและอุณหภูมิ (Environment & Temperature):", crit4_d: "สำหรับเลือกชนิดวัสดุโครงสร้างและชนิดของซีลกันรั่วให้เหมาะสม เช่น งานความร้อนสูงหรืองานด้านอาหาร (Food Grade)",
+                selection_table_title: " ตารางเปรียบเทียบการเลือกใช้งานกระบอกสูบแต่ละประเภท",
+                th_cyl_type: "ประเภทกระบอกสูบ", th_cyl_force: "ลักษณะแรง/การทำงาน", th_cyl_app: "แอปพลิเคชันที่เหมาะสม", th_cyl_limit: "ข้อจำกัด",
+                td1_1: "กระทำด้วยลมทิศทางเดียว คืนตัวด้วยสปริง", td1_2: "งานหนีบยึดชิ้นงานชั่วคราว, งานตัด, งานดันวัตถุขนาดเล็ก", td1_3: "ระยะ Stroke สั้น (เนื่องจากข้อจำกัดความยาวสปริงภายใน)",
+                td2_1: "กระทำด้วยแรงดันลมทั้ง 2 ทิศทาง (เข้า-ออก)", td2_2: "สายพานลำเลียง, แขนกลจับชิ้นงาน, อุตสาหกรรมยานยนต์ทั่วไป", td2_3: "ใช้ปริมาณลมอัดมากกว่าแบบ Single Acting เท่าตัว",
+                td3_1: "โครงสร้างสั้นและบาง แรงดันสูงในพื้นที่จำกัด", td3_2: "อุตสาหกรรมอิเล็กทรอนิกส์, เครื่องจักรประกอบชิ้นส่วนขนาดเล็ก", td3_3: "มีช่วงชักสั้นมาก ไม่เหมาะกับงานระยะยาว",
+                td4_1: "ขับเคลื่อนตลับเลื่อนภายนอกโดยไม่มีก้านสูบยื่น", td4_2: "งานเปิด-ปิดประตูอัตโนมัติบานกว้าง, ระบบเลื่อนตัดวัสดุแนวยาว", td4_3: "การป้องกันฝุ่นละอองเข้าสู่ร่องสไลด์ทำได้ยากกว่าปกติ",
+                sec_mat_principles: "หลักการเลือกใช้วัสดุสำหรับกระบอกสูบนิวแมติก",
+                mat_principles_intro: "ในการออกแบบทางวิศวกรรมวัสดุ (Engineering Materials) การเลือกใช้วัสดุมาผลิตชิ้นส่วนต่าง ๆ ของกระบอกสูบนิวแมติก จะต้องพิจารณาจากคุณสมบัติทางกล (Mechanical Properties), น้ำหนัก, ความทนทานต่อการกัดกร่อน และต้นทุนการผลิต เพื่อให้กระบอกสูบสามารถทำงานภายใต้สภาวะลมอัดได้อย่างมีประสิทธิภาพสูงสุด",
+                mat_factors_title: " ปัจจัยหลักทางวิศวกรรมในการพิจารณาเลือกวัสดุ",
+                factor1: "ความแข็งแรงเชิงกล (Mechanical Strength):", factor1_d: "วัสดุต้องทนทานต่อความเค้นแรงดัน (Pressure Stress) ของลมอัดภายในกระบอกสูบ และทนแรงกระแทกซ้ำ ๆ ได้ดีโดยไม่เกิดการเปลี่ยนรูปถาวร",
+                factor2: "น้ำหนักและความหนาแน่น (Weight & Density):", factor2_d: "ชิ้นส่วนที่เคลื่อนที่ เช่น ก้านสูบและลูกสูบ ควรมีน้ำหนักเบาเพื่อลดความเฉื่อย (Inertia) ส่งผลให้ตอบสนองการเคลื่อนที่ได้อย่างรวดเร็วและประหยัดพลังงาน",
+                factor3: "ความต้านทานแรงเสียดทานและการสึกหรอ (Wear Resistance):", factor3_d: "ผิวด้านในกระบอกสูบ (Bore) ต้องมีความเรียบลื่นสูง และทนต่อแรงเสียดสีของซีลยาง NBR/PTFE ตลอดอายุการใช้งาน",
+                factor4: "ความทนทานต่อการกัดกร่อน (Corrosion Resistance):", factor4_d: "ในระบบนิวแมติกส์มักมีความชื้นสะสมปนมากับลมอัด วัสดุจึงต้องไม่เป็นสนิมง่ายเพื่อป้องกันความเสียหายต่อซีลกันรั่ว",
+                mat_case_study_title: " กรณีศึกษา: การเลือกใช้วาดูในโปรเจกต์นี้ (Project Material Configuration Case)",
+                th_p_part: "ชิ้นส่วนโครงสร้าง", th_p_mat: "วัสดุที่เลือกใช้", th_p_reason: "เหตุผลสำคัญทางวิศวกรรม (Engineering Reasons)",
+                td_p1: "น้ำหนักเบามาก ช่วยลดภาระโครงสร้างโดยรวม, อลูมิเนียมเกรด 6063 มีคุณสมบัติในการรีดขึ้นรูปทรงกระบอกกลวงได้เรียบเนียน (Excellent Extrudability) และทนต่อการกัดกร่อนจากความชื้นในอากาศได้ดีเยี่ยม",
+                td_p2: "เหล็กกล้าให้ค่าความเค้นดึง (Tensile Strength) สูงมาก รองรับแรงกดและแรงดัดงอขณะทำงานหนัก และการเคลือบผิวด้วยฮาร์ดโครม (Chrome-Plating) ช่วยเพิ่มความแข็งที่ผิว ลดแรงเสียดทาน และป้องกันรอยขีดข่วนจากการเคลื่อนที่ผ่านซีล",
+                td_p3: "ให้อัตราส่วนความแข็งแรงต่อน้ำหนักที่ดีเยี่ยม (Strength-to-Weight Ratio) สามารถแปรรูปขึ้นรูปด้วยเครื่องจักร (Machinability) เพื่อเจาะรูนำลม รูร้อยสลักยึด (Tie-rods) และทำบ่าซีลได้อย่างแม่นยำสูง",
+                
+                sec_pneumatic_circuits: "3.6 นิวเมติกส์และวงจรควบคุม",
+                pneu_circuits_intro: "นอกเหนือจากการเลือกใช้วัสดุโครงสร้างที่มีความเหมาะสมตามลักษณะงาน เช่น โครงสร้างภายนอกแบบอลูมิเนียมโปรไฟล์น้ำหนักเบา หรือการเลือกใช้สแตนเลส (Stainless Steel) ในอุตสาหกรรมอาหารและเครื่องดื่มเพื่อสุขอนามัยแล้ว การออกแบบระบบทำงานและวงจรควบคุมลมอัดเบื้องต้น (Fundamental Pneumatic Circuit) ถือเป็นปัจจัยสำคัญที่วิศวกรต้องตระหนักถึง เพื่อเสถียรภาพและยืดอายุการใช้งานเครื่องจักร",
+                frl_title: " ระบบเตรียมลมสะอาด (FRL Unit)",
+                frl_desc: "ลมอัดที่ถูกผลิตจากปั๊มลมทั่วไปมักจะมีความชื้น ละอองน้ำ ฝุ่นละออง และคราบน้ำมันปะปนมาด้วย ซึ่งเป็นอันตรายอย่างยิ่งต่อระบบซีลภายใน (NBR/PTFE) ของกระบอกสูบ ทำให้อายุการใช้งานสั้นลงและเกิดการรั่วไหลภายใน (Internal Leakage) ดังนั้น ระบบจึงจำเป็นต้องติดตั้ง ชุดเตรียมลมสะอาด (FRL Unit) ก่อนเข้าสู่ส่วนควบคุม โดย FRL ประกอบด้วยอุปกรณ์ 3 ชิ้นหลักคือ:",
+                calc_title: " เครื่องคำนวณทางวิศวกรรมเพื่อเลือกขนาดกระบอกสูบ (Interactive Design Calculator)",
+                calc_interactive_desc: "คุณสามารถปรับเปลี่ยนและกรอกข้อมูลตัวเลขน้ำหนักผลิตภัณฑ์ จำนวน หรือแรงดันใช้งานด้านล่างนี้ ระบบจะทำการประมวลผลคำนวณพารามิเตอร์ทางกลและหลักกลศาสตร์ของไหลให้แบบ Real-time ทันที:",
+                calc_step1_t: "1. วิเคราะห์แรงกระทำจากภาระโหลด (Load Analysis)",
+                calc_out_w1: "น้ำหนักรวมของขวดน้ำ ผลิตภัณฑ์",
+                calc_out_w2: "โหลดรวมจริงทั้งหมด (Gross Load, m)",
+                calc_out_w3: "แรงต้านเนื่องจากแรงโน้มถ่วง (F_g = m × g)",
+                calc_step2_t: "2. กำหนดค่าสัมประสิทธิ์ความปลอดภัย (Safety Factor)",
+                calc_out_sf_desc: "แรงผลักเป้าหมายขั้นต่ำที่กระบอกสูบต้องทำได้จริง (Required Target Force, F = F_g × SF)",
+                calc_step3_t: "3. คำนวณขนาดกระบอกสูบจากแรงดันใช้งาน (Bore Size Calculation)",
+                calc_out_p_desc: "แรงดันใช้งานที่แปลงหน่วยแล้ว (P)",
+                calc_out_formula: "จากสูตรความเค้นแรงดันขยายตัว F = P × A โดยที่ A = (π × D²) / 4 จะได้ขนาดทางทฤษฎีคือ:",
+                calc_step4_t: "4. สรุปผลและการเลือกขนาดมาตรฐาน (Engineering Standardization)",
+                calc_out_std_desc: "ขนาดเส้นผ่านศูนย์กลาง Bore Size ขั้นต่ำในทางปฏิบัติคือ",
+                calc_out_match_blueprint: "เพื่อให้ระบบเสถียรและทนแรงกระแทกซ้ำ ๆ ในโปรเจกต์นี้จึงเลือกใช้ขนาดมาตรฐานอุตสาหกรรมทดแทนคือ",
+                calc_out_match_blueprint2: "ซึ่งตรงกับแบบพิมพ์เขียวผิวด้านในกระบอกสูบขนาด ø40.00 mm ของกลุ่มพอแล้ว พอแล้ว",
+                calc_out_verify_title: "ตรวจสอบแรงผลักจริงที่เกิดขึ้นที่ขนาด 40 mm:",
+                calc_out_actual_f: "แรงผลักจริงที่สร้างได้",
+                calc_out_safe_status: "ปลอดภัยสูงสุด แรงเหลือเฟือเอาชนะโหลดได้แน่นอน",
+                speed_control_title: " การควบคุมความเร็วด้วย Speed Controller (Meter-out Control)",
+                speed_control_desc: "ในการประยุกต์ใช้ผลักขวดน้ำ PET ขนาด 550 ml นั้น การควบคุมความเร็วและอัตราเร่งมีความอ่อนไหวสูงมาก หากกระบอกสูบเคลื่อนที่เร็วเกินไป แรงกระแทกจากการชน (Dynamic Impact Force) จะทำให้ขวดน้ำล้มระเนระนาด หรือโครงสร้างขวดบิดเบี้ยวเสียหาย ทางวิศวกรรมจึงเลือกใช้ Speed Controller (วาล์วหรี่ควบคุมอัตราไหลชนิดปรับได้) ติดตั้งที่พอร์ตลมทั้งจังหวะเดินหน้าและถอยกลับ",
+                meter_out_desc: "โดยมีหลักการสำคัญคือใช้วงจรควบคุมแบบ Meter-out (การหรี่ลมระบายทิ้ง) ซึ่งจะปล่อยให้ลมอัดฝั่งต้นทางจ่ายเข้ากระบอกสูบอย่างเต็มที่ แต่จะทำการหรี่หน่วงลมระบายออก (Exhaust Air) ฝั่งตรงข้ามเอาไว้ การควบคุมแบบนี้จะช่วยสร้าง \"แรงต้านย้อนกลับ (Cushioning Pressure)\" ทำให้ก้านสูบเคลื่อนที่ได้อย่างนุ่มนวล สม่ำเสมอ ไม่กระตุก และสามารถปรับลดความเร็วในการดันขวดเข้าสถานีแพ็คได้อย่างแม่นยำ ป้องกันความเสียหายต่อบรรจุภัณฑ์ได้อย่างสมบูรณ์",
+                
+                sec_boom: "รายการวัสดุ", desc_boom: "รายการวัสดุและชิ้นส่วนทั้งหมดที่ใช้ในการประกอบกระบอกสูบนิวเมติกส์",
+                th_no: "ลำดับ", th_comp: "ชิ้นส่วน", th_mat: "วัสดุ", th_qty: "จำนวน",
+                sec_mem: "3. สมาชิกกลุ่ม", mem1_n: "ธีรภัทร เก่งนอก", mem1_r: "หัวหน้ากลุ่ม", mem2_n: "พีระพัฒน์ โภคพูล", mem3_n: "อนุลักษณ์ ศิริภักดี", mem4_n: "ศรัญยู ภูเขาใหญ่",
+                sec_ref: "4. แหล่งอ้างอิง", footer: "© 2026 Pneumatic Cylinder Report | กลุ่มพอแล้ว พอแล้ว"
+            },
+            en: {
+                nav_home: "Home", nav_intro: "Introduction & Concept", nav_design: "Part Design", nav_members: "Team Members", nav_ref: "References",
+                nav_system: "System & Management ▼",
+                drop_cat3d: "3D Mechanical Modeling", drop_cat2d: "2D Mechanical Drafting", drop_selection: "Cylinder Selection", drop_mat_principles: "Material Principles", drop_pneumatic_circuits: "Pneumatics & Circuits", drop_boom: "BOM",
+                drop_sys_variety: "Product Variety", drop_sys_control: "Control System & Software", drop_sys_standard: "Mechanical Standards",
+                sec_sys_variety: "Product Versatility",
+                var_intro: "Designing the operating system and cylinder mechanism to accommodate a variety of products is crucial for the cost-effectiveness of an automated system. This project features three main highlights:",
+                var_bullet1: "Modular Design", 
+                var_desc1: "System components are designed to be easily assembled and reconfigured (Flexible Adaptability) according to production line needs, allowing the system to handle various packaging sizes and formats without a complete machinery overhaul.",
+                var_bullet2: "Modular Pusher Plate", 
+                var_desc2: "The contact plate used for pushing packages is designed for quick and easy replacement to match the specific shapes of different PET bottles or products, preventing physical damage or deformation during the sorting process.",
+                var_bullet3: "Capacity Handling", 
+                var_desc3: "The mechanical structure and pneumatic cylinder deliver high performance, capable of stably and securely managing gross payloads ranging from 10 kg up to 20 kg, making it immediately adaptable for heavy-pack products.",
+                
+                sec_sys_control: "Control & Automation Compatibility",
+                ctrl_intro: "Integrating the pneumatic cylinder with an automated control system is essential for maximizing efficiency. This project is designed to support a wide range of software and hardware architectures:",
+                ctrl_bullet1: "Universal PLC Support",
+                ctrl_desc1: "Seamlessly integrates with industry-leading Programmable Logic Controllers (PLCs) such as Mitsubishi MELSEC, SIEMENS S7-1200, and OMRON. It also supports alternative microcontrollers like Arduino and ESP32 for prototyping and smaller-scale systems.",
+                ctrl_bullet2: "IoT Ready (IoT Connectivity Ready)",
+                ctrl_desc2: "The system architecture is fully prepared for Internet of Things (IoT) integration, enabling real-time monitoring and immediate operational data transmission to cloud platforms or centralized control centers.",
+                ctrl_bullet3: "Flexible Sensing (Diverse Sensor Switching)",
+                ctrl_desc3: "Designed to accommodate various types of detection sensors based on the workpiece characteristics. This includes Photoelectric sensors for opaque objects, Proximity sensors for metals, and compatibility with Camera systems (Machine Vision) for highly precise sorting tasks.",
+
+                sec_sys_standard: "Mechanical & Standard Compatibility",
+                std_intro: "The system is developed with universal mechanical assembly standards to ensure ease of maintenance, spare parts procurement, and integration into existing industrial infrastructure:",
+                std_bullet1: "ISO Standard Compliance",
+                std_desc1: "The cylinder and main components are certified to international standards such as ISO 15552 and ISO 6431, which are the benchmarks upheld by global pneumatic brands like SMC, FESTO, and AIRTAC, ensuring full interchangeability of components.",
+                std_bullet2: "Industrial Frame Integration",
+                std_desc2: "Designed for immediate mounting onto Aluminium Profiles (30x30 or 40x40 mm) without welding, which significantly reduces setup time and prevents damage to existing machinery structures.",
+                
+                hero_title: "PNEUMATICS PART PROJECT", hero_sub: "ENGINEERING MATERIALS",
+                sec_intro: "Introduction", 
+                intro_origin_title: "Origin and Meaning of Pneumatic Cylinders",
+                intro_origin_desc: "The term \"Pneumatics\" originates from the ancient Greek word \"Pneuma\", which translates to air or breath. In engineering, pneumatics is the science of utilizing compressed air to create mechanical movement.",
+                intro_why_choose: "Rationale for Cylinder Selection", 
+                intro_why_choose_d: "In the packaging process of 550 ml PET water bottles arranged in a 3×4 matrix (12 bottles total), the system encounters a gross payload of approximately 6.8 - 7.0 kg, demanding a highly stable pusher mechanism.",
+                intro_prin_title: "Principles of Cylinder Selection",
+                intro_prin_desc: "The basic selection of a pneumatic cylinder depends on four main factors: Required Force, Stroke Length, Operating Speed, and System Operating Pressure.",
+                btn_rotate: "🔄 Auto Rotate", btn_reset: "🎯 Reset View", volume_label: "🔊 Volume:",
+                intro_types: "Types of Pneumatic Cylinders",
+                type1: "Single Acting:", type1_d: "Uses air pressure for one direction, spring returns it.",
+                type2: "Double Acting:", type2_d: "Uses air for both extension and retraction.",
+                type3: "Rodless Cylinder:", type3_d: "No piston rod extends out, saves space.",
+                type4: "Rotary Actuator:", type4_d: "Provides rotational motion.",
+                intro_apps: "Applicable Industries", intro_apps_d: "Widely used in automated production lines such as automotive, packaging, electronics, food industry, and workpiece clamping systems.",
+                sec_cat3d: "3D Mechanical Modeling", 
+                sec_cat2d: "2D Mechanical Drafting", desc_cat2d: "Extracting 2D drawings from 3D models for manufacturing.",
+                dwg_tube_title: "Cylinder Tube",
+                dwg_tube_desc: "Blueprint displaying hollow internal channel structure with a total length of 120.00 mm, ø34.00 mm outer diameter, ø33.50 mm internal bore spec with a 0.25 mm wall thickness.",
+                dwg_slider_title: "Piston Slider Shaft",
+                dwg_slider_desc: "Scale blueprint of the main driving shaft and piston setup with a 110.00 mm main stroke, a ø32.96 mm piston diameter, ø12.15 mm and ø13.07 mm O-ring slots, and a stepped down ø10.00 mm rod end.",
+                dwg1_title: "Rear Plate",
+                dwg1_desc: "Orthographic blueprint layout of the rear cap with a total width of 27.00 mm, specifying a 13.00 mm deep air port placement, a ø30.00 mm cylinder recess with a 0.50 mm step, and ø4.20 mm mounting holes.",
+                dwg2_title: "Front Plate",
+                dwg2_desc: "Section blueprint illustrating the front plate geometry with absolute frame dimensions of 47.00x47.00 mm, a ø30.00 mm collar extending out 12.70 mm, a central ø15.00 mm rod passage, and ø8.00 mm tie-rod alignment slots.",
+                dwg3_title: "O-Ring",
+                dwg3_desc: "Detailed dimensional blueprint layout of the rubber seals specifying a ø34.00 mm Outer Diameter, a ø30.00 mm Inner Diameter, and a cross-section material thickness of 2.00 mm.",
+                dwg4_title: "Tie Rod / Shaft",
+                dwg4_desc: "Dimensional blueprint of the pneumatic cylinder tension rod specifying a 130.00 mm elongated shaft with a ø5.00 mm diameter, an overall ø12.00 mm head profile, a 5.40 mm cap thickness, and a 19.00 mm landing step.",
+                sec_selection: "Pneumatic Cylinder Types & Selection",
+                selection_intro: "Selecting the correct pneumatic cylinder type and size is vital for the efficiency, durability, and safety of automation systems.",
+                selection_criteria_title: " Key Selection Criteria",
+                crit1: "Stroke Length:", crit1_d: "The linear distance the piston rod travels according to kinematic needs.",
+                crit2: "Bore Size:", crit2_d: "Directly determines the push and pull forces based on fluid mechanics principles.",
+                crit3: "Operating Pressure:", crit3_d: "System compressed air pressure (usually calculated at an industry standard of 5-7 bar).",
+                crit4: "Environment & Temperature:", crit4_d: "Crucial for choosing the right seals and materials.",
+                selection_table_title: " Comparison Table for Cylinder Selection",
+                th_cyl_type: "Cylinder Type", th_cyl_force: "Force / Action Feature", th_cyl_app: "Suitable Application", th_cyl_limit: "Limitations",
+                td1_1: "Single direction by air, return by internal spring", td1_2: "Clamping, cutting, ejecting lightweight parts", td1_3: "Limited stroke length due to internal spring compression",
+                td2_1: "Pushed by air pressure in both directions", td2_2: "Conveyors, robotic arms, general automotive automation", td2_3: "Consumes twice as much compressed air as single acting",
+                td3_1: "Compact, thin body structure for high force in narrow areas", td3_2: "Electronics industry, small part assembly machinery", td3_3: "Very short stroke lengths, not suitable for long-reach work",
+                td4_1: "Drives external carriage directly without an extending rod", td4_2: "Automatic wide doors, long-stroke material cutting systems", td4_3: "Harder to prevent fine dust from entering the slide slot",
+                sec_mat_principles: "Material Selection Principles",
+                mat_principles_intro: "In materials engineering design, selecting proper substrates for components must balance mechanical properties, weight, wear resistance, and cost.",
+                mat_factors_title: " Key Engineering Evaluation Factors",
+                factor1: "Mechanical Strength:", factor1_d: "Materials must withstand internal pressure stress and cyclic kinetic impacts.",
+                factor2: "Weight & Density:", factor2_d: "Reciprocating elements require low density to minimize inertia.",
+                factor3: "Wear Resistance:", factor3_d: "The inner sliding bore must retain low absolute surface roughness.",
+                factor4: "Corrosion Resistance:", factor4_d: "Alloys must resist localized oxidative degradation.",
+                mat_case_study_title: " Case Study: Project Material Configuration",
+                th_p_part: "Structural Component", th_p_mat: "Selected Material Substrate", th_p_reason: "Engineering Logic & Operational Reasons",
+                td_p1: "Highly lightweight profile minimizing overall structure load.",
+                td_p2: "Carbon steel yields remarkable structural tensile strength.",
+                td_p3: "Delivers a commendable strength-to-weight ratio. Highly favorable machinability characteristics.",
+                
+                sec_pneumatic_circuits: "3.6 Pneumatics & Control Circuits",
+                pneu_circuits_intro: "Apart from structural material selection criteria, proper system design and a solid understanding of fundamental pneumatic circuits are imperative for ensuring system stability and extending machinery lifespan.",
+                frl_title: " Air Preparation System (FRL Unit)",
+                frl_desc: "Compressed air from generic compressors inevitably carries moisture, water particles, ambient dust, and residual compressor oil. These contaminants are severely detrimental to the cylinder's internal seals (NBR/PTFE).",
+                calc_title: "Interactive Engineering Design Calculator",
+                calc_interactive_desc: "You can modify and input custom mass, quantity, or system pressure variables below. The application will compute fluid mechanics parameters in real-time:",
+                calc_step1_t: "1. Load Analysis",
+                calc_out_w1: "Combined product mass of bottles",
+                calc_out_w2: "Total absolute mass (Gross Load, m)",
+                calc_out_w3: "Gravitational force load (F_g = m × g)",
+                calc_step2_t: "2. Determining Safety Factor",
+                calc_out_sf_desc: "Required minimum target push force (Required Target Force, F = F_g × SF)",
+                calc_step3_t: "3. Bore Size Calculation from Working Pressure",
+                calc_out_p_desc: "Converted working pressure (P)",
+                calc_out_formula: "From fluid pressure expansion formula F = P × A where A = (π × D²) / 4, the theoretical size is:",
+                calc_step4_t: "4. Engineering Standardization Summary",
+                calc_out_std_desc: "The absolute minimum practical internal Bore Size is",
+                calc_out_match_blueprint: "To ensure operational stiffness and handle cyclic dynamic hits, the off-the-shelf industrial size selected is",
+                calc_out_match_blueprint2: "which perfectly aligns with the ø40.00 mm internal bore blueprint spec of Por Laew Por Laew group",
+                calc_out_verify_title: "Verifying Actual Extension Force Capabilities at 40 mm:",
+                calc_out_actual_f: "Actual generated mechanical force",
+                calc_out_safe_status: "Excellent safety margin. System force is highly capable to yield smooth transits.",
+                speed_control_title: " Flow Control via Speed Controllers (Meter-out Design)",
+                speed_control_desc: "In pushing a 3×4 matrix of 550 ml thin-walled PET water bottles, velocity and acceleration control are highly critical.",
+                meter_out_desc: "The system primarily utilizes a Meter-out control configuration (throttling the exhaust air). This allows standard air to freely fill the driving chamber while precisely restricting the escaping air on the opposing side.",
+                
+                sec_boom: "Bill of Materials", desc_boom: "List of materials and components used.",
+                th_no: "No.", th_comp: "Component", th_mat: "Material", th_qty: "Qty",
+                sec_mem: "3. Team Members", mem1_n: "Teerapat kangnoke", mem1_r: "Team Leader", mem2_n: "Peerapat Pokpool", mem3_n: "Anuluk siriphagdee", mem4_n: "Saranyu Phukhaoyai",
+                sec_ref: "4. References", footer: "© 2026 Pneumatic Cylinder Report | Por laew por laew Group"
+            }
+        };
+
+        let currentLang = localStorage.getItem('lang') || 'th';
+        let currentTheme = localStorage.getItem('theme') || 'light';
+
+        // Dark/Light Theme Handler
+        function initTheme() {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            document.getElementById('theme-toggle').textContent = currentTheme === 'light' ? '🌙' : '☀️';
+        }
+
+        function toggleTheme() {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('theme', currentTheme);
+            initTheme();
+        }
+
+        function toggleLang() {
+            currentLang = currentLang === 'th' ? 'en' : 'th';
+            localStorage.setItem('lang', currentLang);
+            updateText();
+            updateCalculatorLabels(); 
+        }
+
+        function updateCalculatorLabels() {
+            if (currentLang === 'th') {
+                document.getElementById('lbl_input_mass').textContent = "น้ำหนักขวดน้ำ 1 ขวด (kg):";
+                document.getElementById('lbl_input_qty').textContent = "จำนวนขวดทั้งหมดในแพ็ค (ขวด):";
+                document.getElementById('lbl_input_extra').textContent = "น้ำหนักแผ่นเพลตดัน + แพ็คเกจ (kg):";
+                document.getElementById('lbl_input_sf').textContent = "ค่าความปลอดภัย (Safety Factor, SF):";
+                document.getElementById('lbl_input_press').textContent = "แรงดันลมอัดใช้งาน (Pressure, bar):";
+            } else {
+                document.getElementById('lbl_input_mass').textContent = "Single Bottle Mass (kg):";
+                document.getElementById('lbl_input_qty').textContent = "Total Bottles in Pack (pcs):";
+                document.getElementById('lbl_input_extra').textContent = "Pusher Plate + Package Mass (kg):";
+                document.getElementById('lbl_input_sf').textContent = "Safety Factor (SF):";
+                document.getElementById('lbl_input_press').textContent = "Working Pressure (bar):";
+            }
+        }
+
+        function updateText() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang] && translations[currentLang][key]) {
+                    el.innerHTML = translations[currentLang][key];
+                }
+            });
+            document.documentElement.lang = currentLang;
+            document.getElementById('lang-toggle').textContent = currentLang === 'th' ? 'EN' : 'TH';
+            syncRotateButton();
+        }
+
+        function calculatePneumatics() {
+            const m_single = parseFloat(document.getElementById('input-mass').value) || 0;
+            const qty = parseInt(document.getElementById('input-qty').value, 10) || 0;
+            const m_extra = parseFloat(document.getElementById('input-extra').value) || 0;
+            const sf = parseFloat(document.getElementById('input-sf').value) || 1.0;
+            const p_bar = parseFloat(document.getElementById('input-press').value) || 1.0;
+            
+            const mass_products = m_single * qty;
+            const mass_gross = mass_products + m_extra;
+            const f_g = mass_gross * 9.81; 
+            const f_target = f_g * sf;
+            const p_mpa = p_bar * 0.1; 
+            
+            let d_calc = 0;
+            if (p_mpa > 0) {
+                d_calc = Math.sqrt((f_target * 4) / (p_mpa * Math.PI));
+            }
+            
+            const a_actual = (Math.PI * Math.pow(40, 2)) / 4;
+            const f_actual = p_mpa * a_actual;
+
+            document.getElementById('out-prod-mass').textContent = mass_products.toFixed(2);
+            document.getElementById('out-gross-mass').textContent = mass_gross.toFixed(2);
+            document.getElementById('out-fg').textContent = f_g.toFixed(2);
+            document.getElementById('out-target-force').textContent = f_target.toFixed(2);
+            document.getElementById('out-p-mpa').textContent = p_mpa.toFixed(2);
+            document.getElementById('out-calc-d').textContent = d_calc.toFixed(2);
+            document.getElementById('out-final-min-d').textContent = d_calc.toFixed(2);
+            document.getElementById('out-actual-force').textContent = f_actual.toFixed(2);
+        }
+
+        function toggleMobileMenu() { 
+            document.getElementById('navMenu').classList.toggle('active'); 
+            document.querySelector('.hamburger').classList.toggle('active'); 
+        }
+
+        function closeMobileMenu() { 
+            document.getElementById('navMenu').classList.remove('active'); 
+            document.querySelector('.hamburger').classList.remove('active'); 
+            document.getElementById('design-dropdown').classList.remove('open');
+            document.getElementById('system-dropdown').classList.remove('open');
+        }
+
+        function toggleDropdown(e, dropdownId) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if(dropdownId !== 'design-dropdown') document.getElementById('design-dropdown').classList.remove('open');
+            if(dropdownId !== 'system-dropdown') document.getElementById('system-dropdown').classList.remove('open');
+            
+            document.getElementById(dropdownId).classList.toggle('open');
+        }
+
+        function showSection(sectionId) {
+            if (sectionId === 'design3d') sectionId = 'cat3d';
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
+            const target = document.getElementById(sectionId); 
+            if (target) target.classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-menu > li > a').forEach(a => a.classList.remove('active'));
+            
+            const navLink = document.getElementById('nav-' + sectionId); 
+            if (navLink) navLink.classList.add('active');
+
+            document.getElementById('design-dropdown').classList.remove('open');
+            document.getElementById('system-dropdown').classList.remove('open');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('click', (e) => { 
+            if (!e.target.closest('.dropdown')) {
+                document.getElementById('design-dropdown').classList.remove('open'); 
+                document.getElementById('system-dropdown').classList.remove('open'); 
+            }
+            if (!e.target.closest('nav')) closeMobileMenu(); 
+        });
+
+        let isAutoRotating = false; let rotateAnimFrame = null; let currentRotation = 0;
+        function startSmoothRotation() {
+            if (rotateAnimFrame) cancelAnimationFrame(rotateAnimFrame);
+            function animate() {
+                if (isAutoRotating) {
+                    currentRotation += 1.5;
+                    const viewer = document.getElementById('glb-viewer');
+                    if (viewer) viewer.cameraOrbit = `${currentRotation}deg auto auto`;
+                }
+                rotateAnimFrame = requestAnimationFrame(animate);
+            }
+            animate();
+            const audio = document.getElementById('background-music');
+            if (audio && isAutoRotating) audio.play().catch(()=>{});
+        }
+        function stopSmoothRotation() {
+            if (rotateAnimFrame) cancelAnimationFrame(rotateAnimFrame);
+            rotateAnimFrame = null;
+            const audio = document.getElementById('background-music');
+            if (audio) audio.pause();
+        }
+        function toggleAutoRotate() {
+            isAutoRotating = !isAutoRotating;
+            syncRotateButton();
+            if (isAutoRotating) startSmoothRotation(); else stopSmoothRotation();
+        }
+        function syncRotateButton() {
+            const btn = document.getElementById('btn-rotate'); if (!btn) return;
+            btn.textContent = isAutoRotating ? translations[currentLang].btn_rotate : (currentLang === 'th' ? '🔄 หมุนอัตโนมัติ' : '🔄 Auto Rotate');
+        }
+        function resetCamera() { const viewer = document.getElementById('glb-viewer'); currentRotation = 0; if (viewer) viewer.cameraOrbit = '0deg auto auto'; }
+        function updateVolume(val) { const audio = document.getElementById('background-music'); const numVal = parseInt(val, 10); if (audio) audio.volume = numVal / 100; document.getElementById('volume-txt-label').textContent = `${numVal}%`; }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            updateText();
+            updateCalculatorLabels();
+            calculatePneumatics(); 
+            isAutoRotating = true;
+            syncRotateButton();
+            // startSmoothRotation();
+        });
+    </script>
+</body>
+</html>
